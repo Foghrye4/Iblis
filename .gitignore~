@@ -20,6 +20,7 @@ build
 # other
 eclipse
 run
+.gradle
 /build/
 
 # Ignore Gradle GUI config
