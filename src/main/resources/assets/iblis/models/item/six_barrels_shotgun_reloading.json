@@ -1,0 +1,11 @@
+{
+    "parent": "iblis:item/six_barrels_shotgun_reloading_0",
+    "overrides": [
+        { "predicate": { "ammo": 1.0000000 }, "model": "iblis:item/six_barrels_shotgun_reloading_1" },
+        { "predicate": { "ammo": 2.0000000 }, "model": "iblis:item/six_barrels_shotgun_reloading_2" },
+        { "predicate": { "ammo": 3.0000000 }, "model": "iblis:item/six_barrels_shotgun_reloading_3" },
+        { "predicate": { "ammo": 4.0000000 }, "model": "iblis:item/six_barrels_shotgun_reloading_4" },
+        { "predicate": { "ammo": 5.0000000 }, "model": "iblis:item/six_barrels_shotgun_reloading_5" },
+        { "predicate": { "ammo": 6.0000000 }, "model": "iblis:item/six_barrels_shotgun_reloading_6" }
+    ]
+}

@@ -1,0 +1,16 @@
+[
+{
+  "modid": "iblis",
+  "name": "Iblis",
+  "description": "Skill from experience",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Foghrye4"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

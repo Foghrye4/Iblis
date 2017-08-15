@@ -1,0 +1,45 @@
+{
+  "book_reading": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:book_reading_1", "stream": false },
+    	{ "name": "iblis:book_reading_2", "stream": false }
+    ]
+	},
+  "book_closing": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:book_closing", "stream": false }
+    ]
+	},
+  "shotgun_ammo_loading": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:shotgun_ammo_loading", "stream": false }
+    ]
+	},
+  "shoot": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:shoot", "stream": false }
+    ]
+	},
+  "shotgun_hammer_click": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:shotgun_hammer_click", "stream": false }
+    ]
+	},
+  "shotgun_hammer_cock": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:shotgun_hammer_cock", "stream": false }
+    ]
+	},
+  "shotgun_charging": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:shotgun_charging", "stream": false }
+    ]
+	}
+}

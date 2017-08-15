@@ -1,0 +1,954 @@
+{
+    "pools": [
+        {
+	    	"name":"SWORDSMANSHIP_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"SWORDSMANSHIP_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SWORDSMANSHIP_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SWORDSMANSHIP\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+                {
+	    	"name":"ARCHERY_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"ARCHERY_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARCHERY_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARCHERY\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+                {
+	    	"name":"SHARPSHOOTING_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"SHARPSHOOTING_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"SHARPSHOOTING_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"SHARPSHOOTING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+                {
+	    	"name":"ARMORSMITH_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"ARMORSMITH_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"ARMORSMITH_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"ARMORSMITH\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+                {
+	    	"name":"WEAPONSMITH_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"WEAPONSMITH_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"WEAPONSMITH_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "quality": 8,
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"WEAPONSMITH\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        }
+    ]
+}

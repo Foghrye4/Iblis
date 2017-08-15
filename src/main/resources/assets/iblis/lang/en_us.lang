@@ -1,0 +1,82 @@
+language.name=English
+language.region=US
+language.code=en_US
+
+key.iblis.reload=Reload ammo
+
+generic.maxHealth=Max health points %d: %0.1f
+generic.attackDamage=Damage base %d: %0.1f
+generic.attackSpeed=Attack speed %d: %0.1f
+generic.knockbackResistance=Knockback resistance %d: %0.2f
+generic.luck=Luck %d: %0.1f
+
+iblis.melee_damage_reduction=Incoming melee damage reduction %d: %0.1f
+iblis.fire_damage_reduction=Incoming fire damage reduction %d: %0.1f
+iblis.explosion_damage_reduction=Incoming explosion damage reduction %d: %0.1f
+iblis.projectile_damage_reduction=Incoming projectile damage reduction %d: %0.1f
+iblis.intelligence=Intelligence %d: %0.1f
+iblis.sprinting_speed=Sprinting speed %d: %0.1f
+
+iblis.wisdom=Wisdom: %0.1f
+iblis.martial_arts=Martial arts: %0.1f
+iblis.swordsmanship=Swordsmanship: %0.1f
+iblis.archery=Archery: %0.1f
+iblis.sharpshooting=Sharpshooting: %0.1f
+iblis.craftmanship=Craftmanship: %0.1f
+iblis.weaponsmith=Weaponsmith: %0.1f
+iblis.armorsmith=Armorsmith: %0.1f
+
+iblis.SWORDSMANSHIP=swordsmanship
+iblis.ARCHERY=archery
+iblis.SHARPSHOOTING=sharpshooting
+iblis.WEAPONSMITH=weapon smithing
+iblis.ARMORSMITH=armor smithing
+
+iblis.seconds=%d seconds
+iblis.minutes=%d minutes
+iblis.hours=%d hours
+iblis.days=%d days
+
+iblis.second=one second
+iblis.minute=one minute
+iblis.hour=one hour
+iblis.day=one day
+
+iblis.qualityLevel.worthless=worthless
+iblis.qualityLevel.trash=trash
+iblis.qualityLevel.miserable=miserable
+iblis.qualityLevel.awful=awful
+iblis.qualityLevel.bad=bad
+iblis.qualityLevel.normal=normal
+iblis.qualityLevel.good=good
+iblis.qualityLevel.excellent=excellent
+iblis.qualityLevel.marvelous=marvelous
+iblis.qualityLevel.exceptional=exceptional
+iblis.qualityLevel.perfect=perfect
+iblis.quality=Quality: %s (%d)
+iblis.bowAttackDamage=Bow quality damage modifier: %0.1f
+
+attribute.name.iblis.arrow_damage=Arrows damage
+attribute.name.iblis.bullet_damage=Bullet damage
+attribute.name.iblis.damage_reduction=Damage reduction
+attribute.name.iblis.intelligence=Intelligence
+
+iblis.diary=%ss' diary
+iblis.youAlreadyReadThatBook=You already read that book.
+iblis.youLearnedSomethingNew=You learned something new from that book.
+iblis.thisBookWasWritten=This book was written %s ago.
+iblis.guideTitle=The %s guide of %s
+iblis.guideLevel.beginners=beginners
+iblis.guideLevel.novice=novice
+iblis.guideLevel.experienced=experienced
+iblis.guideLevel.professional=professional 
+iblis.guideLevel.experts=experts
+iblis.guideLevel.ultimate=ultimate
+
+itemGroup.iblis.tab=Iblis items
+
+item.adventurer_diary.name=Adventurer diary
+item.guide.name=Guide
+item.six_barrels_shotgun.name=Six barrels shotgun
+item.shotgun_bullet.name=Shotgun shot
+item.ingot_steel.name=Steel ingot
