@@ -18,9 +18,10 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class PlayerSensitiveRecipeWrapper implements IRecipe {
+public class PlayerSensitiveRecipeWrapper extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	PlayerSkills sensitiveSkill = PlayerSkills.WEAPONSMITH;
 	private int minimalSkill = 0;
@@ -75,11 +76,6 @@ public class PlayerSensitiveRecipeWrapper implements IRecipe {
 	}
 
 	@Override
-	public int getRecipeSize() {
-		return this.wrappedRecipe.getRecipeSize();
-	}
-
-	@Override
 	public ItemStack getRecipeOutput() {
 		return this.wrappedRecipe.getRecipeOutput();
 	}
@@ -97,5 +93,10 @@ public class PlayerSensitiveRecipeWrapper implements IRecipe {
 	
 	public void raiseSkill(EntityPlayer player){
 		sensitiveSkill.raiseSkill(player, minimalSkill + 1);
+	}
+
+	@Override
+	public boolean canFit(int width, int height) {
+		return this.wrappedRecipe.canFit(width, height);
 	}
 }

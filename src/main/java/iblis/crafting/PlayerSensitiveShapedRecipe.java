@@ -8,16 +8,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 
-	public PlayerSensitiveShapedRecipe(int width, int height, ItemStack[] ingredientsIn, ItemStack output) {
-		super(width, height, ingredientsIn, output);
+	public PlayerSensitiveShapedRecipe(String groupIn, int width, int height, NonNullList<Ingredient> ingredientsIn, ItemStack output) {
+		super(groupIn, height, height, ingredientsIn, output);
 	}
 
 	@Override
@@ -74,11 +76,6 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		return super.matches(inv, worldIn);
-	}
-
-	@Override
-	public int getRecipeSize() {
-		return super.getRecipeSize();
 	}
 
 	@Override

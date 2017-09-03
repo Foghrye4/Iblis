@@ -1,6 +1,5 @@
 package iblis.gui;
 
-
 import java.util.Random;
 
 import iblis.IblisMod;
@@ -11,6 +10,8 @@ import iblis.player.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiButtonImage;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,29 +33,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiEventHandler {
 	/** I hope I'm lucky to not interfere with other mods. **/
+	private static final int RECIPE_BOOK_BUTTON_INDEX = 10;
 	private static final int CHARACTERISTICS_BUTTON_INDEX = 4;
-	private static final int SKILLS_BUTTON_INDEX = CHARACTERISTICS_BUTTON_INDEX+1;
-    
-	private static final ResourceLocation IBLIS_ICONS = new ResourceLocation(IblisMod.MODID,"textures/gui/icons.png");
-    
+	private static final int SKILLS_BUTTON_INDEX = CHARACTERISTICS_BUTTON_INDEX + 1;
+
+	public static final ResourceLocation IBLIS_ICONS = new ResourceLocation(IblisMod.MODID, "textures/gui/icons.png");
+
 	private long healthUpdateCounter;
 	private int playerHealth;
 	private long lastSystemTime;
 	private int lastPlayerHealth;
 	private Random rand = new Random();
+	GuiButtonImage characteristicsButton;
+	GuiButtonImage skillsButton;
 
 	@SubscribeEvent
 	public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
 		if (event.getGui() instanceof GuiInventory) {
 			GuiInventory gui = (GuiInventory) event.getGui();
-			boolean isCharacteristicsCouldBeRaised = PlayerUtils
-					.isCharacteristicsCouldBeRaised(Minecraft.getMinecraft().player);
-			GuiButtonRed characteristicsButton = new GuiButtonRed(CHARACTERISTICS_BUTTON_INDEX, gui.getGuiLeft() + 77 + 18,
-					gui.getGuiTop() + 60, 20, 20, isCharacteristicsCouldBeRaised ? "+" : "C");
-			characteristicsButton.setRed(isCharacteristicsCouldBeRaised);
-			
-			GuiButton skillsButton = new GuiButton(SKILLS_BUTTON_INDEX, gui.getGuiLeft() + 77 + 18 + 20,
-					gui.getGuiTop() + 60, 20, 20, "S");
+			characteristicsButton = new GuiButtonImage(CHARACTERISTICS_BUTTON_INDEX,
+					gui.getGuiLeft() + 125, gui.getGuiTop() + 61, 20, 18, 0, 220, 18, IBLIS_ICONS);
+			skillsButton = new GuiButtonImage(SKILLS_BUTTON_INDEX, gui.getGuiLeft() + 146,
+					gui.getGuiTop() + 61, 20, 18, 20, 220, 18, IBLIS_ICONS);
 			event.getGui().buttonList.add(characteristicsButton);
 			event.getGui().buttonList.add(skillsButton);
 		}
@@ -63,13 +63,20 @@ public class GuiEventHandler {
 	@SubscribeEvent
 	public void onButtonPressed(GuiScreenEvent.ActionPerformedEvent.Post action) {
 		if (action.getGui() instanceof GuiInventory) {
+			GuiInventory gui = (GuiInventory) action.getGui();
 			Minecraft mc = Minecraft.getMinecraft();
-			switch(action.getButton().id){
+			switch (action.getButton().id) {
 			case CHARACTERISTICS_BUTTON_INDEX:
 				mc.displayGuiScreen(new GuiCharacteritics(mc.player));
 				break;
 			case SKILLS_BUTTON_INDEX:
 				mc.displayGuiScreen(new GuiSkills(mc.player));
+				break;
+			case RECIPE_BOOK_BUTTON_INDEX:
+				if(characteristicsButton!=null)
+					characteristicsButton.setPosition(gui.getGuiLeft() + 125, gui.getGuiTop() + 61);
+				if(skillsButton!=null)
+					skillsButton.setPosition(gui.getGuiLeft() + 146, gui.getGuiTop() + 61);
 				break;
 			}
 		}
@@ -80,33 +87,41 @@ public class GuiEventHandler {
 		if (action.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayer player = mc.player;
-			if(player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemShotgun){
+			if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemShotgun) {
 				double sharpshootingSkillValue = PlayerSkills.SHARPSHOOTING.getFullSkillValue(player);
 				ScaledResolution res = action.getResolution();
-				int screenWidth = res.getScaledWidth(); 
+				int screenWidth = res.getScaledWidth();
 				int screenHeight = res.getScaledHeight();
-				int centerX = screenWidth/2+1;
-				int centerY = screenHeight/2+1;
-				double divider = sharpshootingSkillValue + 1d
-						+ 4d * player.getCooledAttackStrength(0.0F) + (player.isSneaking() ? 4d : 0d);
-				int frameSize = (int) (screenHeight * 8 / divider);
+				int centerX = screenWidth / 2 + 1;
+				int centerY = screenHeight / 2 + 1;
+				double divider = (sharpshootingSkillValue + 1d) * (1d + player.getCooledAttackStrength(0.0F))
+						* (player.isSneaking() ? 2d : 1d) * (player.isSprinting() ? 0.5d : 1d);
+				int frameSize = (int) (screenHeight / divider);
 				int colour = 0x44ff9600;
-				//Top line left
-				Gui.drawRect(centerX-frameSize/2-1, centerY-frameSize/2, centerX-frameSize/3, centerY-frameSize/2-1, colour);
-				//Top line right
-				Gui.drawRect(centerX+frameSize/3-1, centerY-frameSize/2, centerX+frameSize/2, centerY-frameSize/2-1, colour);
-				//Bottom line left
-				Gui.drawRect(centerX-frameSize/2, centerY+frameSize/2, centerX-frameSize/3, centerY+frameSize/2-1, colour);
-				//Bottom line right
-				Gui.drawRect(centerX+frameSize/3-1, centerY+frameSize/2, centerX+frameSize/2, centerY+frameSize/2-1, colour);
-				//Left line top
-				Gui.drawRect(centerX-frameSize/2, centerY-frameSize/2, centerX-frameSize/2-1, centerY-frameSize/3, colour);
-				//Left line bottom
-				Gui.drawRect(centerX-frameSize/2, centerY+frameSize/3-1, centerX-frameSize/2-1, centerY+frameSize/2, colour);
-				//Right line top
-				Gui.drawRect(centerX+frameSize/2, centerY-frameSize/2, centerX+frameSize/2-1, centerY-frameSize/3, colour);
-				//Right line bottom
-				Gui.drawRect(centerX+frameSize/2, centerY+frameSize/3-1, centerX+frameSize/2-1, centerY+frameSize/2-1, colour);
+				// Top line left
+				Gui.drawRect(centerX - frameSize / 2 - 1, centerY - frameSize / 2, centerX - frameSize / 3,
+						centerY - frameSize / 2 - 1, colour);
+				// Top line right
+				Gui.drawRect(centerX + frameSize / 3 - 1, centerY - frameSize / 2, centerX + frameSize / 2,
+						centerY - frameSize / 2 - 1, colour);
+				// Bottom line left
+				Gui.drawRect(centerX - frameSize / 2, centerY + frameSize / 2, centerX - frameSize / 3,
+						centerY + frameSize / 2 - 1, colour);
+				// Bottom line right
+				Gui.drawRect(centerX + frameSize / 3 - 1, centerY + frameSize / 2, centerX + frameSize / 2,
+						centerY + frameSize / 2 - 1, colour);
+				// Left line top
+				Gui.drawRect(centerX - frameSize / 2, centerY - frameSize / 2, centerX - frameSize / 2 - 1,
+						centerY - frameSize / 3, colour);
+				// Left line bottom
+				Gui.drawRect(centerX - frameSize / 2, centerY + frameSize / 3 - 1, centerX - frameSize / 2 - 1,
+						centerY + frameSize / 2, colour);
+				// Right line top
+				Gui.drawRect(centerX + frameSize / 2, centerY - frameSize / 2, centerX + frameSize / 2 - 1,
+						centerY - frameSize / 3, colour);
+				// Right line bottom
+				Gui.drawRect(centerX + frameSize / 2, centerY + frameSize / 3 - 1, centerX + frameSize / 2 - 1,
+						centerY + frameSize / 2 - 1, colour);
 			}
 		}
 		if (action.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
@@ -115,7 +130,7 @@ public class GuiEventHandler {
 			renderHealth(res.getScaledWidth(), res.getScaledHeight());
 		}
 	}
-	
+
 	/**
 	 * It's mostly copy-paste from forge. I just set healthbar row height to 1
 	 **/
@@ -123,7 +138,7 @@ public class GuiEventHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
 		GlStateManager.enableBlend();
-		
+
 		mc.mcProfiler.startSection("iblisModAmmo");
 		int right = width / 2 + 91;
 		int top = height - GuiIngameForge.left_height;
@@ -140,7 +155,7 @@ public class GuiEventHandler {
 					mc.ingameGUI.drawTexturedModalRect(x, y, 8, 0, 7, 16);
 			}
 		}
-		
+
 		mc.mcProfiler.endStartSection("health");
 		mc.getTextureManager().bindTexture(Gui.ICONS);
 		int health = MathHelper.ceil(player.getHealth());
@@ -230,7 +245,7 @@ public class GuiEventHandler {
 				}
 			}
 		}
-		
+
 		GlStateManager.disableBlend();
 		mc.mcProfiler.endSection();
 

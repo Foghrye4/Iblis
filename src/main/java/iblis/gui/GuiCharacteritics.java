@@ -9,6 +9,7 @@ import iblis.player.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,13 +50,12 @@ public class GuiCharacteritics extends GuiScreen {
 		int row = 0;
 		for (PlayerCharacteristics characteristic : PlayerCharacteristics.values()) {
 				if (PlayerUtils.isCharacteristicCouldBeRaised(characteristic, player)) {
-					GuiButtonRed raiseCB = new GuiButtonRed(characteristic.ordinal(), leftMargin,
-							topMargin + (buttonSize + 1) * row, buttonSize, buttonSize, "+");
-					raiseCB.setRed(true);
+				GuiButtonImage raiseCB = new GuiButtonImage(characteristic.ordinal(), leftMargin,
+						topMargin + (buttonSize + 1) * row, 20, 18, 40, 220, 18, GuiEventHandler.IBLIS_ICONS);
 					this.buttonList.add(raiseCB);
 				}
-				GuiLabelFormatted label = new GuiLabelFormatted(fontRendererObj, characteristic.ordinal(),
-						leftMargin + buttonSize + 1, topMargin + 5 + (buttonSize + 1) * row, buttonSize, buttonSize,
+				GuiLabelFormatted label = new GuiLabelFormatted(fontRenderer, characteristic.ordinal(),
+						leftMargin + buttonSize + 1, topMargin + 2 + (buttonSize + 1) * row, buttonSize, buttonSize,
 						0xFFAA33);
 				label.addLine(characteristic.getNiceName(),
 						Integer.valueOf(characteristic.getCurrentLevel(player)),

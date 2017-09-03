@@ -46,6 +46,11 @@ public class ItemShotgun extends Item {
 			return EntitySelectors.NOT_SPECTATING.apply(entity) && EntitySelectors.IS_ALIVE.apply(entity)
 					&& entity.canBeCollidedWith();
 		}
+		
+		@Override
+		public boolean test(@Nullable Entity entity) {
+			return apply(entity);
+		}
 	};
 
 	@Override
@@ -70,13 +75,13 @@ public class ItemShotgun extends Item {
 				double sharpshootingSkillValue = PlayerSkills.SHARPSHOOTING.getFullSkillValue(playerIn);
 				double luckValue = playerIn.getEntityAttribute(SharedMonsterAttributes.LUCK).getAttributeValue();
 				boolean isCritical = rand.nextDouble()<(sharpshootingSkillValue+luckValue-8d)/100d;
-				float cas = playerIn.getCooledAttackStrength(0.0F);
-				double divider = sharpshootingSkillValue + 1d + cas * 4d + (playerIn.isSneaking() ? 4d : 0d);
+				double divider = (sharpshootingSkillValue + 1d) * (1d + playerIn.getCooledAttackStrength(0.0F))
+						* (playerIn.isSneaking() ? 2d : 1d) * (playerIn.isSprinting() ? 0.5d : 1d);
 				pLook = pLook.addVector((rand.nextFloat() - .5f) / divider, (rand.nextFloat() - .5f) / divider,
 						(rand.nextFloat() - .5f) / divider);
 				Vec3d vec3d = new Vec3d(playerIn.posX, playerIn.posY + playerIn.eyeHeight, playerIn.posZ);
-				Vec3d vec3d2 = vec3d.addVector(pLook.xCoord * blockReachDistance, pLook.yCoord * blockReachDistance,
-						pLook.zCoord * blockReachDistance);
+				Vec3d vec3d2 = vec3d.addVector(pLook.x * blockReachDistance, pLook.y * blockReachDistance,
+						pLook.z * blockReachDistance);
 				RayTraceResult rtr = worldIn.rayTraceBlocks(vec3d, vec3d2, false, true, true);
 				if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
 					vec3d2 = rtr.hitVec;
@@ -99,8 +104,8 @@ public class ItemShotgun extends Item {
 				nbt.setInteger("ammo", --ammoIn);
 		        itemstack.damageItem(1, playerIn);
 			}
-			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, playerIn.posX + pLook.xCoord,
-					playerIn.posY + pLook.yCoord + playerIn.eyeHeight, playerIn.posZ + pLook.zCoord, 0, 0.1, 0);
+			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, playerIn.posX + pLook.x,
+					playerIn.posY + pLook.y + playerIn.eyeHeight, playerIn.posZ + pLook.z, 0, 0.1, 0);
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shoot,
 					SoundCategory.PLAYERS, 1.0f, 1.0f);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);

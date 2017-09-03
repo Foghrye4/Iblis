@@ -26,6 +26,8 @@ public class IblisSounds {
 
 	private static SoundEvent registerSound(String soundNameIn) {
 		ResourceLocation sound = new ResourceLocation(IblisMod.MODID, soundNameIn);
-		return GameRegistry.register(new SoundEvent(sound).setRegistryName(sound));
+		SoundEvent soundEvent = new SoundEvent(sound).setRegistryName(sound);
+		RegistryEventHandler.sounds.add(soundEvent);
+		return soundEvent;
 	}
 }

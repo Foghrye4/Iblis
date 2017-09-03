@@ -58,14 +58,14 @@ public class ServerNetworkHandler {
 			PlayerCharacteristics characteristic = PlayerCharacteristics.values()[byteBufInputStream.read()];
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
-			World world = server.worldServerForDimension(worldDimensionId);
+			World world = server.getWorld(worldDimensionId);
 			EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			characteristic.raiseCharacteristic(player);
 			break;
 		case RELOAD_WEAPON:
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
-			world = server.worldServerForDimension(worldDimensionId);
+			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			ItemStack held = player.getHeldItem(EnumHand.MAIN_HAND);
 			if(held.getItem() instanceof ItemShotgun) {
@@ -78,7 +78,7 @@ public class ServerNetworkHandler {
 		case APPLY_SPRINTING_SPEED_MODIFIER:
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
-			world = server.worldServerForDimension(worldDimensionId);
+			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			int sprintingState = byteBufInputStream.readInt();
 			PlayerUtils.applySprintingSpeedModifier(player, sprintingState);
@@ -122,27 +122,27 @@ public class ServerNetworkHandler {
 		ByteBuf bb = Unpooled.buffer(36);
 		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
 		byteBufOutputStream.writeByte(ClientCommands.SPAWN_BLOCK_PARTICLES.ordinal());
-		byteBufOutputStream.writeDouble(targetPos.xCoord);
-		byteBufOutputStream.writeDouble(targetPos.yCoord);
-		byteBufOutputStream.writeDouble(targetPos.zCoord);
-		byteBufOutputStream.writeDouble(impactVector.xCoord);
-		byteBufOutputStream.writeDouble(impactVector.yCoord);
-		byteBufOutputStream.writeDouble(impactVector.zCoord);
+		byteBufOutputStream.writeDouble(targetPos.x);
+		byteBufOutputStream.writeDouble(targetPos.y);
+		byteBufOutputStream.writeDouble(targetPos.z);
+		byteBufOutputStream.writeDouble(impactVector.x);
+		byteBufOutputStream.writeDouble(impactVector.y);
+		byteBufOutputStream.writeDouble(impactVector.z);
 		byteBufOutputStream.writeInt(blockStateID);
-		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(playerIn.dimension, targetPos.xCoord, targetPos.yCoord, targetPos.zCoord, 64d));
+		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(playerIn.dimension, targetPos.x, targetPos.y, targetPos.z, 64d));
 	}
 
 	public void spawnParticles(EntityPlayerMP playerIn, Vec3d targetPos, Vec3d impactVector, EnumParticleTypes crit) {
 		ByteBuf bb = Unpooled.buffer(36);
 		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
 		byteBufOutputStream.writeByte(ClientCommands.SPAWN_PARTICLES.ordinal());
-		byteBufOutputStream.writeDouble(targetPos.xCoord);
-		byteBufOutputStream.writeDouble(targetPos.yCoord);
-		byteBufOutputStream.writeDouble(targetPos.zCoord);
-		byteBufOutputStream.writeDouble(impactVector.xCoord);
-		byteBufOutputStream.writeDouble(impactVector.yCoord);
-		byteBufOutputStream.writeDouble(impactVector.zCoord);
+		byteBufOutputStream.writeDouble(targetPos.x);
+		byteBufOutputStream.writeDouble(targetPos.y);
+		byteBufOutputStream.writeDouble(targetPos.z);
+		byteBufOutputStream.writeDouble(impactVector.x);
+		byteBufOutputStream.writeDouble(impactVector.y);
+		byteBufOutputStream.writeDouble(impactVector.z);
 		byteBufOutputStream.writeInt(crit.ordinal());
-		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(playerIn.dimension, targetPos.xCoord, targetPos.yCoord, targetPos.zCoord, 64d));
+		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(playerIn.dimension, targetPos.x, targetPos.y, targetPos.z, 64d));
 	}
 }

@@ -36,8 +36,8 @@ public class ItemGuideBook extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		ItemStack guideStack = new ItemStack(itemIn, 1, 1);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		ItemStack guideStack = new ItemStack(this, 1, 1);
 		NBTTagCompound guideNBT = new NBTTagCompound();
 		NBTTagList skills = new NBTTagList();
 		NBTTagCompound skill = new NBTTagCompound();
@@ -48,7 +48,7 @@ public class ItemGuideBook extends Item {
 		guideNBT.setInteger("id", 0);
 		guideStack.setTagCompound(guideNBT);
 		subItems.add(guideStack);
-		ItemStack diaryStack = new ItemStack(itemIn, 1, 0);
+		ItemStack diaryStack = new ItemStack(this, 1, 0);
 		NBTTagCompound diaryNBT = guideNBT.copy();
 		diaryNBT.setInteger("id", 1);
 		diaryNBT.setString("author", "Foghrye4");

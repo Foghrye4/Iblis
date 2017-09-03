@@ -80,3 +80,5 @@ item.guide.name=Guide
 item.six_barrels_shotgun.name=Six barrels shotgun
 item.shotgun_bullet.name=Shotgun shot
 item.ingot_steel.name=Steel ingot
+
+entity.Villager.mechanic=Mechanic

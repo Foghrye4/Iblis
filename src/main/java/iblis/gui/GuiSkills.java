@@ -61,7 +61,7 @@ public class GuiSkills extends GuiScreen {
 	private GuiLabelFormatted addAttributeLabel(GuiLabelFormatted childLabel, IAttribute attribute, int row, int column){
 		GuiLabelFormatted label = this.getAttributeLabel(attribute);
 		if (label == null) {
-			label = new GuiLabelFormatted(fontRendererObj, row,
+			label = new GuiLabelFormatted(fontRenderer, row,
 				leftMargin + columnWidth * column + 1, topMargin + 5 + (labelHeight + 1) * (2 - row),
 				100, 11, 0xFFAA33);
 		label.addLine(attribute.getName(),

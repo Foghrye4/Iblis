@@ -72,8 +72,10 @@ public class PlayerUtils {
 		if (sprintCounter > 0) {
 			double ss = PlayerCharacteristics.SPRINTING_SPEED.getAttributeInstance(player)
 					.getAttributeValue();
+			if (ss > 0)
+				ss *= sprintCounter / PlayerUtils.MAX_SPRINT_SPEED;
 			msi.applyModifier(new AttributeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER,
-					"Sprinting speed boost", ss * sprintCounter/PlayerUtils.MAX_SPRINT_SPEED, 2));
+						"Sprinting speed boost", ss, 2));
 		}
 	}
 }

@@ -60,15 +60,15 @@ public class IblisItems {
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
 		
-		GameRegistry.register(GUIDE);
-		GameRegistry.register(SHOTGUN);
-		GameRegistry.register(SHOTGUN_RELOADING);
-		GameRegistry.register(SHOTGUN_BULLET);
-		GameRegistry.register(INGOT_STEEL);
-		
-		OreDictionary.registerOre("ingotSteel", INGOT_STEEL);
-		for (int meta = 0; meta < 16; meta++)
-			OreDictionary.registerOre("plankWood", new ItemStack(Blocks.PLANKS, 1, meta));
+		registerItem(GUIDE);
+		registerItem(SHOTGUN);
+		registerItem(SHOTGUN_RELOADING);
+		registerItem(SHOTGUN_BULLET);
+		registerItem(INGOT_STEEL);
+	}
+	
+	private static void registerItem(Item item) {
+		RegistryEventHandler.items.add(item);
 	}
 	
 	@SideOnly(value=Side.CLIENT)

@@ -63,7 +63,7 @@ public class EntityLivingEventHandler {
 			if (event.getSource() instanceof EntityDamageSourceIndirect) {
 				EntityDamageSourceIndirect dsi = (EntityDamageSourceIndirect) event.getSource();
 				if (dsi.damageType.equals("arrow")) {
-					Entity shooter = dsi.getEntity();
+					Entity shooter = dsi.getTrueSource();
 					if (shooter instanceof EntityPlayer) {
 						EntityLivingBase target = (EntityLivingBase) event.getEntity();
 						PlayerSkills.ARCHERY.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
@@ -74,7 +74,7 @@ public class EntityLivingEventHandler {
 			else if (event.getSource() instanceof EntityDamageSource) {
 				EntityDamageSource dsi = (EntityDamageSource) event.getSource();
 				if (dsi.damageType.equals("shotgun")) {
-					Entity shooter = dsi.getEntity();
+					Entity shooter = dsi.getTrueSource();
 					if (shooter instanceof EntityPlayer) {
 						EntityLivingBase target = (EntityLivingBase) event.getEntity();
 						PlayerSkills.SHARPSHOOTING.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()

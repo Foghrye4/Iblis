@@ -33,7 +33,7 @@ public enum PlayerCharacteristics {
 
 	public boolean raiseCharacteristic(EntityPlayer player) {
 		if(PlayerUtils.isCharacteristicCouldBeRaised(this, player)){
-			player.removeExperienceLevel(getCurrentLevel(player));
+			player.addExperienceLevel(-getCurrentLevel(player));
 			double value = player.getEntityAttribute(attribute).getBaseValue();
 			value+=pointsPerLevel;
 			player.getEntityAttribute(attribute).setBaseValue(value);
