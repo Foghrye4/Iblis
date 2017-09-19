@@ -1,11 +1,16 @@
 package iblis.item;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import iblis.IblisMod;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,6 +25,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,66 +62,70 @@ public class ItemGuideBook extends Item {
 		subItems.add(diaryStack);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		if (stack.hasTagCompound()) {
-			if (stack.getMetadata() == 0) {
-				String author = stack.getTagCompound().getString("author");
-				tooltip.add(I18n.format("iblis.diary", author));
-			} else {
-				NBTTagList skills = stack.getTagCompound().getTagList("skills", 10);
-				NBTTagCompound skillNBT = skills.getCompoundTagAt(0);
-				String skillName = skillNBT.getString("name");
-				int skillValue = (int) (skillNBT.getDouble("value") * 3d);
-				if (skillValue >= GUIDE_LEVEL.length)
-					skillValue = GUIDE_LEVEL.length - 1;
-				String skillNameFormatted = I18n.format("iblis." + skillName);
-				String skillValueFormatted = I18n.format("iblis.guideLevel." + GUIDE_LEVEL[skillValue]);
-				tooltip.add(I18n.format("iblis.guideTitle", skillValueFormatted, skillNameFormatted));
-			}
-			NBTTagCompound bookIn = stack.getTagCompound();
-			int bookIdIn = bookIn.getInteger("id");
-			long timeOfCreation = bookIn.getLong("timeOfCreation");
-			long timeGap = (playerIn.getEntityWorld().getTotalWorldTime() - timeOfCreation) / 20;
-			String dataOfCreation = null;
-			if (timeGap < 60) {
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (worldIn == null)
+			return;
+		if (!stack.hasTagCompound())
+			return;
+		if (stack.getMetadata() == 0) {
+			String author = stack.getTagCompound().getString("author");
+			tooltip.add(I18n.format("iblis.diary", author));
+		} else {
+			NBTTagList skills = stack.getTagCompound().getTagList("skills", 10);
+			NBTTagCompound skillNBT = skills.getCompoundTagAt(0);
+			String skillName = skillNBT.getString("name");
+			int skillValue = (int) (skillNBT.getDouble("value") * 3d);
+			if (skillValue >= GUIDE_LEVEL.length)
+				skillValue = GUIDE_LEVEL.length - 1;
+			String skillNameFormatted = I18n.format("iblis." + skillName);
+			String skillValueFormatted = I18n.format("iblis.guideLevel." + GUIDE_LEVEL[skillValue]);
+			tooltip.add(I18n.format("iblis.guideTitle", skillValueFormatted, skillNameFormatted));
+		}
+		NBTTagCompound bookIn = stack.getTagCompound();
+		int bookIdIn = bookIn.getInteger("id");
+		long timeOfCreation = bookIn.getLong("timeOfCreation");
+		long timeGap = (worldIn.getTotalWorldTime() - timeOfCreation) / 20;
+		String dataOfCreation = null;
+		if (timeGap < 60) {
+			if (timeGap == 1)
+				dataOfCreation = I18n.format("iblis.second");
+			else
+				dataOfCreation = I18n.format("iblis.seconds", timeGap);
+		} else {
+			timeGap /= 60;
+			if (timeGap < 60)
 				if (timeGap == 1)
-					dataOfCreation = I18n.format("iblis.second");
+					dataOfCreation = I18n.format("iblis.minute");
 				else
-					dataOfCreation = I18n.format("iblis.seconds", timeGap);
-			} else {
+					dataOfCreation = I18n.format("iblis.minutes", timeGap);
+			else {
 				timeGap /= 60;
-				if (timeGap < 60)
+				if (timeGap < 24)
 					if (timeGap == 1)
-						dataOfCreation = I18n.format("iblis.minute");
+						dataOfCreation = I18n.format("iblis.hour");
 					else
-						dataOfCreation = I18n.format("iblis.minutes", timeGap);
+						dataOfCreation = I18n.format("iblis.hours", timeGap);
 				else {
-					timeGap /= 60;
-					if (timeGap < 24)
-						if (timeGap == 1)
-							dataOfCreation = I18n.format("iblis.hour");
-						else
-							dataOfCreation = I18n.format("iblis.hours", timeGap);
-					else {
-						timeGap /= 24;
-						if (timeGap == 1)
-							dataOfCreation = I18n.format("iblis.day");
-						else
-							dataOfCreation = I18n.format("iblis.days", timeGap);
-					}
+					timeGap /= 24;
+					if (timeGap == 1)
+						dataOfCreation = I18n.format("iblis.day");
+					else
+						dataOfCreation = I18n.format("iblis.days", timeGap);
 				}
 			}
-			if (timeOfCreation > 0)
-				tooltip.add(I18n.format("iblis.thisBookWasWritten", dataOfCreation));
-			NBTTagList books = playerIn.getEntityData().getTagList("exploredBooks", 10);
-			for (int i = 0; i < books.tagCount(); i++) {
-				NBTTagCompound book = books.getCompoundTagAt(i);
-				int bookId = book.getInteger("id");
-				if (bookIdIn == bookId) {
-					tooltip.add(I18n.format("iblis.youAlreadyReadThatBook"));
-					break;
-				}
+		}
+		if (timeOfCreation > 0)
+			tooltip.add(I18n.format("iblis.thisBookWasWritten", dataOfCreation));
+		NBTTagList books = FMLClientHandler.instance().getClientPlayerEntity().getEntityData()
+				.getTagList("exploredBooks", 10);
+		for (int i = 0; i < books.tagCount(); i++) {
+			NBTTagCompound book = books.getCompoundTagAt(i);
+			int bookId = book.getInteger("id");
+			if (bookIdIn == bookId) {
+				tooltip.add(I18n.format("iblis.youAlreadyReadThatBook"));
+				break;
 			}
 		}
 	}
@@ -130,7 +140,7 @@ public class ItemGuideBook extends Item {
 			int bookIdIn = bookIn.getInteger("id");
 			if (bookIdIn == 0) {
 				bookIdIn = worldIn.rand.nextInt();
-				bookIn.setInteger("id",bookIdIn);
+				bookIn.setInteger("id", bookIdIn);
 			}
 			long bookVersionIn = bookIn.getLong("timeOfCreation");
 			NBTTagList books = playerIn.getEntityData().getTagList("exploredBooks", 10);
@@ -144,9 +154,15 @@ public class ItemGuideBook extends Item {
 					playerAlreadyReadBook = true;
 					if (bookVersionIn > bookVersion)
 						bookNewVersion = true;
-					break;
+					if (bookVersionIn <= bookVersion) {
+						if (bookNewVersion)
+							fixBookTags(playerIn, books);
+						bookNewVersion = false;
+						break;
+					}
 				}
 			}
+			
 			if (!playerAlreadyReadBook || bookNewVersion) {
 				NBTTagList skills = bookIn.getTagList("skills", 10);
 				for (int i = 0; i < skills.tagCount(); i++) {
@@ -164,7 +180,7 @@ public class ItemGuideBook extends Item {
 					NBTTagCompound bookInfoNBT = new NBTTagCompound();
 					bookInfoNBT.setInteger("id", bookIn.getInteger("id"));
 					bookInfoNBT.setLong("timeOfCreation", bookIn.getLong("timeOfCreation"));
-					books.appendTag(bookIn.copy());
+					books.appendTag(bookInfoNBT);
 				} else {
 					playerBookNBT.setLong("timeOfCreation", bookVersionIn);
 					books.set(bookIndex, playerBookNBT);
@@ -180,20 +196,41 @@ public class ItemGuideBook extends Item {
 			} else {
 				playerIn.sendMessage(new TextComponentString(I18n.format("iblis.youAlreadyReadThatBook")));
 			}
-			if(itemstack.getMetadata()==0){
-				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_reading, SoundCategory.PLAYERS, 1.0f, 1.0f);
-			}
-			else if(itemstack.getMetadata()==1){
-				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_reading, SoundCategory.PLAYERS, 1.0f, 1.0f);
+			if (itemstack.getMetadata() == 0) {
+				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_reading,
+						SoundCategory.PLAYERS, 1.0f, 1.0f);
+			} else if (itemstack.getMetadata() == 1) {
+				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_reading,
+						SoundCategory.PLAYERS, 1.0f, 1.0f);
 				itemstack.setItemDamage(2);
-			}
-			else if(itemstack.getMetadata()==2){
-				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_closing, SoundCategory.PLAYERS, 1.0f, 1.0f);
+			} else if (itemstack.getMetadata() == 2) {
+				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_closing,
+						SoundCategory.PLAYERS, 1.0f, 1.0f);
 				itemstack.setItemDamage(1);
 			}
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+	}
+
+	private void fixBookTags(EntityPlayer playerIn, NBTTagList books) {
+		NBTTagList fixed = new NBTTagList();
+		Map<Integer, Long> bookToTimeOfCreation = new HashMap<Integer, Long>();
+		for (int i1 = 0; i1 < books.tagCount(); i1++) {
+			NBTTagCompound bookNBT = books.getCompoundTagAt(i1);
+			int bookId = bookNBT.getInteger("id");
+			long bookVersion = bookNBT.getLong("timeOfCreation");
+			Long existingBookVersion = bookToTimeOfCreation.get(bookId);
+			if (existingBookVersion == null || existingBookVersion.longValue() < bookVersion)
+				bookToTimeOfCreation.put(bookId, bookVersion);
+		}
+		for(Entry<Integer, Long> bookToTime:bookToTimeOfCreation.entrySet()){
+			NBTTagCompound bookInfoNBT = new NBTTagCompound();
+			bookInfoNBT.setInteger("id", bookToTime.getKey());
+			bookInfoNBT.setLong("timeOfCreation", bookToTime.getValue());
+			fixed.appendTag(bookInfoNBT);
+			playerIn.getEntityData().setTag("exploredBooks", fixed);
+		}
 	}
 
 	private boolean isNBTListContainEntryFor(NBTTagList books, NBTTagCompound bookIn) {

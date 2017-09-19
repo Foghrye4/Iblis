@@ -17,7 +17,6 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,7 +26,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
@@ -84,15 +82,20 @@ public class CraftingHandler {
 		NonNullList<Ingredient> guideRecipeIngridients = NonNullList.from(
 				Ingredient.EMPTY, 
 				Ingredient.fromStacks(new ItemStack(Items.WRITABLE_BOOK,1,0)), 
-				Ingredient.fromStacks(new ItemStack(Items.PAPER,1,0)));
+				Ingredient.fromStacks(new ItemStack(Items.PAPER,1,0)),
+				Ingredient.EMPTY,
+				Ingredient.EMPTY);
 		
 		NonNullList<Ingredient> guideRecipeIngridients2 = NonNullList.from(
 				Ingredient.EMPTY, 
 				Ingredient.fromStacks(new ItemStack(IblisItems.GUIDE,1,0)), 
-				Ingredient.fromStacks(new ItemStack(Items.PAPER,1,0)));
+				Ingredient.fromStacks(new ItemStack(Items.PAPER,1,0)),
+				Ingredient.EMPTY, 
+				Ingredient.EMPTY
+				);
 		
-		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 1, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
-		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 1, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
+		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
+		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
 		RegistryEventHandler.recipes.add(recipe1);

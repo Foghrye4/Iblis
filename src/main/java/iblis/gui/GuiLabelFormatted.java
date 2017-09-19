@@ -20,14 +20,15 @@ public class GuiLabelFormatted extends GuiLabel {
 
 	/** To detect if label is already added. **/
 	private Set<String> unformattedLabels = new HashSet<String>();
-	private int borderYOffset = -2;
+	private final int borderYOffset = -2;
+	private final int rowHeight;
 
-	/** This value handled externally and have no other uses. **/
-	GuiLabelFormatted parent;
+	List<GuiLabelFormatted> childs = new ArrayList<GuiLabelFormatted>();
 
 	public GuiLabelFormatted(FontRenderer fontRendererObj, int id, int x, int y, int widthIn, int heightIn,
 			int textColour) {
 		super(fontRendererObj, id, x, y, widthIn, heightIn, textColour);
+		rowHeight = heightIn;
 	}
 
 	public void addLine(String text, Object... parameters) {
@@ -37,8 +38,9 @@ public class GuiLabelFormatted extends GuiLabel {
 			this.height = this.height * this.labels.size() / (this.labels.size() - 1);
 	}
 
-	public void setParent(GuiLabelFormatted parentIn) {
-		parent = parentIn;
+	public void addChild(GuiLabelFormatted childIn) {
+		if(!childs.contains(childIn))
+			childs.add(childIn);
 	}
 
 	public void setColoursAndBorder(int borderIn, int backColorIn, int ulColorIn, int brColorIn) {
@@ -47,10 +49,6 @@ public class GuiLabelFormatted extends GuiLabel {
 		this.ulColor = ulColorIn;
 		this.brColor = brColorIn;
 		this.labelBgEnabled = true;
-	}
-
-	public GuiLabelFormatted getParent() {
-		return parent;
 	}
 
 	public boolean isContainLine(String text) {
@@ -73,33 +71,31 @@ public class GuiLabelFormatted extends GuiLabel {
 			this.drawHorizontalLine(k, k + i, l + j, this.brColor);
 			this.drawVerticalLine(k, l, l + j, this.ulColor);
 			this.drawVerticalLine(k + i, l, l + j, this.brColor);
-            for (int i1 = 1; i1 < this.labels.size(); ++i1)
-            {
-    			this.drawHorizontalLine(k, k + i, l + i1*10 - this.borderYOffset, this.brColor);
-            }
+			for (int i1 = 1; i1 < this.labels.size(); ++i1) {
+				this.drawHorizontalLine(k, k + i, l + i1 * 10 - this.borderYOffset, this.brColor);
+			}
 		}
-		if (this.parent != null) {
-			int bordersWidth = this.width + this.border * 2;
-			int bordersHeight = this.height + this.border * 2;
-			int bordersStartX = this.x - this.border;
-			int bordersStartY = this.y - this.border + this.borderYOffset;
+		for (int row = 0; row < childs.size(); row++) {
+			GuiLabelFormatted child = childs.get(row);
+			int bordersHeight = child.height + child.border * 2;
+			int bordersStartX = child.x - child.border;
+			int bordersStartY = child.y - child.border + child.borderYOffset;
 
-			int parentBordersWidth = this.parent.width + this.parent.border * 2;
-			int parentBordersHeight = this.parent.height + this.parent.border * 2;
-			int parentBordersStartX = this.parent.x - this.parent.border;
-			int parentBordersStartY = this.parent.y - this.parent.border + this.borderYOffset;
+			int parentBordersWidth = this.width + this.border * 2;
+			int parentBordersStartX = this.x - this.border;
+			int parentBordersStartY = this.y - this.border + this.borderYOffset;
 
 			int x1 = bordersStartX;
 			int y1 = bordersStartY + bordersHeight / 2;
 			int x2 = bordersStartX - bordersHeight / 2;
-			int y2 = (parentBordersStartY + parentBordersHeight + bordersStartY) / 2;
-			int x3 = parentBordersStartX + parentBordersWidth / 2;
-			int y3 = parentBordersStartY + parentBordersHeight;
+			int y2 = parentBordersStartY + this.rowHeight * row + this.rowHeight / 2;
+			int x3 = parentBordersStartX + parentBordersWidth;
+			if (x3 > x1)
+				x3 = parentBordersStartX;
 
 			this.drawHorizontalLine(x2, x1, y1, this.ulColor);
 			this.drawVerticalLine(x2, y2, y1, this.ulColor);
 			this.drawHorizontalLine(x2, x3, y2, this.ulColor);
-			this.drawVerticalLine(x3, y3, y2, this.ulColor);
 		}
 	}
 }

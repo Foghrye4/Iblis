@@ -2,10 +2,10 @@ package iblis;
 
 import org.apache.logging.log4j.Logger;
 
+import iblis.command.CommandGetAttribute;
 import iblis.command.CommandSetAttribute;
+import iblis.command.CommandShowNBT;
 import iblis.crafting.CraftingHandler;
-import iblis.crafting.PlayerSensitiveRecipeWrapper;
-import iblis.crafting.PlayerSensitiveShapedRecipe;
 import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.init.RegistryEventHandler;
@@ -13,12 +13,10 @@ import iblis.item.IblisCreativeTab;
 import iblis.loot.LootTableParsingEventHandler;
 import iblis.player.EntityLivingEventHandler;
 import iblis.player.EntityPlayerZombie;
-import iblis.player.PlayerDeathEventHandler;
 import iblis.villager.EmeraldForOreDictionaryItems;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
-import net.minecraft.entity.passive.EntityVillager.EmeraldForItems;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.entity.passive.EntityVillager.ListItemForEmeralds;
 import net.minecraft.entity.passive.EntityVillager.PriceInfo;
@@ -34,12 +32,9 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
 
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION)
 public class IblisMod
@@ -52,7 +47,7 @@ public class IblisMod
 	public static CreativeTabs creativeTab;
 	
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.0";
+    public static final String VERSION = "0.3.3";
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -80,7 +75,6 @@ public class IblisMod
     	proxy.load();
     	network.load();
     	MinecraftForge.EVENT_BUS.register(craftingHandler);
-    	MinecraftForge.EVENT_BUS.register(new PlayerDeathEventHandler());
     	MinecraftForge.EVENT_BUS.register(new EntityLivingEventHandler());
     	MinecraftForge.EVENT_BUS.register(new LootTableParsingEventHandler());
     	MinecraftForge.EVENT_BUS.register(new RegistryEventHandler());
@@ -104,6 +98,8 @@ public class IblisMod
     {
     	network.setServer(event.getServer());
    		event.registerServerCommand(new CommandSetAttribute());
+   		event.registerServerCommand(new CommandGetAttribute());
+   		event.registerServerCommand(new CommandShowNBT());
     }
     
 }

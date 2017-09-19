@@ -1,6 +1,8 @@
 package iblis.player;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -12,6 +14,7 @@ import net.minecraft.item.ItemStack;
 public class PlayerUtils {
 
 	public static final int MAX_SPRINT_SPEED = 64;
+	public static final Map<Integer,Integer> sprintingButtonCounterState = new HashMap<Integer,Integer>();
 	
 	private final static String[] ATTRIBUTES_AFFECTED_BY_CRAFTING_SKILL = new String[] {
 			SharedMonsterAttributes.ARMOR.getName(), 
@@ -71,11 +74,25 @@ public class PlayerUtils {
 		msi.removeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER);
 		if (sprintCounter > 0) {
 			double ss = PlayerCharacteristics.SPRINTING_SPEED.getAttributeInstance(player)
+					.getAttributeValue() + 
+					PlayerSkills.RUNNING.getAttributeInstance(player)
 					.getAttributeValue();
 			if (ss > 0)
-				ss *= sprintCounter / PlayerUtils.MAX_SPRINT_SPEED;
+				ss = ss * sprintCounter / PlayerUtils.MAX_SPRINT_SPEED;
 			msi.applyModifier(new AttributeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER,
 						"Sprinting speed boost", ss, 2));
 		}
 	}
+
+	public static void saveSprintButtonCounterState(EntityPlayer player, int sprintButtonCounter) {
+		sprintingButtonCounterState.put(player.getEntityId(), sprintButtonCounter);
+	}
+	
+	public static int getSprintButtonCounterState(EntityPlayer player) {
+		Integer state = sprintingButtonCounterState.get(player.getEntityId());
+		if(state!=null)
+			return state.intValue();
+		return 0;
+	}
+
 }

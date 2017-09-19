@@ -8,21 +8,43 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SPacketEntityProperties;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EntityLivingEventHandler {
+	
+	@SubscribeEvent
+	public void onLivingJump(LivingJumpEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (!(living instanceof EntityPlayer))
+			return;
+		double multiplier = living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.JUMPING)
+				.getAttributeValue();
+		multiplier = multiplier * PlayerUtils.getSprintButtonCounterState((EntityPlayer) living)
+				/ PlayerUtils.MAX_SPRINT_SPEED;
+		multiplier++;
+		living.motionX *= multiplier;
+		living.motionY *= multiplier;
+		living.motionZ *= multiplier;
+		if (living instanceof EntityPlayerMP)
+			PlayerSkills.JUMPING.raiseSkill((EntityPlayer) living, 1d);
+	}	
 
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
@@ -40,6 +62,13 @@ public class EntityLivingEventHandler {
 		else if (event.getSource().getDamageType().equals("mob"))
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.MELEE_DAMAGE_REDUCTION)
 					.getAttributeValue();
+		else if (event.getSource() == DamageSource.FALL) {
+			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.FALLING)
+					.getAttributeValue();
+			if (damage > 0 && living instanceof EntityPlayerMP)
+				PlayerSkills.FALLING.raiseSkill((EntityPlayer) living, damage);
+		}
+
 		event.setAmount(damage);
 	}
 
@@ -49,7 +78,7 @@ public class EntityLivingEventHandler {
 		ItemStack stackInHand = living.getHeldItemMainhand();
 		Multimap<String, AttributeModifier> am = stackInHand.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 		if (event.getTarget() instanceof EntityLivingBase) {
-			if (am.containsKey(SharedMonsterAttributes.MAX_HEALTH.getName())) {
+			if (am.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
 				EntityLivingBase target = (EntityLivingBase) event.getTarget();
 				PlayerSkills.SWORDSMANSHIP.raiseSkill(event.getEntityPlayer(),
 						target.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
@@ -114,6 +143,16 @@ public class EntityLivingEventHandler {
 					arrow.setDamage(0.5d);
 			}
 		}
+		if (event.getEntity() instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) event.getEntity();
+			IAttributeInstance aiAttackDamage = player.getAttributeMap()
+					.getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
+			aiAttackDamage.removeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER);
+			aiAttackDamage.applyModifier(new AttributeModifier(
+					SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER, "Characteristic modifier",
+					PlayerCharacteristics.MELEE_DAMAGE_BONUS.getCurrentValue(player), 1));
+			player.connection.sendPacket(new SPacketEntityProperties(player.getEntityId(),player.getAttributeMap().getAllAttributes()));
+		}
 	}
 
 	@SubscribeEvent
@@ -128,6 +167,15 @@ public class EntityLivingEventHandler {
 						SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER, "Weapon skill modifier",
 						PlayerSkills.SWORDSMANSHIP.getFullSkillValue(event.getEntityLiving()), 0));
 			}
+		}
+	}
+	
+	@SubscribeEvent
+	public void onPlayerDeath(LivingDeathEvent event) {
+		if(event.getEntityLiving() instanceof EntityPlayer){
+			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+			EntityPlayerZombie playerZombie = new EntityPlayerZombie(player);
+			player.world.spawnEntity(playerZombie);
 		}
 	}
 }

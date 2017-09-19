@@ -1,7 +1,11 @@
 package iblis.gui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import iblis.IblisMod;
 import iblis.player.PlayerSkills;
+import iblis.player.SharedIblisAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiLabel;
@@ -14,55 +18,56 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiSkills extends GuiScreen {
 
 	private EntityPlayerSP player;
-	int guiLeft = 0;
-	int guiTop = 0;
-	int xSize = 176;
-	int ySize = 166;
-	int leftMargin = 40;
-	int topMargin = 9;
-	int buttonSize = 20;
-	int labelHeight = 40;
-	int columnWidth = 140;
+	private final int leftMargin = 40;
+	private final int topMargin = 9;
+	private final int labelHeight = 40;
+	private final int columnWidth = 140;
 
 	public GuiSkills(EntityPlayerSP playerIn) {
 		super();
 		player = playerIn;
 		mc = Minecraft.getMinecraft();
-		guiLeft = (width - xSize) / 2;
-		guiTop = (height - ySize) / 2;
 	}
 
 	@Override
 	public void initGui() {
 		this.buttonList.clear();
 		this.labelList.clear();
-		int column = 0;
+		
+		int id = 0;
+		int skillLabelRow = 0;
+		GuiLabelFormatted wisdomAttributeLabel = this.addAttributeLabel(null, SharedIblisAttributes.WISDOM, id++, 0, 0);
+		GuiLabelFormatted parentLabel = null;
+		Map<IAttribute, GuiLabelFormatted> skillLabelsMap = new HashMap<IAttribute, GuiLabelFormatted>();
 		for (PlayerSkills skill : PlayerSkills.values()) {
-			int row = 0;
-			IAttribute attribute = skill.getAttribute();
-			GuiLabelFormatted parentLabel = this.getAttributeLabel(attribute.getParent());
-			GuiLabelFormatted childLabel = null;
-			if (parentLabel != null) {
-				this.getChildOf(parentLabel).addLine(attribute.getName(),
-						Math.round(player.getAttributeMap().getAttributeInstance(attribute).getAttributeValue() * 10)
-									/ 10d);
-			} else {
-				childLabel = this.addAttributeLabel(childLabel, attribute, row, column);
+			IAttribute skillAttribute = skill.getAttribute();
+			IAttribute parentAttribute = skillAttribute.getParent();
+			if(parentLabel == null){
+				parentLabel = this.addAttributeLabel(wisdomAttributeLabel, parentAttribute, id++, 1, 0);
+				wisdomAttributeLabel.addChild(parentLabel);
 			}
-			attribute = attribute.getParent();
-			childLabel = this.addAttributeLabel(childLabel, attribute, ++row, column);
-			attribute = attribute.getParent();
-			this.addAttributeLabel(childLabel, attribute, ++row, column);
-			if (parentLabel == null)
-				column++;
+			else if(!parentLabel.isContainLine(parentAttribute.getName())){
+				parentLabel.addLine(parentAttribute.getName(),
+						Math.round(player.getAttributeMap().getAttributeInstance(parentAttribute).getAttributeValue() * 10)/ 10d);
+			}
+			GuiLabelFormatted skillLabel = skillLabelsMap.get(parentAttribute);
+			if(skillLabel==null){
+				skillLabel = this.addAttributeLabel(parentLabel, skillAttribute, id++, skillLabelRow++, 1);
+				parentLabel.addChild(skillLabel);
+				skillLabelsMap.put(parentAttribute, skillLabel);
+			}
+			else{
+				skillLabel.addLine(skillAttribute.getName(),
+						Math.round(player.getAttributeMap().getAttributeInstance(parentAttribute).getAttributeValue() * 10)/ 10d);
+			}
 		}
 	}
 	
-	private GuiLabelFormatted addAttributeLabel(GuiLabelFormatted childLabel, IAttribute attribute, int row, int column){
+	private GuiLabelFormatted addAttributeLabel(GuiLabelFormatted parentLabel, IAttribute attribute, int id, int row, int column){
 		GuiLabelFormatted label = this.getAttributeLabel(attribute);
 		if (label == null) {
-			label = new GuiLabelFormatted(fontRenderer, row,
-				leftMargin + columnWidth * column + 1, topMargin + 5 + (labelHeight + 1) * (2 - row),
+			label = new GuiLabelFormatted(fontRenderer, id,
+				leftMargin + columnWidth * column + 1, topMargin + 5 + (labelHeight + 1) * row,
 				100, 11, 0xFFAA33);
 		label.addLine(attribute.getName(),
 				Math.round(player.getAttributeMap().getAttributeInstance(attribute).getAttributeValue() * 10)
@@ -71,8 +76,8 @@ public class GuiSkills extends GuiScreen {
 		label.setCentered();
 		this.labelList.add(label);
 		}
-		if(childLabel!=null){
-			childLabel.setParent(label);
+		if(parentLabel!=null){
+			parentLabel.addChild(label);
 		}
 		return label;
 	}
@@ -84,19 +89,6 @@ public class GuiSkills extends GuiScreen {
 			if (label instanceof GuiLabelFormatted) {
 				GuiLabelFormatted formattedLabel = (GuiLabelFormatted) label;
 				if (formattedLabel.isContainLine(iattribute.getName()))
-					return formattedLabel;
-			}
-		}
-		return null;
-	}
-
-	private GuiLabelFormatted getChildOf(GuiLabelFormatted parent) {
-		if (parent == null)
-			return null;
-		for (GuiLabel label : this.labelList) {
-			if (label instanceof GuiLabelFormatted) {
-				GuiLabelFormatted formattedLabel = (GuiLabelFormatted) label;
-				if (formattedLabel.getParent() == parent)
 					return formattedLabel;
 			}
 		}

@@ -11,8 +11,11 @@ public enum PlayerSkills {
 	SWORDSMANSHIP(SharedIblisAttributes.SWORDSMANSHIP,0.001d),
 	ARCHERY(SharedIblisAttributes.ARCHERY,0.001d),
 	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001d),
-	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.01d),
-	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.01d);
+	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02d),
+	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02d),
+	RUNNING(SharedIblisAttributes.RUNNING,0.01d),
+	JUMPING(SharedIblisAttributes.JUMPING,0.01d), 
+	FALLING(SharedIblisAttributes.FALLING,0.01d);
 	
 	private final double pointsPerLevel;
 	private final IAttribute attribute;
@@ -52,13 +55,7 @@ public enum PlayerSkills {
 	}
 	
 	public double getFullSkillValue(EntityLivingBase entityLivingBase) {
-		double value = 0d;
-		for (IAttribute iattribute = this.attribute; 
-				iattribute != null;
-				iattribute = iattribute.getParent()) {
-			value += entityLivingBase.getEntityAttribute(iattribute).getAttributeValue();
-		}
-		return value;
+		return entityLivingBase.getEntityAttribute(attribute).getAttributeValue();
 	}
 
 	public double getMaxValue(EntityPlayer player) {
@@ -69,7 +66,7 @@ public enum PlayerSkills {
 		return attribute.getName();
 	}
 
-	public IAttributeInstance getAttributeInstance(EntityPlayerMP player) {
+	public IAttributeInstance getAttributeInstance(EntityPlayer player) {
 		return player.getEntityAttribute(attribute);
 	}
 	

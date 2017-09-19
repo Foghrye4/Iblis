@@ -18,7 +18,8 @@ import net.minecraft.world.World;
 
 public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 
-	public PlayerSensitiveShapedRecipe(String groupIn, int width, int height, NonNullList<Ingredient> ingredientsIn, ItemStack output) {
+	public PlayerSensitiveShapedRecipe(String groupIn, int width, int height, NonNullList<Ingredient> ingredientsIn,
+			ItemStack output) {
 		super(groupIn, height, height, ingredientsIn, output);
 	}
 
@@ -28,22 +29,22 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 		ItemStack output1 = getRecipeOutput().copy();
 		if (!output1.hasTagCompound())
 			output1.setTagCompound(new NBTTagCompound());
-		EntityPlayer player = IblisMod.proxy.getPlayer(inv);
+		EntityPlayer playerIn = IblisMod.proxy.getPlayer(inv);
 
-		int id = player.getName().hashCode();
-		long timeOfCreation = player.getEntityWorld().getTotalWorldTime();
+		int id = playerIn.getName().hashCode();
+		long timeOfCreation = playerIn.getEntityWorld().getTotalWorldTime();
 
 		NBTTagList skillsNBT = new NBTTagList();
 		for (PlayerSkills skill : PlayerSkills.values()) {
 			NBTTagCompound skillNBT = new NBTTagCompound();
 			skillNBT.setString("name", skill.name());
-			skillNBT.setDouble("value", skill.getCurrentValue(player));
+			skillNBT.setDouble("value", skill.getCurrentValue(playerIn));
 			skillsNBT.appendTag(skillNBT);
 		}
 		output1.getTagCompound().setTag("skills", skillsNBT);
 		NBTTagList exploredBooksNBTList = new NBTTagList();
-		NBTTagList books = player.getEntityData().getTagList("exploredBooks", 10);
-		boolean firstTimeCraft = true;
+		NBTTagList books = playerIn.getEntityData().getTagList("exploredBooks", 10);
+		int diaryTagIndex = -1;
 		for (int bookIndex = 0; bookIndex < books.tagCount(); bookIndex++) {
 			NBTTagCompound playerBookNBT = books.getCompoundTagAt(bookIndex);
 			int bookId = playerBookNBT.getInteger("id");
@@ -53,23 +54,24 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 				bookInfoNBT.setInteger("id", bookId);
 				bookInfoNBT.setLong("timeOfCreation", bookVersion);
 				exploredBooksNBTList.appendTag(bookInfoNBT);
-			} else {
-				firstTimeCraft = true;
 			}
+			else
+				diaryTagIndex = bookIndex;
 		}
 		output1.getTagCompound().setTag("exploredBooks", exploredBooksNBTList);
 		output1.getTagCompound().setInteger("id", id);
-		output1.getTagCompound().setString("author", player.getName());
+		output1.getTagCompound().setString("author", playerIn.getName());
 		output1.getTagCompound().setLong("timeOfCreation", timeOfCreation);
-		if (firstTimeCraft) {
-			NBTTagCompound craftedBookInfoNBT = new NBTTagCompound();
-			craftedBookInfoNBT.setInteger("id", id);
-			craftedBookInfoNBT.setLong("timeOfCreation", timeOfCreation);
+		NBTTagCompound craftedBookInfoNBT = new NBTTagCompound();
+		craftedBookInfoNBT.setInteger("id", id);
+		craftedBookInfoNBT.setLong("timeOfCreation", timeOfCreation);
+		if(diaryTagIndex==-1)
 			books.appendTag(craftedBookInfoNBT);
-			player.getEntityData().setTag("exploredBooks", books);
-			if(player instanceof EntityPlayerMP)
-				IblisMod.network.sendPlayerBookListInfo((EntityPlayerMP) player);
-		}
+		else
+			books.set(diaryTagIndex, craftedBookInfoNBT);
+		playerIn.getEntityData().setTag("exploredBooks", books);
+		if (playerIn instanceof EntityPlayerMP)
+			IblisMod.network.sendPlayerBookListInfo((EntityPlayerMP) playerIn);
 		return output1;
 	}
 

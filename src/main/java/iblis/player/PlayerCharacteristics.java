@@ -1,6 +1,8 @@
 package iblis.player;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,9 +13,8 @@ public enum PlayerCharacteristics {
 	FIRE_DAMAGE_REDUCTION(SharedIblisAttributes.FIRE_DAMAGE_REDUCTION,0d,0.1d),
 	EXPLOSION_DAMAGE_REDUCTION(SharedIblisAttributes.EXPLOSION_DAMAGE_REDUCTION,0d,0.1d),
 	PROJECTILE_DAMAGE_REDUCTION(SharedIblisAttributes.PROJECTILE_DAMAGE_REDUCTION,0d,0.1d),
-	ATTACK_DAMAGE(SharedMonsterAttributes.ATTACK_DAMAGE,1d,0.1d),
+	MELEE_DAMAGE_BONUS(SharedIblisAttributes.MELEE_DAMAGE_BONUS,1d,0.1d),
 	ATTACK_SPEED(SharedMonsterAttributes.ATTACK_SPEED,4d,0.1d),
-	KNOCKBACK_RESISTANCE(SharedMonsterAttributes.KNOCKBACK_RESISTANCE,0.0d,0.01d),
 	LUCK(SharedMonsterAttributes.LUCK,0d,0.1d),
 	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d),
 	SPRINTING_SPEED(SharedIblisAttributes.SPRINTING_SPEED,-0.1d,0.04d);
@@ -37,13 +38,21 @@ public enum PlayerCharacteristics {
 			double value = player.getEntityAttribute(attribute).getBaseValue();
 			value+=pointsPerLevel;
 			player.getEntityAttribute(attribute).setBaseValue(value);
+			if (this == MELEE_DAMAGE_BONUS) {
+				IAttributeInstance aiAttackDamage = player.getAttributeMap()
+						.getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
+				aiAttackDamage.removeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER);
+				aiAttackDamage.applyModifier(new AttributeModifier(
+						SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER, "Characteristic modifier",
+						PlayerCharacteristics.MELEE_DAMAGE_BONUS.getCurrentValue(player), 1));
+			}
 			return true;
 		}
 		return false;
 	}
 	
-	public double getCurrentValue(EntityPlayer player) {
-		return player.getEntityAttribute(attribute).getBaseValue();
+	public double getCurrentValue(EntityLivingBase living) {
+		return living.getEntityAttribute(attribute).getBaseValue();
 	}
 	
 	public double getMaxValue(EntityPlayer player) {
@@ -60,5 +69,9 @@ public enum PlayerCharacteristics {
 	
 	public IAttribute getAttribute() {
 		return attribute;
+	}
+
+	public void resetToDefault(EntityPlayer player) {
+		player.getEntityAttribute(attribute).setBaseValue(this.startLevel);
 	}
 }

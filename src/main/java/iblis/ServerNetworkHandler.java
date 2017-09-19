@@ -6,6 +6,7 @@ import iblis.ClientNetworkHandler.ClientCommands;
 import iblis.init.IblisSounds;
 import iblis.item.ItemShotgun;
 import iblis.player.PlayerCharacteristics;
+import iblis.player.PlayerSkills;
 import iblis.player.PlayerUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 public class ServerNetworkHandler {
 
 	public enum ServerCommands {
-		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER;
+		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER, RUNNED_DISTANCE_INFO, SPRINTING_BUTTON_INFO;
 	}
 
 	protected static FMLEventChannel channel;
@@ -82,6 +83,22 @@ public class ServerNetworkHandler {
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			int sprintingState = byteBufInputStream.readInt();
 			PlayerUtils.applySprintingSpeedModifier(player, sprintingState);
+			break;
+		case RUNNED_DISTANCE_INFO:
+			playerEntityId = byteBufInputStream.readInt();
+			worldDimensionId = byteBufInputStream.readInt();
+			world = server.getWorld(worldDimensionId);
+			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			// Please don't cheat. I want to keep it client side.
+			PlayerSkills.RUNNING.raiseSkill(player, byteBufInputStream.readFloat());
+			break;
+		case SPRINTING_BUTTON_INFO:
+			playerEntityId = byteBufInputStream.readInt();
+			worldDimensionId = byteBufInputStream.readInt();
+			world = server.getWorld(worldDimensionId);
+			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			int sprintButtonCounter = byteBufInputStream.readInt();
+			PlayerUtils.saveSprintButtonCounterState(player, sprintButtonCounter);
 			break;
 		default:
 			break;

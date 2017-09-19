@@ -10,6 +10,7 @@ generic.attackSpeed=Attack speed %d: %0.1f
 generic.knockbackResistance=Knockback resistance %d: %0.2f
 generic.luck=Luck %d: %0.1f
 
+iblis.melee_damage_bonus=Melee damage multiplier %d: %0.1f
 iblis.melee_damage_reduction=Incoming melee damage reduction %d: %0.1f
 iblis.fire_damage_reduction=Incoming fire damage reduction %d: %0.1f
 iblis.explosion_damage_reduction=Incoming explosion damage reduction %d: %0.1f
@@ -25,12 +26,17 @@ iblis.sharpshooting=Sharpshooting: %0.1f
 iblis.craftmanship=Craftmanship: %0.1f
 iblis.weaponsmith=Weaponsmith: %0.1f
 iblis.armorsmith=Armorsmith: %0.1f
+iblis.acrobatics=Acrobatics: %0.1f
+iblis.running=Running: %0.1f
+iblis.jumping=Jumping: %0.1f
+iblis.falling=Falling: %0.1f
 
 iblis.SWORDSMANSHIP=swordsmanship
 iblis.ARCHERY=archery
 iblis.SHARPSHOOTING=sharpshooting
 iblis.WEAPONSMITH=weapon smithing
 iblis.ARMORSMITH=armor smithing
+iblis.ACROBATICS=acrobatics
 
 iblis.seconds=%d seconds
 iblis.minutes=%d minutes

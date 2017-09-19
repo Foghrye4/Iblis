@@ -115,4 +115,28 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		byteBufOutputStream.writeInt(sprintCounter);
 		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
+
+	public void sendPlayerRunnedDistance(float distance) {
+		WorldClient world = Minecraft.getMinecraft().world;
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		ByteBuf bb = Unpooled.buffer(36);
+		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
+		byteBufOutputStream.writeByte(ServerCommands.RUNNED_DISTANCE_INFO.ordinal());
+		byteBufOutputStream.writeInt(player.getEntityId());
+		byteBufOutputStream.writeInt(world.provider.getDimension());
+		byteBufOutputStream.writeFloat(distance);
+		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
+	}
+
+	public void sendSprintButtonCounterState(int sprintButtonCounter) {
+		WorldClient world = Minecraft.getMinecraft().world;
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		ByteBuf bb = Unpooled.buffer(36);
+		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
+		byteBufOutputStream.writeByte(ServerCommands.SPRINTING_BUTTON_INFO.ordinal());
+		byteBufOutputStream.writeInt(player.getEntityId());
+		byteBufOutputStream.writeInt(world.provider.getDimension());
+		byteBufOutputStream.writeInt(sprintButtonCounter);
+		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
+	}
 }
