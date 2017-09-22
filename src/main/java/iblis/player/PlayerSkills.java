@@ -1,5 +1,6 @@
 package iblis.player;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -8,20 +9,24 @@ import net.minecraft.entity.player.EntityPlayerMP;
 
 public enum PlayerSkills {
 
-	SWORDSMANSHIP(SharedIblisAttributes.SWORDSMANSHIP,0.001d),
-	ARCHERY(SharedIblisAttributes.ARCHERY,0.001d),
-	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001d),
-	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02d),
-	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02d),
-	RUNNING(SharedIblisAttributes.RUNNING,0.01d),
-	JUMPING(SharedIblisAttributes.JUMPING,0.01d), 
-	FALLING(SharedIblisAttributes.FALLING,0.01d);
+	SWORDSMANSHIP(SharedIblisAttributes.SWORDSMANSHIP,0.001f),
+	ARCHERY(SharedIblisAttributes.ARCHERY,0.001f),
+	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001f),
+	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02f),
+	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02f),
+	RUNNING(SharedIblisAttributes.RUNNING,0.001f),
+	JUMPING(SharedIblisAttributes.JUMPING,0.001f), 
+	FALLING(SharedIblisAttributes.FALLING,0.02f);
 	
-	private final double pointsPerLevel;
+	public double pointsPerLevel;
+	public final float defaultPointsPerLevel;
+	public final String configDescription;
 	private final IAttribute attribute;
-	PlayerSkills(IAttribute attributeIn, double pointsPerLevelIn){
+	public boolean enabled = true;
+	PlayerSkills(IAttribute attributeIn, float pointsPerLevelIn){
 		this.attribute = attributeIn;
-		this.pointsPerLevel = pointsPerLevelIn;
+		this.pointsPerLevel = this.defaultPointsPerLevel = pointsPerLevelIn;
+		this.configDescription = I18n.format(this.getNiceName()+".config");
 	}
 	
 	public void raiseSkill(EntityPlayer player, double d) {
@@ -55,7 +60,15 @@ public enum PlayerSkills {
 	}
 	
 	public double getFullSkillValue(EntityLivingBase entityLivingBase) {
-		return entityLivingBase.getEntityAttribute(attribute).getAttributeValue();
+		if(!enabled)
+			return 0d;
+		double value = 0d;
+		for (IAttribute iattribute = this.attribute; 
+				iattribute != null;
+				iattribute = iattribute.getParent()) {
+			value += entityLivingBase.getEntityAttribute(iattribute).getAttributeValue();
+		}
+		return value;
 	}
 
 	public double getMaxValue(EntityPlayer player) {

@@ -65,6 +65,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(ACROBATICS);
 		attributeMap.registerAttribute(RUNNING);
 		attributeMap.registerAttribute(JUMPING);
+		attributeMap.registerAttribute(FALLING);
 	}
     
     

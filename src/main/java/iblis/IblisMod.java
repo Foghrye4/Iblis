@@ -24,6 +24,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -36,22 +37,26 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import net.minecraftforge.oredict.OreDictionary;
 
-@Mod(modid = IblisMod.MODID, version = IblisMod.VERSION)
+@Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY)
 public class IblisMod
 {
+    public static final String MODID = "iblis";
+    public static final String VERSION = "0.3.4";
+    public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
+    
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
 	public static ServerProxy proxy;
 	@SidedProxy(clientSide = "iblis.ClientNetworkHandler", serverSide = "iblis.ServerNetworkHandler")
 	public static ServerNetworkHandler network;
 	public static Logger log;
 	public static CreativeTabs creativeTab;
+    public static IblisModConfig config;
 	
-    public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.3";
-    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
+		MinecraftForge.EVENT_BUS.register(config);
     	log = event.getModLog();
     	creativeTab = new IblisCreativeTab("iblis.tab");
     	IblisItems.init();

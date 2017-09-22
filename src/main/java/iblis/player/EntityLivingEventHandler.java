@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -30,20 +31,31 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EntityLivingEventHandler {
 	
 	@SubscribeEvent
+	public void onLivingFall(LivingFallEvent event) {
+		EntityLivingBase living = event.getEntityLiving();
+		if (event.getDistance() > 2f && living instanceof EntityPlayerMP)
+			PlayerSkills.FALLING.raiseSkill((EntityPlayer) living, 1d);
+	}
+	
+	@SubscribeEvent
 	public void onLivingJump(LivingJumpEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
 		if (!(living instanceof EntityPlayer))
 			return;
 		double multiplier = living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.JUMPING)
 				.getAttributeValue();
-		multiplier = multiplier * PlayerUtils.getSprintButtonCounterState((EntityPlayer) living)
-				/ PlayerUtils.MAX_SPRINT_SPEED;
+		float sprintButtonState = (float)PlayerUtils.getSprintButtonCounterState((EntityPlayer) living) / PlayerUtils.MAX_SPRINT_SPEED;
+		multiplier *= sprintButtonState;
 		multiplier++;
 		living.motionX *= multiplier;
 		living.motionY *= multiplier;
 		living.motionZ *= multiplier;
-		if (living instanceof EntityPlayerMP)
-			PlayerSkills.JUMPING.raiseSkill((EntityPlayer) living, 1d);
+		if (living instanceof EntityPlayerMP) {
+			EntityPlayer player = (EntityPlayer) living;
+			PlayerSkills.JUMPING.raiseSkill(player, 1f + sprintButtonState);
+			if(!player.isSprinting() && sprintButtonState > 0.2f)
+				player.addExhaustion(0.1f * sprintButtonState);
+		}
 	}	
 
 	@SubscribeEvent
@@ -65,8 +77,6 @@ public class EntityLivingEventHandler {
 		else if (event.getSource() == DamageSource.FALL) {
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.FALLING)
 					.getAttributeValue();
-			if (damage > 0 && living instanceof EntityPlayerMP)
-				PlayerSkills.FALLING.raiseSkill((EntityPlayer) living, damage);
 		}
 
 		event.setAmount(damage);

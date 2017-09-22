@@ -40,6 +40,8 @@ public class GuiSkills extends GuiScreen {
 		GuiLabelFormatted parentLabel = null;
 		Map<IAttribute, GuiLabelFormatted> skillLabelsMap = new HashMap<IAttribute, GuiLabelFormatted>();
 		for (PlayerSkills skill : PlayerSkills.values()) {
+			if(!skill.enabled)
+				continue;
 			IAttribute skillAttribute = skill.getAttribute();
 			IAttribute parentAttribute = skillAttribute.getParent();
 			if(parentLabel == null){
@@ -58,7 +60,7 @@ public class GuiSkills extends GuiScreen {
 			}
 			else{
 				skillLabel.addLine(skillAttribute.getName(),
-						Math.round(player.getAttributeMap().getAttributeInstance(parentAttribute).getAttributeValue() * 10)/ 10d);
+						Math.round(player.getAttributeMap().getAttributeInstance(skillAttribute).getAttributeValue() * 10)/ 10d);
 			}
 		}
 	}
