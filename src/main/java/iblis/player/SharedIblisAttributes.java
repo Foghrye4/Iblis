@@ -18,8 +18,7 @@ public class SharedIblisAttributes {
     public static final UUID SPRINTING_SPEED_MODIFIER = UUID.fromString("5719796-57EED-AA0D1F1E7-A3-C4A7AC791571C");
     
     public static final IAttribute MELEE_DAMAGE_BONUS = (new RangedAttribute((IAttribute)null, "iblis.melee_damage_bonus", 1.0D, 0.0D, Double.MAX_VALUE)).setDescription("Melee damage bonus").setShouldWatch(true);
-    public static final IAttribute BULLET_DAMAGE = (new RangedAttribute((IAttribute)null, "iblis.bullet_damage", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Bullet damage").setShouldWatch(true);
-    public static final IAttribute ARROW_DAMAGE = (new RangedAttribute((IAttribute)null, "iblis.arrow_damage", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Arrow damage").setShouldWatch(true);
+    public static final IAttribute PROJECTILE_DAMAGE = (new RangedAttribute((IAttribute)null, "iblis.projectile_damage", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Projectile damage").setShouldWatch(true);
     public static final IAttribute MELEE_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.melee_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming melee damage reduction").setShouldWatch(true);
     public static final IAttribute EXPLOSION_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.explosion_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming explosion damage reduction").setShouldWatch(true);
     public static final IAttribute FIRE_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.fire_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming fire damage reduction").setShouldWatch(true);
@@ -38,6 +37,7 @@ public class SharedIblisAttributes {
     public static final IAttribute CRAFTMANSHIP = (new RangedAttribute(WISDOM, "iblis.craftmanship", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Craftmanship").setShouldWatch(true);
     public static final IAttribute WEAPONSMITH = (new RangedAttribute(CRAFTMANSHIP, "iblis.weaponsmith", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Weaponsmith").setShouldWatch(true);
     public static final IAttribute ARMORSMITH = (new RangedAttribute(CRAFTMANSHIP, "iblis.armorsmith", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Armorsmith").setShouldWatch(true);
+	public static final IAttribute MEDICAL_AID = (new RangedAttribute(CRAFTMANSHIP, "iblis.medical_aid", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Medical aid").setShouldWatch(true);
     
     public static final IAttribute ACROBATICS = (new RangedAttribute(WISDOM, "iblis.acrobatics", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Acrobatics").setShouldWatch(true);
     public static final IAttribute RUNNING = (new RangedAttribute(ACROBATICS, "iblis.running", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Running").setShouldWatch(true);
@@ -46,8 +46,7 @@ public class SharedIblisAttributes {
     
 	public static void registerAttributes(AbstractAttributeMap attributeMap) {
 		attributeMap.registerAttribute(MELEE_DAMAGE_BONUS);
-		attributeMap.registerAttribute(ARROW_DAMAGE);
-		attributeMap.registerAttribute(BULLET_DAMAGE);
+		attributeMap.registerAttribute(PROJECTILE_DAMAGE);
 		attributeMap.registerAttribute(MELEE_DAMAGE_REDUCTION);
 		attributeMap.registerAttribute(EXPLOSION_DAMAGE_REDUCTION);
 		attributeMap.registerAttribute(FIRE_DAMAGE_REDUCTION);
@@ -62,6 +61,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(CRAFTMANSHIP);
 		attributeMap.registerAttribute(WEAPONSMITH);
 		attributeMap.registerAttribute(ARMORSMITH);
+		attributeMap.registerAttribute(MEDICAL_AID);
 		attributeMap.registerAttribute(ACROBATICS);
 		attributeMap.registerAttribute(RUNNING);
 		attributeMap.registerAttribute(JUMPING);

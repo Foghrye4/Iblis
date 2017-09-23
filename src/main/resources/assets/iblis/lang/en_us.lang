@@ -26,6 +26,7 @@ iblis.sharpshooting=Sharpshooting: %0.1f
 iblis.craftmanship=Craftmanship: %0.1f
 iblis.weaponsmith=Weaponsmith: %0.1f
 iblis.armorsmith=Armorsmith: %0.1f
+iblis.medical_aid=Medical aid: %0.1f
 iblis.acrobatics=Acrobatics: %0.1f
 iblis.running=Running: %0.1f
 iblis.jumping=Jumping: %0.1f
@@ -72,8 +73,7 @@ iblis.qualityLevel.perfect=perfect
 iblis.quality=Quality: %s (%d)
 iblis.bowAttackDamage=Bow quality damage modifier: %0.1f
 
-attribute.name.iblis.arrow_damage=Arrows damage
-attribute.name.iblis.bullet_damage=Bullet damage
+attribute.name.iblis.projectile_damage=Projectile damage
 attribute.name.iblis.damage_reduction=Damage reduction
 attribute.name.iblis.intelligence=Intelligence
 

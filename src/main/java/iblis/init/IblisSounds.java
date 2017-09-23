@@ -13,6 +13,11 @@ public class IblisSounds {
 	public static SoundEvent shotgun_hammer_click;
 	public static SoundEvent shotgun_hammer_cock;
 	public static SoundEvent shotgun_charging;
+	public static SoundEvent opening_medkit;
+	public static SoundEvent closing_medkit;
+	public static SoundEvent full_bottle_shaking;
+	public static SoundEvent scissors_clicking;
+	public static SoundEvent tearing_bandage;
 	
 	public static void register() {
 		book_reading = registerSound("book_reading");
@@ -22,6 +27,11 @@ public class IblisSounds {
 		shotgun_hammer_click = registerSound("shotgun_hammer_click");
 		shotgun_hammer_cock = registerSound("shotgun_hammer_cock");
 		shotgun_charging = registerSound("shotgun_charging");
+		opening_medkit = registerSound("opening_medkit");
+		closing_medkit = registerSound("closing_medkit");
+		full_bottle_shaking = registerSound("full_bottle_shaking");
+		scissors_clicking = registerSound("scissors_clicking");
+		tearing_bandage = registerSound("tearing_bandage");
 	}
 
 	private static SoundEvent registerSound(String soundNameIn) {

@@ -152,16 +152,4 @@ public class ItemShotgunReloading extends Item {
 		}
 		return super.getIsRepairable(toRepair, repair);
 	}
-
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
-		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
-		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
-			multimap.put(SharedIblisAttributes.BULLET_DAMAGE.getName(),
-					new AttributeModifier(SharedIblisAttributes.BULLET_DAMAGE_MODIFIER, "Weapon modifier", 4.0d, 0));
-			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
-					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4D, 0));
-		}
-		return multimap;
-	}
-
 }

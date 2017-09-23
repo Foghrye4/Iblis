@@ -41,5 +41,35 @@
     "sounds": [
     	{ "name": "iblis:shotgun_charging", "stream": false }
     ]
+	},
+  "opening_medkit": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:opening_medkit", "stream": false }
+    ]
+	},
+  "closing_medkit": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:closing_medkit", "stream": false }
+    ]
+	},
+  "full_bottle_shaking": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:full_bottle_shaking", "stream": false }
+    ]
+	},
+  "scissors_clicking": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:scissors_clicking", "stream": false }
+    ]
+	},
+  "tearing_bandage": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:tearing_bandage", "stream": false }
+    ]
 	}
 }

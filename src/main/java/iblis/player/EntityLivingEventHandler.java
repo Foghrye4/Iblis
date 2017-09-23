@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketEntityProperties;
@@ -42,8 +43,7 @@ public class EntityLivingEventHandler {
 		EntityLivingBase living = event.getEntityLiving();
 		if (!(living instanceof EntityPlayer))
 			return;
-		double multiplier = living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.JUMPING)
-				.getAttributeValue();
+		double multiplier = PlayerSkills.JUMPING.getFullSkillValue(living);
 		float sprintButtonState = (float)PlayerUtils.getSprintButtonCounterState((EntityPlayer) living) / PlayerUtils.MAX_SPRINT_SPEED;
 		multiplier *= sprintButtonState;
 		multiplier++;
@@ -75,10 +75,10 @@ public class EntityLivingEventHandler {
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.MELEE_DAMAGE_REDUCTION)
 					.getAttributeValue();
 		else if (event.getSource() == DamageSource.FALL) {
-			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.FALLING)
-					.getAttributeValue();
-		}
+			damage -= PlayerSkills.FALLING.getFullSkillValue(living);
 
+		}
+		living.removePotionEffect(MobEffects.REGENERATION);
 		event.setAmount(damage);
 	}
 
@@ -145,7 +145,7 @@ public class EntityLivingEventHandler {
 			if (arrow.shootingEntity instanceof EntityLivingBase) {
 				EntityLivingBase living = (EntityLivingBase) arrow.shootingEntity;
 				double arrowDamage = (arrow.getDamage() - 2.0d + living.getAttributeMap()
-						.getAttributeInstance(SharedIblisAttributes.ARROW_DAMAGE).getAttributeValue())
+						.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue())
 						* (PlayerSkills.ARCHERY.getFullSkillValue(living) + 0.2d);
 				if (arrowDamage > 0.5d)
 					arrow.setDamage(arrowDamage);

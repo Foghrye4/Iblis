@@ -14,6 +14,7 @@ public enum PlayerSkills {
 	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001f),
 	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02f),
 	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02f),
+	//MEDICAL_AID(SharedIblisAttributes.MEDICAL_AID,0.02f),
 	RUNNING(SharedIblisAttributes.RUNNING,0.001f),
 	JUMPING(SharedIblisAttributes.JUMPING,0.001f), 
 	FALLING(SharedIblisAttributes.FALLING,0.02f);

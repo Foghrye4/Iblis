@@ -20,8 +20,7 @@ public class PlayerUtils {
 			SharedMonsterAttributes.ARMOR.getName(), 
 			SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
 			SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
-			SharedIblisAttributes.ARROW_DAMAGE.getName(),
-			SharedIblisAttributes.BULLET_DAMAGE.getName()};
+			SharedIblisAttributes.PROJECTILE_DAMAGE.getName()};
 
 	public static boolean isCharacteristicsCouldBeRaised(EntityPlayer player) {
 		for (PlayerCharacteristics characteristic : PlayerCharacteristics.values()) {
@@ -74,9 +73,7 @@ public class PlayerUtils {
 		msi.removeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER);
 		if (sprintCounter > 0) {
 			double ss = PlayerCharacteristics.SPRINTING_SPEED.getAttributeInstance(player)
-					.getAttributeValue() + 
-					PlayerSkills.RUNNING.getAttributeInstance(player)
-					.getAttributeValue();
+					.getAttributeValue() + PlayerSkills.RUNNING.getFullSkillValue(player);
 			if (ss > 0)
 				ss = ss * sprintCounter / PlayerUtils.MAX_SPRINT_SPEED;
 			msi.applyModifier(new AttributeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER,

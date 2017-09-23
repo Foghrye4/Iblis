@@ -63,7 +63,7 @@ public class CraftingHandler {
 					NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(new AttributeModifier(
 							SharedIblisAttributes.ARROW_DAMAGE_MODIFIER, "Arrow damage", 2d, 0));
 					modifierNBT.setString("Slot", EntityEquipmentSlot.MAINHAND.getName());
-					modifierNBT.setString("AttributeName", SharedIblisAttributes.ARROW_DAMAGE.getName());
+					modifierNBT.setString("AttributeName", SharedIblisAttributes.PROJECTILE_DAMAGE.getName());
 					attributeModifiersNBTList.appendTag(modifierNBT);
 					is.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
 					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
