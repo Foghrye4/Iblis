@@ -2,6 +2,7 @@ package iblis.init;
 
 import iblis.IblisMod;
 import iblis.item.ItemGuideBook;
+import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
 import net.minecraft.client.Minecraft;
@@ -21,6 +22,8 @@ public class IblisItems {
 	public static Item SHOTGUN_RELOADING;
 	public static Item SHOTGUN_BULLET;
 	public static Item INGOT_STEEL;
+	public static Item NONSTERILE_MEDKIT;
+	public static Item MEDKIT;
 	
 	public static void init(){
 		GUIDE = new ItemGuideBook();
@@ -28,6 +31,8 @@ public class IblisItems {
 		SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
 		SHOTGUN_BULLET = new Item();
 		INGOT_STEEL = new Item();
+		NONSTERILE_MEDKIT = new Item();
+		MEDKIT = new ItemMedkit();
 		
 		GUIDE.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("guide")
@@ -59,12 +64,27 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
+		NONSTERILE_MEDKIT.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("non-sterile_medkit")
+			.setRegistryName(IblisMod.MODID, "non-sterile_medkit")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(1);
+		MEDKIT.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("medkit")
+			.setRegistryName(IblisMod.MODID, "medkit")
+			.setHasSubtypes(false)
+			.setMaxDamage(10)
+			.setMaxStackSize(1);
+
 		
 		registerItem(GUIDE);
 		registerItem(SHOTGUN);
 		registerItem(SHOTGUN_RELOADING);
 		registerItem(SHOTGUN_BULLET);
 		registerItem(INGOT_STEEL);
+		registerItem(NONSTERILE_MEDKIT);
+		registerItem(MEDKIT);
 	}
 	
 	private static void registerItem(Item item) {
@@ -99,5 +119,9 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_bullet"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT_STEEL, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_steel"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NONSTERILE_MEDKIT, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
 	}
 }

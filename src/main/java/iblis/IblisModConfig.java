@@ -46,6 +46,10 @@ public class IblisModConfig {
 			skill.enabled = configuration.getBoolean("enable_"+skill.name().toLowerCase()+"_skill",
 					Configuration.CATEGORY_GENERAL, true, I18n.format("iblis.enableSkill"));
 		}
+		IblisMod.eventHandler.spawnPlayerZombie = configuration.getBoolean("spawn_player_zombie",
+				Configuration.CATEGORY_GENERAL, true, I18n.format("iblis.spawnPlayerZombie"));
+		IblisMod.eventHandler.noDeathPenalty = configuration.getBoolean("no_death_penalty",
+				Configuration.CATEGORY_GENERAL, false, I18n.format("iblis.noDeathPenalty"));
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}

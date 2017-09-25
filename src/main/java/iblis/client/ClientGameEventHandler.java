@@ -18,16 +18,18 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 @SideOnly(Side.CLIENT)
 public class ClientGameEventHandler {
-	KeyBinding[] keyBindings = new KeyBinding[] {
+	
+	public static ClientGameEventHandler instance;
+	private final KeyBinding[] keyBindings = new KeyBinding[] {
 			new KeyBinding("key.iblis.reload", Keyboard.KEY_R, "key.categories.gameplay") };
-	boolean sprintingState = false;
-	int sprintCounter = 0;
-	int lastSprintCounter = 0;
-	BlockPos sprintingStartPos = null;
-	int sprintButtonCounter = 0;
-	int lastSprintButtonCounter = 0;
+	public int sprintCounter = 0;
+	private int lastSprintCounter = 0;
+	private BlockPos sprintingStartPos = null;
+	public int sprintButtonCounter = 0;
+	private int lastSprintButtonCounter = 0;
 	
 	public ClientGameEventHandler() {
+		instance = this;
 		ClientRegistry.registerKeyBinding(keyBindings[0]);
 	}
 
@@ -60,12 +62,11 @@ public class ClientGameEventHandler {
 					((ClientNetworkHandler) IblisMod.network).sendPlayerRunnedDistance((float) dsq);
 				}
 				lastSprintCounter = sprintCounter;
-				PlayerUtils.applySprintingSpeedModifier(event.player, sprintCounter);
 				((ClientNetworkHandler) IblisMod.network).sendCommandApplySprintingSpeedModifier(sprintCounter);
 			}
 		}
 		else {
-			if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown()) {
+			if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown() && PlayerUtils.canJump(event.player)) {
 				if (sprintButtonCounter < PlayerUtils.MAX_SPRINT_SPEED)
 					sprintButtonCounter++;
 			} else

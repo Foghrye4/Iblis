@@ -16,8 +16,7 @@ public enum PlayerCharacteristics {
 	MELEE_DAMAGE_BONUS(SharedIblisAttributes.MELEE_DAMAGE_BONUS,1d,0.1d),
 	ATTACK_SPEED(SharedMonsterAttributes.ATTACK_SPEED,4d,0.1d),
 	LUCK(SharedMonsterAttributes.LUCK,0d,0.1d),
-	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d),
-	SPRINTING_SPEED(SharedIblisAttributes.SPRINTING_SPEED,-0.1d,0.04d);
+	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d);
 	
 	private final double pointsPerLevel;
 	private final double startLevel;

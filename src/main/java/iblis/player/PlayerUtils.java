@@ -71,9 +71,8 @@ public class PlayerUtils {
 		IAttributeInstance msi = player.getAttributeMap()
 				.getAttributeInstance(SharedMonsterAttributes.MOVEMENT_SPEED);
 		msi.removeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER);
-		if (sprintCounter > 0) {
-			double ss = PlayerCharacteristics.SPRINTING_SPEED.getAttributeInstance(player)
-					.getAttributeValue() + PlayerSkills.RUNNING.getFullSkillValue(player);
+		if (sprintCounter > 0 && PlayerSkills.RUNNING.enabled) {
+			double ss = (PlayerSkills.RUNNING.getFullSkillValue(player) - 0.1) * 0.1;
 			if (ss > 0)
 				ss = ss * sprintCounter / PlayerUtils.MAX_SPRINT_SPEED;
 			msi.applyModifier(new AttributeModifier(SharedIblisAttributes.SPRINTING_SPEED_MODIFIER,
@@ -90,6 +89,10 @@ public class PlayerUtils {
 		if(state!=null)
 			return state.intValue();
 		return 0;
+	}
+
+	public static boolean canJump(EntityPlayer player) {
+		return player.getFoodStats().getFoodLevel() >= 6;
 	}
 
 }

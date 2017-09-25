@@ -7,18 +7,22 @@ import net.minecraft.potion.PotionEffect;
 public class PotionEffectMedkit extends PotionEffect {
 
 	private final int applyFrequency;
+
 	public PotionEffectMedkit(Potion potionIn, int durationIn, int amplifierIn, double medicalAidSkillIn) {
-		super(potionIn,durationIn, amplifierIn);
-		applyFrequency = (int)(4096/++medicalAidSkillIn);
+		super(potionIn, durationIn, amplifierIn);
+		applyFrequency = (int) (4096 / ++medicalAidSkillIn);
 	}
 
 	public boolean onUpdate(EntityLivingBase entityIn) {
-		if (this.getDuration() > 0) {
-			if (this.getDuration() % applyFrequency == 0)
-				return super.onUpdate(entityIn);
-			else
-				return true;
-		}
-		return false;
+		if (entityIn.getHealth() >= entityIn.getMaxHealth())
+			return false;
+		return super.onUpdate(entityIn);
 	}
+	
+    public void performEffect(EntityLivingBase entityIn)
+    {
+		if (this.getDuration() % applyFrequency == 0)
+			super.performEffect(entityIn);
+    }
+
 }

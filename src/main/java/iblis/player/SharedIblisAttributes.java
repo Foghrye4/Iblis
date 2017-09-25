@@ -23,7 +23,6 @@ public class SharedIblisAttributes {
     public static final IAttribute EXPLOSION_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.explosion_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming explosion damage reduction").setShouldWatch(true);
     public static final IAttribute FIRE_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.fire_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming fire damage reduction").setShouldWatch(true);
     public static final IAttribute PROJECTILE_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.projectile_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming projectile damage reduction").setShouldWatch(true);
-    public static final IAttribute SPRINTING_SPEED = (new RangedAttribute((IAttribute)null, "iblis.sprinting_speed", -0.1D, -0.9D, Double.MAX_VALUE)).setDescription("Sprinting speed").setShouldWatch(true);
     public static final IAttribute INTELLIGENCE = (new RangedAttribute((IAttribute)null, "iblis.intelligence", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Intelligence").setShouldWatch(true);
     
     // Skills
@@ -38,6 +37,7 @@ public class SharedIblisAttributes {
     public static final IAttribute WEAPONSMITH = (new RangedAttribute(CRAFTMANSHIP, "iblis.weaponsmith", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Weaponsmith").setShouldWatch(true);
     public static final IAttribute ARMORSMITH = (new RangedAttribute(CRAFTMANSHIP, "iblis.armorsmith", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Armorsmith").setShouldWatch(true);
 	public static final IAttribute MEDICAL_AID = (new RangedAttribute(CRAFTMANSHIP, "iblis.medical_aid", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Medical aid").setShouldWatch(true);
+	public static final IAttribute DIGGING = (new RangedAttribute(CRAFTMANSHIP, "iblis.digging", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Digging").setShouldWatch(true);
     
     public static final IAttribute ACROBATICS = (new RangedAttribute(WISDOM, "iblis.acrobatics", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Acrobatics").setShouldWatch(true);
     public static final IAttribute RUNNING = (new RangedAttribute(ACROBATICS, "iblis.running", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Running").setShouldWatch(true);
@@ -51,7 +51,6 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(EXPLOSION_DAMAGE_REDUCTION);
 		attributeMap.registerAttribute(FIRE_DAMAGE_REDUCTION);
 		attributeMap.registerAttribute(PROJECTILE_DAMAGE_REDUCTION);
-		attributeMap.registerAttribute(SPRINTING_SPEED);
 		attributeMap.registerAttribute(INTELLIGENCE);
 		attributeMap.registerAttribute(WISDOM);
 		attributeMap.registerAttribute(MARTIAL_ARTS);
@@ -62,6 +61,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(WEAPONSMITH);
 		attributeMap.registerAttribute(ARMORSMITH);
 		attributeMap.registerAttribute(MEDICAL_AID);
+		attributeMap.registerAttribute(DIGGING);
 		attributeMap.registerAttribute(ACROBATICS);
 		attributeMap.registerAttribute(RUNNING);
 		attributeMap.registerAttribute(JUMPING);

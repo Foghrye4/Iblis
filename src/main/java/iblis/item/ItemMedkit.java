@@ -17,10 +17,14 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public class ItemMedkit extends Item {
-	/*
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		if (playerIn.isPotionActive(MobEffects.REGENERATION))
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+		if (playerIn.getHealth() >= playerIn.getMaxHealth())
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 		playerIn.setActiveHand(handIn);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 	}
@@ -33,8 +37,6 @@ public class ItemMedkit extends Item {
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
 		World worldIn = playerIn.world;
-		if (!worldIn.isRemote)
-			return;
 		if (count == 62) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.opening_medkit,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
@@ -52,9 +54,8 @@ public class ItemMedkit extends Item {
 
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
-		if (worldIn.isRemote)
-			worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, IblisSounds.closing_medkit,
-					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
+		worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, IblisSounds.closing_medkit,
+				SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 		if (entityLiving instanceof EntityPlayer) {
 			PotionEffect medkitEffect = this.getPotionEffect(stack, (EntityPlayer) entityLiving);
 			entityLiving.addPotionEffect(medkitEffect);
@@ -77,7 +78,8 @@ public class ItemMedkit extends Item {
 		double medaidSkillValue = PlayerSkills.MEDICAL_AID.getFullSkillValue(playerIn);
 		stack.damageItem(1, playerIn);
 		playerIn.addExhaustion(1f);
+		PlayerSkills.MEDICAL_AID.raiseSkill(playerIn, 1d);
 		PotionEffectMedkit medkitEffect = new PotionEffectMedkit(MobEffects.REGENERATION, 18000, 5, medaidSkillValue);
 		return medkitEffect;
-	}*/
+	}
 }

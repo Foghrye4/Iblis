@@ -3,6 +3,7 @@ package iblis.gui;
 import java.util.Random;
 
 import iblis.IblisMod;
+import iblis.client.ClientGameEventHandler;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
 import iblis.player.PlayerSkills;
@@ -22,6 +23,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -139,7 +141,7 @@ public class GuiEventHandler {
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
 		GlStateManager.enableBlend();
 
-		mc.mcProfiler.startSection("iblisModAmmo");
+		mc.mcProfiler.startSection("iblisMod");
 		int right = width / 2 + 91;
 		int top = height - GuiIngameForge.left_height;
 		mc.getTextureManager().bindTexture(IBLIS_ICONS);
@@ -155,7 +157,21 @@ public class GuiEventHandler {
 					mc.ingameGUI.drawTexturedModalRect(x, y, 8, 0, 7, 16);
 			}
 		}
-
+		int sprintCounter = ClientGameEventHandler.instance.sprintCounter;
+		int sprintButtonCounter = ClientGameEventHandler.instance.sprintButtonCounter;
+		
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 0.8f);
+		if (sprintCounter != 0)
+			mc.ingameGUI.drawTexturedModalRect(width - 13, height - PlayerUtils.MAX_SPRINT_SPEED - 15, 235, 0, 13, 13);
+		if (sprintButtonCounter != 0)
+			mc.ingameGUI.drawTexturedModalRect(width - 19, height - PlayerUtils.MAX_SPRINT_SPEED - 18, 249, 0, 7, 16);
+		
+		if (sprintCounter != 0)
+			GuiScreen.drawRect(width - 7, height - sprintCounter - 1, width - 5, height - 1, 0x88ff9600);
+		if (sprintButtonCounter != 0)
+			GuiScreen.drawRect(width - 15, height - sprintButtonCounter - 1, width - 13, height - 1, 0x88ff9600);
+		
+		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 		mc.mcProfiler.endStartSection("health");
 		mc.getTextureManager().bindTexture(Gui.ICONS);
 		int health = MathHelper.ceil(player.getHealth());

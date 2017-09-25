@@ -1,6 +1,8 @@
 package iblis.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import iblis.IblisMod;
@@ -17,10 +19,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiSkills extends GuiScreen {
 
+	List<GuiFancyTooltip> tooltips = new ArrayList<GuiFancyTooltip>();
 	private EntityPlayerSP player;
 	private final int leftMargin = 40;
 	private final int topMargin = 9;
-	private final int labelHeight = 40;
+	private final int labelHeight = 50;
 	private final int columnWidth = 140;
 
 	public GuiSkills(EntityPlayerSP playerIn) {

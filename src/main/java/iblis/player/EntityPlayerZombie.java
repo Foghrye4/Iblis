@@ -18,11 +18,12 @@ public class EntityPlayerZombie extends EntityZombie {
 		super(worldIn);
 	}
 
-	public EntityPlayerZombie(EntityPlayer playerIn) {
+	public EntityPlayerZombie(EntityPlayer playerIn, boolean noDeathPenalty) {
 		super(playerIn.world);
 		this.setPosition(playerIn.posX, playerIn.posY, playerIn.posZ);
 		this.experienceValue = playerIn.experienceTotal;
-		for (PlayerCharacteristics characteristic : PlayerCharacteristics.values()) {
+		if (!noDeathPenalty) {
+			for (PlayerCharacteristics characteristic : PlayerCharacteristics.values()) {
 				int characteristicLevel = characteristic.getCurrentLevel(playerIn);
 				while (characteristicLevel-- > 0) {
 					playerIn.experienceLevel = characteristicLevel;
@@ -30,6 +31,7 @@ public class EntityPlayerZombie extends EntityZombie {
 						this.experienceValue += playerIn.xpBarCap();
 					}
 				}
+			}
 		}
 		InventoryPlayer inv = playerIn.inventory;
 		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, inv.getCurrentItem());

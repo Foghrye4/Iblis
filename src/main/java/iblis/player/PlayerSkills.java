@@ -14,7 +14,8 @@ public enum PlayerSkills {
 	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001f),
 	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02f),
 	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02f),
-	//MEDICAL_AID(SharedIblisAttributes.MEDICAL_AID,0.02f),
+	MEDICAL_AID(SharedIblisAttributes.MEDICAL_AID,0.02f),
+	DIGGING(SharedIblisAttributes.DIGGING,0.001f),
 	RUNNING(SharedIblisAttributes.RUNNING,0.001f),
 	JUMPING(SharedIblisAttributes.JUMPING,0.001f), 
 	FALLING(SharedIblisAttributes.FALLING,0.02f);
@@ -31,6 +32,8 @@ public enum PlayerSkills {
 	}
 	
 	public void raiseSkill(EntityPlayer player, double d) {
+		if(player.world.isRemote)
+			throw new IllegalStateException("Skills should be raised only at server side.");
 		int divider = 1;
 		for (IAttribute iattribute = this.attribute; 
 				iattribute != SharedIblisAttributes.INTELLIGENCE;

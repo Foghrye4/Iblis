@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import iblis.IblisMod;
 import iblis.init.IblisItems;
 import iblis.init.RegistryEventHandler;
@@ -14,13 +16,18 @@ import iblis.player.SharedIblisAttributes;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
@@ -93,13 +100,39 @@ public class CraftingHandler {
 				Ingredient.EMPTY, 
 				Ingredient.EMPTY
 				);
+	    Ingredient water_bottle = new Ingredient(new ItemStack[0])
+	    {
+	        public boolean apply(@Nullable ItemStack stack)
+	        {
+	        	if(stack.getItem() != Items.POTIONITEM)
+	        		return false;
+	        	return PotionUtils.getPotionFromItem(stack) == PotionTypes.WATER;
+	        }
+	    };
+	    
+		NonNullList<Ingredient> medkitRecipeIngridients = NonNullList.from(
+				Ingredient.EMPTY, 
+				Ingredient.fromStacks(new ItemStack(Items.STRING,1,0)),
+				Ingredient.EMPTY, 
+				Ingredient.EMPTY,
+				Ingredient.fromStacks(new ItemStack(Items.STRING,1,0)), 
+				Ingredient.fromStacks(new ItemStack(Items.LEATHER,1,0)), 
+				water_bottle,
+				Ingredient.fromStacks(new ItemStack(Items.STRING,1,0)), 
+				Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT,1,0)), 
+				Ingredient.EMPTY
+				);
+		
 		
 		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
 		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
+		ShapedRecipes medkitRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, medkitRecipeIngridients, new ItemStack(IblisItems.NONSTERILE_MEDKIT));
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
+		medkitRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"medkit"));
 		RegistryEventHandler.recipes.add(recipe1);
 		RegistryEventHandler.recipes.add(recipe2);
+		RegistryEventHandler.recipes.add(medkitRecipe);
 
 		ShapedOreRecipe shotgunRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),IblisItems.SHOTGUN, 
 				"  W",
@@ -111,6 +144,8 @@ public class CraftingHandler {
 		replacements.add(shotgunRecipeWrapper);
 		for(PlayerSensitiveRecipeWrapper recipeReplacement: replacements)
 			RegistryEventHandler.recipes.add(recipeReplacement);
+		
+		FurnaceRecipes.instance().addSmelting(IblisItems.NONSTERILE_MEDKIT, new ItemStack(IblisItems.MEDKIT), 1.0f);
 	}
 	
 	@SubscribeEvent

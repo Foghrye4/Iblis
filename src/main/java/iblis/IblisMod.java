@@ -11,7 +11,7 @@ import iblis.init.IblisSounds;
 import iblis.init.RegistryEventHandler;
 import iblis.item.IblisCreativeTab;
 import iblis.loot.LootTableParsingEventHandler;
-import iblis.player.EntityLivingEventHandler;
+import iblis.player.IblisEventHandler;
 import iblis.player.EntityPlayerZombie;
 import iblis.villager.EmeraldForOreDictionaryItems;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,7 +41,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.5";
+    public static final String VERSION = "0.3.9";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
@@ -51,10 +51,12 @@ public class IblisMod
 	public static Logger log;
 	public static CreativeTabs creativeTab;
     public static IblisModConfig config;
+    public static IblisEventHandler eventHandler;
 	
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+    	eventHandler = new IblisEventHandler();
 		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		MinecraftForge.EVENT_BUS.register(config);
     	log = event.getModLog();
@@ -79,8 +81,9 @@ public class IblisMod
 
     	proxy.load();
     	network.load();
+    	
     	MinecraftForge.EVENT_BUS.register(craftingHandler);
-    	MinecraftForge.EVENT_BUS.register(new EntityLivingEventHandler());
+    	MinecraftForge.EVENT_BUS.register(eventHandler);
     	MinecraftForge.EVENT_BUS.register(new LootTableParsingEventHandler());
     	MinecraftForge.EVENT_BUS.register(new RegistryEventHandler());
     }
