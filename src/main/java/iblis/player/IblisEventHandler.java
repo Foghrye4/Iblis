@@ -116,6 +116,8 @@ public class IblisEventHandler {
 	@SubscribeEvent
 	public void onPlayerAttackEntityEvent(AttackEntityEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
+		if(living.world.isRemote)
+			return;
 		ItemStack stackInHand = living.getHeldItemMainhand();
 		Multimap<String, AttributeModifier> am = stackInHand.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 		if (event.getTarget() instanceof EntityLivingBase) {
@@ -134,7 +136,7 @@ public class IblisEventHandler {
 				EntityDamageSourceIndirect dsi = (EntityDamageSourceIndirect) event.getSource();
 				if (dsi.damageType.equals("arrow")) {
 					Entity shooter = dsi.getTrueSource();
-					if (shooter instanceof EntityPlayer) {
+					if (shooter instanceof EntityPlayerMP) {
 						EntityLivingBase target = (EntityLivingBase) event.getEntity();
 						PlayerSkills.ARCHERY.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
@@ -145,7 +147,7 @@ public class IblisEventHandler {
 				EntityDamageSource dsi = (EntityDamageSource) event.getSource();
 				if (dsi.damageType.equals("shotgun")) {
 					Entity shooter = dsi.getTrueSource();
-					if (shooter instanceof EntityPlayer) {
+					if (shooter instanceof EntityPlayerMP) {
 						EntityLivingBase target = (EntityLivingBase) event.getEntity();
 						PlayerSkills.SHARPSHOOTING.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
