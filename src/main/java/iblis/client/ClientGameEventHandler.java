@@ -4,10 +4,14 @@ import org.lwjgl.input.Keyboard;
 
 import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
+import iblis.player.PlayerSkills;
 import iblis.player.PlayerUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.item.ItemBow;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -40,9 +44,25 @@ public class ClientGameEventHandler {
 				((ClientNetworkHandler) IblisMod.network).sendCommandReloadWeapon();
 		}
 	}
+	
+	@SubscribeEvent
+	public void onCheckingPlayerIsInBlock(PlayerSPPushOutOfBlocksEvent event) {
+		EntityPlayerSP player = (EntityPlayerSP) event.getEntityPlayer();
+		// Ugly way to compensate movement speed decreasing on using item
+		if (player.isHandActive() && !player.isRiding() && player.getActiveItemStack().getItem() instanceof ItemBow) {
+			double archery = PlayerSkills.ARCHERY.getFullSkillValue(player);
+			if (archery < 5.1d)
+				return;
+			float multiliper = 5.0f - 20.0f/(float)archery;
+			player.movementInput.moveStrafe *= multiliper;
+			player.movementInput.moveForward *= multiliper;
+		}
+	}
 
 	@SubscribeEvent
 	public void onEvent(PlayerTickEvent event) {
+		if (event.side != Side.CLIENT)
+			return;
 		if (event.phase == Phase.END) {
 			if (!event.player.isSprinting()) {
 				sprintCounter = 0;

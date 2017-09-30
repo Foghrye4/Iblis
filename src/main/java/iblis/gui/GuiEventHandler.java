@@ -7,12 +7,9 @@ import iblis.client.ClientGameEventHandler;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
 import iblis.player.PlayerSkills;
-import iblis.player.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiButtonImage;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,7 +20,6 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -160,18 +156,13 @@ public class GuiEventHandler {
 		int sprintCounter = ClientGameEventHandler.instance.sprintCounter;
 		int sprintButtonCounter = ClientGameEventHandler.instance.sprintButtonCounter;
 		
-		GlStateManager.color(1.0f, 1.0f, 1.0f, 0.8f);
-		if (sprintCounter != 0)
-			mc.ingameGUI.drawTexturedModalRect(width - 13, height - PlayerUtils.MAX_SPRINT_SPEED - 15, 235, 0, 13, 13);
-		if (sprintButtonCounter != 0)
-			mc.ingameGUI.drawTexturedModalRect(width - 19, height - PlayerUtils.MAX_SPRINT_SPEED - 18, 249, 0, 7, 16);
-		
-		if (sprintCounter != 0)
-			GuiScreen.drawRect(width - 7, height - sprintCounter - 1, width - 5, height - 1, 0x88ff9600);
-		if (sprintButtonCounter != 0)
-			GuiScreen.drawRect(width - 15, height - sprintButtonCounter - 1, width - 13, height - 1, 0x88ff9600);
-		
 		GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+		for (int i = 0; i < sprintCounter / 4; i++)
+			mc.ingameGUI.drawTexturedModalRect(width - 9, height - 9*i, 247, 0, 9, 9);
+
+		for (int i = 0; i < sprintButtonCounter / 4; i++)
+			mc.ingameGUI.drawTexturedModalRect(width - 18, height - 9*i, 238, 0, 9, 9);
+
 		mc.mcProfiler.endStartSection("health");
 		mc.getTextureManager().bindTexture(Gui.ICONS);
 		int health = MathHelper.ceil(player.getHealth());

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -25,11 +26,13 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -158,10 +161,14 @@ public class IblisEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onArrowLooseEvent(ArrowLooseEvent event) {
-		EntityLivingBase living = event.getEntityLiving();
-		event.setCharge(event.getCharge() - 5 + (int) PlayerSkills.ARCHERY.getFullSkillValue(living) / 2);
+	public void onNockEvent(LivingEntityUseItemEvent event) {
+		if(!(event.getEntityLiving() instanceof EntityPlayer))
+			return;
+		if(!(event.getItem().getItem() instanceof ItemBow))
+			return;
+		event.setDuration(event.getDuration() + (int) PlayerSkills.ARCHERY.getFullSkillValue(event.getEntityLiving()) / 2);
 	}
+
 
 	@SubscribeEvent
 	public void onEntityConstructingEvent(EntityEvent.EntityConstructing event) {

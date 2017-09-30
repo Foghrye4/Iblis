@@ -1,0 +1,57 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "display": {
+        "gui": {
+            "rotation": [ 30, 135, 0 ],
+            "translation": [ 0, 0, 0],
+            "scale":[ 1.0, 1.0, 1.0 ]
+        },
+        "head": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale":[ 0.625, 0.625, 0.625 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, -0.35, 0],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, -0.35, 0],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        }
+    },
+    "textures": {
+        "0": "iblis:items/non-sterile_medkit",
+        "1": "iblis:items/medkit"
+    },
+    "elements": [
+        {
+            "name": "Body",
+            "from": [ 7.0, 5.0, 4.0 ], 
+            "to": [ 8.0, 10.0, 12.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 4.0, 1.0, 12.0 ] },
+                "east": { "texture": "#1", "uv": [ 1.0, 10.0, 14.0, 11.0 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 4.0, 1.0, 9.0 ] },
+                "west": { "texture": "#0", "uv": [ 1.0, 4.0, 15.0, 12.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 4.0, 1.0, 12.0 ] },
+                "down": { "texture": "#1", "uv": [ 0.0, 4.0, 1.0, 12.0 ] }
+            }
+        },
+        {
+            "name": "Valve",
+            "from": [ 8.0, 10.0, 4.0 ], 
+            "to": [ 8.0, 16.0, 12.0 ], 
+            "faces": {
+                "north": { "texture": "#-1", "uv": [ 0.0, 0.0, 0.0, 5.0 ] },
+                "east": { "texture": "#1", "uv": [ 1.0, 3.0, 14.0, 12.0 ], "rotation": 180 },
+                "south": { "texture": "#-1", "uv": [ 0.0, 0.0, 0.0, 5.0 ] },
+                "west": { "texture": "#1", "uv": [ 1.0, 10.0, 14.0, 11.0 ] },
+                "up": { "texture": "#1", "uv": [ 14.0, 3.0, 1.0, 12.0 ], "rotation": 90 },
+                "down": { "texture": "#1", "uv": [ 14.0, 3.0, 1.0, 11.0 ] }
+            }
+        }
+    ]
+}

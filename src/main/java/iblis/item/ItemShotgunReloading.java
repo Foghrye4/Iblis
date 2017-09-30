@@ -2,19 +2,12 @@ package iblis.item;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
 import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
-import iblis.player.SharedIblisAttributes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
@@ -39,13 +32,6 @@ public class ItemShotgunReloading extends Item {
 		super();
 		this.gunBase = gunBaseIn;
 		this.addPropertyOverride(new ResourceLocation("ammo"), new IItemPropertyGetter() {
-			@SideOnly(Side.CLIENT)
-			double rotation;
-			@SideOnly(Side.CLIENT)
-			double rota;
-			@SideOnly(Side.CLIENT)
-			long lastUpdateTick;
-
 			@SideOnly(Side.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				if (!stack.hasTagCompound())
@@ -112,7 +98,8 @@ public class ItemShotgunReloading extends Item {
 		worldIn.playSound(null, player.posX, player.posY, player.posZ, IblisSounds.shotgun_ammo_loading,
 				SoundCategory.PLAYERS, 1.0f, 1.0f);
 		nbt.setInteger("ammo", ++ammoIn);
-		ammo.shrink(1);
+		if(!player.isCreative())
+			ammo.shrink(1);
 		if (ammo.isEmpty()) {
 			player.inventory.deleteStack(ammo);
 		}

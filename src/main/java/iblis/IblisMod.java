@@ -41,7 +41,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.10";
+    public static final String VERSION = "0.3.11";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
@@ -74,7 +74,7 @@ public class IblisMod
 				MODID + ":textures/entity/villager/zombie_mechanic.png");
 		VillagerCareer mechanicCareer = new VillagerCareer(mechanic, "mechanic");
 		ITradeList trade1 = new ListItemForEmeralds(IblisItems.SHOTGUN_BULLET,
-				new PriceInfo(-8, -24));
+				new PriceInfo(-24, -8));
 		ITradeList trade2 = new EmeraldForOreDictionaryItems("ingotSteel", new PriceInfo(4, 8));
 		mechanicCareer.addTrade(1, trade1, trade2);
 		RegistryEventHandler.professions.add(mechanic);

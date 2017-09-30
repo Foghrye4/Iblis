@@ -1,6 +1,20 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "iblis:items/medkit"
-    }
+    "parent": "iblis:item/medkit_frame_0",
+     "overrides": [
+        { "predicate": { "animation_frame": 1.0000000 }, "model": "iblis:item/medkit_frame_1" },
+        { "predicate": { "animation_frame": 2.0000000 }, "model": "iblis:item/medkit_frame_2" },
+        { "predicate": { "animation_frame": 3.0000000 }, "model": "iblis:item/medkit_frame_3" },
+        { "predicate": { "animation_frame": 4.0000000 }, "model": "iblis:item/medkit_frame_4" },
+        { "predicate": { "animation_frame": 5.0000000 }, "model": "iblis:item/medkit_frame_5" },
+        { "predicate": { "animation_frame": 6.0000000 }, "model": "iblis:item/medkit_frame_6" },
+        { "predicate": { "animation_frame": 7.0000000 }, "model": "iblis:item/medkit_frame_7" },
+        { "predicate": { "animation_frame": 8.0000000 }, "model": "iblis:item/medkit_frame_8" },
+        { "predicate": { "animation_frame": 9.0000000 }, "model": "iblis:item/medkit_frame_9" },
+        { "predicate": { "animation_frame": 10.0000000 }, "model": "iblis:item/medkit_frame_10" },
+        { "predicate": { "animation_frame": 11.0000000 }, "model": "iblis:item/medkit_frame_11" },
+        { "predicate": { "animation_frame": 12.0000000 }, "model": "iblis:item/medkit_frame_12" },
+        { "predicate": { "animation_frame": 13.0000000 }, "model": "iblis:item/medkit_frame_13" },
+        { "predicate": { "animation_frame": 14.0000000 }, "model": "iblis:item/medkit_frame_14" },
+        { "predicate": { "animation_frame": 15.0000000 }, "model": "iblis:item/medkit_frame_15" }
+   ]
 }

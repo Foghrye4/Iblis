@@ -1,22 +1,47 @@
 package iblis.item;
 
+import javax.annotation.Nullable;
+
+import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
 import iblis.potion.PotionEffectMedkit;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMedkit extends Item {
+	
+	public ItemMedkit() {
+		super();
+		this.addPropertyOverride(new ResourceLocation("animation_frame"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				if (entityIn == null) {
+					return 0.0F;
+				} else {
+					return entityIn.getActiveItemStack().getItem() != IblisItems.MEDKIT ? 0.0F
+							: (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount());
+				}
+			}
+		});
+
+	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
