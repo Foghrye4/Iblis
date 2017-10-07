@@ -15,6 +15,12 @@
         { "predicate": { "animation_frame": 12.0000000 }, "model": "iblis:item/medkit_frame_12" },
         { "predicate": { "animation_frame": 13.0000000 }, "model": "iblis:item/medkit_frame_13" },
         { "predicate": { "animation_frame": 14.0000000 }, "model": "iblis:item/medkit_frame_14" },
-        { "predicate": { "animation_frame": 15.0000000 }, "model": "iblis:item/medkit_frame_15" }
+        { "predicate": { "animation_frame": 15.0000000 }, "model": "iblis:item/medkit_frame_15" },
+        { "predicate": { "animation_frame": 16.0000000 }, "model": "iblis:item/medkit_frame_16" },
+        { "predicate": { "animation_frame": 32.0000000 }, "model": "iblis:item/medkit_frame_32" },
+        { "predicate": { "animation_frame": 64.0000000 }, "model": "iblis:item/medkit_frame_64" },
+        { "predicate": { "animation_frame": 80.0000000 }, "model": "iblis:item/medkit_frame_80" },
+        { "predicate": { "animation_frame": 92.0000000 }, "model": "iblis:item/medkit_frame_92" },
+        { "predicate": { "animation_frame": 120.0000000 }, "model": "iblis:item/medkit_frame_120" }
    ]
 }

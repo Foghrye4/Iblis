@@ -1,0 +1,6 @@
+{
+    "parent" : "iblis:item/medkit_frame_15",
+    "textures": {
+        "0": "iblis:items/medkit_frame_2"
+    }
+}

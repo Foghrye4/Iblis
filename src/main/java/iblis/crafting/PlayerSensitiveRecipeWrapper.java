@@ -15,6 +15,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
@@ -98,5 +99,10 @@ public class PlayerSensitiveRecipeWrapper extends net.minecraftforge.registries.
 	@Override
 	public boolean canFit(int width, int height) {
 		return this.wrappedRecipe.canFit(width, height);
+	}
+	
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		return this.wrappedRecipe.getIngredients();
 	}
 }

@@ -89,4 +89,9 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
 		return super.getRemainingItems(inv);
 	}
+	
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		return super.getIngredients();
+	}
 }

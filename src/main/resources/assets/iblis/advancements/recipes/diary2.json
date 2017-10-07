@@ -1,0 +1,8 @@
+{
+  "parent": "iblis:recipes/diary",
+  "rewards": {
+    "recipes": [
+      "iblis:guide_book_2"
+    ]
+  }
+}

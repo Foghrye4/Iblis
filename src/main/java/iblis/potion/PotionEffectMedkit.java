@@ -9,8 +9,8 @@ public class PotionEffectMedkit extends PotionEffect {
 	private final int applyFrequency;
 
 	public PotionEffectMedkit(Potion potionIn, int durationIn, int amplifierIn, double medicalAidSkillIn) {
-		super(potionIn, durationIn, amplifierIn);
-		applyFrequency = (int) (4096 / ++medicalAidSkillIn);
+		super(potionIn, durationIn + (int) (20 * medicalAidSkillIn), amplifierIn);
+		applyFrequency = 1 + (int) (256 / ++medicalAidSkillIn);
 	}
 
 	public boolean onUpdate(EntityLivingBase entityIn) {

@@ -3,7 +3,6 @@ package iblis.player;
 import com.google.common.collect.Multimap;
 
 import iblis.world.WorldSavedDataPlayers;
-import net.minecraft.world.World;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -16,12 +15,12 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.play.server.SPacketEntityProperties;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -31,8 +30,6 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -45,13 +42,16 @@ public class IblisEventHandler {
 	
 	@SubscribeEvent
 	public void onPlayerGetBreakSpeed(PlayerEvent.BreakSpeed event){
-		float speed= event.getOriginalSpeed();
-		if(speed<=0.0f || !PlayerSkills.DIGGING.enabled)
+		float speed = event.getOriginalSpeed();
+		if (speed <= 0.0f || !PlayerSkills.DIGGING.enabled)
 			return;
 		EntityPlayer player = event.getEntityPlayer();
+		if (!ForgeHooks.isToolEffective(player.world, event.getPos(), player.getHeldItemMainhand()))
+			return;
 		double msm = PlayerSkills.DIGGING.getFullSkillValue(player);
-		speed*=msm+0.2;
+		speed *= msm * 0.1 + 0.2;
 		event.setNewSpeed(speed);
+		
 	}
 	
 	@SubscribeEvent
@@ -66,8 +66,12 @@ public class IblisEventHandler {
 	@SubscribeEvent
 	public void onLivingFall(LivingFallEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
-		if (event.getDistance() > 2f && living instanceof EntityPlayerMP)
+		if (event.getDistance() > 2f && living instanceof EntityPlayerMP){
 			PlayerSkills.FALLING.raiseSkill((EntityPlayer) living, 1d);
+			float distance = event.getDistance();
+			distance -= PlayerSkills.FALLING.getFullSkillValue(living);
+			event.setDistance(distance);
+		}
 	}
 	
 	@SubscribeEvent
@@ -108,10 +112,6 @@ public class IblisEventHandler {
 		else if (event.getSource().getDamageType().equals("mob"))
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.MELEE_DAMAGE_REDUCTION)
 					.getAttributeValue();
-		else if (event.getSource() == DamageSource.FALL) {
-			damage -= PlayerSkills.FALLING.getFullSkillValue(living);
-
-		}
 		living.removePotionEffect(MobEffects.REGENERATION);
 		event.setAmount(damage);
 	}
@@ -166,7 +166,9 @@ public class IblisEventHandler {
 			return;
 		if(!(event.getItem().getItem() instanceof ItemBow))
 			return;
-		event.setDuration(event.getDuration() + (int) PlayerSkills.ARCHERY.getFullSkillValue(event.getEntityLiving()) / 2);
+		double skillValue = PlayerSkills.ARCHERY.getFullSkillValue(event.getEntityLiving()) + 1.0d;
+		if(event.getDuration() % (int)(128.0d / skillValue) == 0)
+			event.setDuration(event.getDuration() - 1);
 	}
 
 
@@ -211,7 +213,6 @@ public class IblisEventHandler {
 			}
 			if (attributesNBTList != null && noDeathPenalty)
 				SharedMonsterAttributes.setAttributeModifiers(player.getAttributeMap(), attributesNBTList);
-			player.connection.sendPacket(new SPacketEntityProperties(player.getEntityId(),player.getAttributeMap().getAllAttributes()));
 		}
 	}
 

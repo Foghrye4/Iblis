@@ -41,7 +41,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.11";
+    public static final String VERSION = "0.3.14";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
@@ -49,7 +49,7 @@ public class IblisMod
 	@SidedProxy(clientSide = "iblis.ClientNetworkHandler", serverSide = "iblis.ServerNetworkHandler")
 	public static ServerNetworkHandler network;
 	public static Logger log;
-	public static CreativeTabs creativeTab;
+	public static IblisCreativeTab creativeTab;
     public static IblisModConfig config;
     public static IblisEventHandler eventHandler;
 	

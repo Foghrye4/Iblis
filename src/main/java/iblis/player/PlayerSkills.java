@@ -1,11 +1,9 @@
 package iblis.player;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 public enum PlayerSkills {
 
@@ -22,13 +20,11 @@ public enum PlayerSkills {
 	
 	public double pointsPerLevel;
 	public final float defaultPointsPerLevel;
-	public final String configDescription;
 	private final IAttribute attribute;
 	public boolean enabled = true;
 	PlayerSkills(IAttribute attributeIn, float pointsPerLevelIn){
 		this.attribute = attributeIn;
 		this.pointsPerLevel = this.defaultPointsPerLevel = pointsPerLevelIn;
-		this.configDescription = I18n.format(this.getNiceName()+".config");
 	}
 	
 	public void raiseSkill(EntityPlayer player, double d) {

@@ -1,9 +1,9 @@
 package iblis.player;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class PlayerUtils {
 
 	public static final int MAX_SPRINT_SPEED = 64;
-	public static final Map<Integer,Integer> sprintingButtonCounterState = new HashMap<Integer,Integer>();
+	private static final Int2IntMap sprintingButtonCounterState = new Int2IntOpenHashMap();
 	
 	private final static String[] ATTRIBUTES_AFFECTED_BY_CRAFTING_SKILL = new String[] {
 			SharedMonsterAttributes.ARMOR.getName(), 
@@ -85,10 +85,8 @@ public class PlayerUtils {
 	}
 	
 	public static int getSprintButtonCounterState(EntityPlayer player) {
-		Integer state = sprintingButtonCounterState.get(player.getEntityId());
-		if(state!=null)
-			return state.intValue();
-		return 0;
+		// Return default value if not specified. '0' for java.
+		return sprintingButtonCounterState.get(player.getEntityId());
 	}
 
 	public static boolean canJump(EntityPlayer player) {

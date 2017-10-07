@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 @SideOnly(Side.CLIENT)
 public class ClientGameEventHandler {
-	
+
 	public static ClientGameEventHandler instance;
 	private final KeyBinding[] keyBindings = new KeyBinding[] {
 			new KeyBinding("key.iblis.reload", Keyboard.KEY_R, "key.categories.gameplay") };
@@ -31,7 +31,8 @@ public class ClientGameEventHandler {
 	private BlockPos sprintingStartPos = null;
 	public int sprintButtonCounter = 0;
 	private int lastSprintButtonCounter = 0;
-	
+	private final int NETWORK_SENSIBILITY_BIT = 2;
+
 	public ClientGameEventHandler() {
 		instance = this;
 		ClientRegistry.registerKeyBinding(keyBindings[0]);
@@ -44,7 +45,7 @@ public class ClientGameEventHandler {
 				((ClientNetworkHandler) IblisMod.network).sendCommandReloadWeapon();
 		}
 	}
-	
+
 	@SubscribeEvent
 	public void onCheckingPlayerIsInBlock(PlayerSPPushOutOfBlocksEvent event) {
 		EntityPlayerSP player = (EntityPlayerSP) event.getEntityPlayer();
@@ -53,7 +54,7 @@ public class ClientGameEventHandler {
 			double archery = PlayerSkills.ARCHERY.getFullSkillValue(player);
 			if (archery < 5.1d)
 				return;
-			float multiliper = 5.0f - 20.0f/(float)archery;
+			float multiliper = 5.0f - 20.0f / (float) archery;
 			player.movementInput.moveStrafe *= multiliper;
 			player.movementInput.moveForward *= multiliper;
 		}
@@ -72,26 +73,28 @@ public class ClientGameEventHandler {
 				else if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown())
 					sprintCounter++;
 			}
-
-			if (sprintCounter>>>3 != lastSprintCounter>>>3) { // Make it more crude so packets will not spawned too often
-				if(lastSprintCounter == 0) // Start of sprint
+			// Make it more crude so packets will not spawned too often
+			if (sprintCounter >>> NETWORK_SENSIBILITY_BIT != lastSprintCounter >>> NETWORK_SENSIBILITY_BIT) { 
+				if (lastSprintCounter == 0) // Start of sprint
 					sprintingStartPos = event.player.getPosition();
-				else if (lastSprintCounter == PlayerUtils.MAX_SPRINT_SPEED) { // Sprint counter cannot go back unless you stop movement.
+				// Sprint counter cannot go back unless you stop movement.
+				else if (lastSprintCounter == PlayerUtils.MAX_SPRINT_SPEED) { 
 					double dsq = event.player.getPosition().distanceSq(sprintingStartPos);
 					dsq = Math.sqrt(dsq);
 					((ClientNetworkHandler) IblisMod.network).sendPlayerRunnedDistance((float) dsq);
 				}
 				lastSprintCounter = sprintCounter;
+				EntityPlayerSP player = Minecraft.getMinecraft().player;
+				PlayerUtils.applySprintingSpeedModifier(player, sprintCounter);
 				((ClientNetworkHandler) IblisMod.network).sendCommandApplySprintingSpeedModifier(sprintCounter);
 			}
-		}
-		else {
+		} else {
 			if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown() && PlayerUtils.canJump(event.player)) {
 				if (sprintButtonCounter < PlayerUtils.MAX_SPRINT_SPEED)
 					sprintButtonCounter++;
 			} else
 				sprintButtonCounter = 0;
-			if (sprintButtonCounter >>> 3 != lastSprintButtonCounter >>> 3) {
+			if (sprintButtonCounter >>> NETWORK_SENSIBILITY_BIT != lastSprintButtonCounter >>> NETWORK_SENSIBILITY_BIT) {
 				PlayerUtils.saveSprintButtonCounterState(Minecraft.getMinecraft().player, sprintButtonCounter);
 				((ClientNetworkHandler) IblisMod.network).sendSprintButtonCounterState(sprintButtonCounter);
 				lastSprintButtonCounter = sprintButtonCounter;

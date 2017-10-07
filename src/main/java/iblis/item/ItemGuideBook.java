@@ -43,6 +43,8 @@ public class ItemGuideBook extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+        if (!this.isInCreativeTab(tab))
+			return;
 		ItemStack guideStack = new ItemStack(this, 1, 1);
 		NBTTagCompound guideNBT = new NBTTagCompound();
 		NBTTagList skills = new NBTTagList();

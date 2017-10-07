@@ -1,7 +1,6 @@
 package iblis;
 
 import iblis.player.PlayerSkills;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,12 +43,12 @@ public class IblisModConfig {
 	void syncConfig() {
 		for(PlayerSkills skill:PlayerSkills.values()){
 			skill.enabled = configuration.getBoolean("enable_"+skill.name().toLowerCase()+"_skill",
-					Configuration.CATEGORY_GENERAL, true, I18n.format("iblis.enableSkill"));
+					Configuration.CATEGORY_GENERAL, true, "Turn off to disable skill. Disabled skills always counts as equal to zero.");
 		}
 		IblisMod.eventHandler.spawnPlayerZombie = configuration.getBoolean("spawn_player_zombie",
-				Configuration.CATEGORY_GENERAL, true, I18n.format("iblis.spawnPlayerZombie"));
+				Configuration.CATEGORY_GENERAL, true, "Spawn player zombie on players death with all inventory.");
 		IblisMod.eventHandler.noDeathPenalty = configuration.getBoolean("no_death_penalty",
-				Configuration.CATEGORY_GENERAL, false, I18n.format("iblis.noDeathPenalty"));
+				Configuration.CATEGORY_GENERAL, false, "No death penalty to all skills and characteristics.");
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}

@@ -49,39 +49,37 @@ public class CraftingHandler {
 			IRecipe recipe = irecipes.next();
 			ItemStack is = recipe.getRecipeOutput();
 			if (is != null) {
-				if(isArmor(is)){
+				if (isArmor(is)) {
 					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
 					recipeReplacement.setSesitiveTo(PlayerSkills.ARMORSMITH, getArmorCraftingRequiredSkill(is));
-					recipeReplacement.setRegistryName(new ResourceLocation(IblisMod.MODID,recipe.getRegistryName().getResourcePath()));
+					recipeReplacement.setRegistryName(recipe.getRegistryName());
 					replacements.add(recipeReplacement);
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
-				}
-				else if(isWeapon(is)){
+				} else if (isWeapon(is)) {
 					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
 					recipeReplacement.setSesitiveTo(PlayerSkills.WEAPONSMITH, getWeaponCraftingRequiredSkill(is));
-					recipeReplacement.setRegistryName(new ResourceLocation(IblisMod.MODID,recipe.getRegistryName().getResourcePath()));
+					recipeReplacement.setRegistryName(recipe.getRegistryName());
 					replacements.add(recipeReplacement);
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
-				}
-				else if(is.getItem() instanceof ItemBow) {
+				} else if (is.getItem() instanceof ItemBow) {
 					if (!is.hasTagCompound())
 						is.setTagCompound(new NBTTagCompound());
 					NBTTagList attributeModifiersNBTList = new NBTTagList();
-					NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(new AttributeModifier(
-							SharedIblisAttributes.ARROW_DAMAGE_MODIFIER, "Arrow damage", 2d, 0));
+					NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(
+							new AttributeModifier(SharedIblisAttributes.ARROW_DAMAGE_MODIFIER, "Arrow damage", 2d, 0));
 					modifierNBT.setString("Slot", EntityEquipmentSlot.MAINHAND.getName());
 					modifierNBT.setString("AttributeName", SharedIblisAttributes.PROJECTILE_DAMAGE.getName());
 					attributeModifiersNBTList.appendTag(modifierNBT);
 					is.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
 					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
-					recipeReplacement.setRegistryName(new ResourceLocation(IblisMod.MODID,recipe.getRegistryName().getResourcePath()));
+					recipeReplacement.setRegistryName(recipe.getRegistryName());
 					recipeReplacement.setSesitiveTo(PlayerSkills.WEAPONSMITH, getWeaponCraftingRequiredSkill(is));
 					replacements.add(recipeReplacement);
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
 				}
 			}
 		}
-		for(ResourceLocation key:vanillaRecipesToRemove)
+		for (ResourceLocation key : vanillaRecipesToRemove)
 			recipeRegistry.remove(key);
 	}
 
@@ -100,15 +98,16 @@ public class CraftingHandler {
 				Ingredient.EMPTY, 
 				Ingredient.EMPTY
 				);
-	    Ingredient water_bottle = new Ingredient(new ItemStack[0])
-	    {
-	        public boolean apply(@Nullable ItemStack stack)
-	        {
-	        	if(stack.getItem() != Items.POTIONITEM)
-	        		return false;
-	        	return PotionUtils.getPotionFromItem(stack) == PotionTypes.WATER;
-	        }
-	    };
+		ItemStack[] waterBottleArray = new ItemStack[] {
+				PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER) };
+		Ingredient water_bottle = new Ingredient(waterBottleArray) {
+			@Override
+			public boolean apply(@Nullable ItemStack stack) {
+				if (stack.getItem() != Items.POTIONITEM)
+					return false;
+				return PotionUtils.getPotionFromItem(stack) == PotionTypes.WATER;
+			}
+		};
 	    
 		NonNullList<Ingredient> medkitRecipeIngridients = NonNullList.from(
 				Ingredient.EMPTY, 

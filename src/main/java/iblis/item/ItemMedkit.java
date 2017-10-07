@@ -56,22 +56,23 @@ public class ItemMedkit extends Item {
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return 64;
+		return 128;
 	}
 
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
 		World worldIn = playerIn.world;
-		if (count == 62) {
+		int maxDuration = this.getMaxItemUseDuration(stack);
+		if (count == maxDuration - 2) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.opening_medkit,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
-		} else if (count == 48) {
+		} else if (count == maxDuration * 3 / 4) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.full_bottle_shaking,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
-		} else if (count == 32) {
+		} else if (count == maxDuration / 2) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.scissors_clicking,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
-		} else if (count == 16) {
+		} else if (count == maxDuration / 4) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.tearing_bandage,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 		}
@@ -100,11 +101,12 @@ public class ItemMedkit extends Item {
 	}
 
 	private PotionEffect getPotionEffect(ItemStack stack, EntityPlayer playerIn) {
-		double medaidSkillValue = PlayerSkills.MEDICAL_AID.getFullSkillValue(playerIn);
+		double medAidSkillValue = PlayerSkills.MEDICAL_AID.getFullSkillValue(playerIn);
 		stack.damageItem(1, playerIn);
 		playerIn.addExhaustion(1f);
-		PlayerSkills.MEDICAL_AID.raiseSkill(playerIn, 1d);
-		PotionEffectMedkit medkitEffect = new PotionEffectMedkit(MobEffects.REGENERATION, 18000, 5, medaidSkillValue);
+		if(!playerIn.world.isRemote)
+			PlayerSkills.MEDICAL_AID.raiseSkill(playerIn, 1d);
+		PotionEffectMedkit medkitEffect = new PotionEffectMedkit(MobEffects.REGENERATION, 600, 5, medAidSkillValue);
 		return medkitEffect;
 	}
 }

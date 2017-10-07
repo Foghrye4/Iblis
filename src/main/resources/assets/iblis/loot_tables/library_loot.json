@@ -7,7 +7,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -29,7 +29,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -50,7 +50,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -71,7 +71,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -92,7 +92,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -113,7 +113,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -134,7 +134,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -155,7 +155,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -176,7 +176,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -197,7 +197,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -219,7 +219,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -240,7 +240,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -261,7 +261,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -282,7 +282,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -303,7 +303,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -324,7 +324,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -345,7 +345,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -366,7 +366,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -387,7 +387,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -409,7 +409,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -430,7 +430,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -451,7 +451,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -472,7 +472,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -493,7 +493,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -514,7 +514,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -535,7 +535,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -556,7 +556,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -577,7 +577,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -599,7 +599,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -620,7 +620,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -641,7 +641,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -662,7 +662,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -683,7 +683,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -704,7 +704,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -725,7 +725,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -746,7 +746,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -767,7 +767,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -789,7 +789,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -810,7 +810,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -831,7 +831,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -852,7 +852,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -873,7 +873,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -894,7 +894,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -915,7 +915,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -936,7 +936,7 @@
                 {
                     "type": "item",
                     "name": "iblis:guide",
-                    "quality": 8,
+                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
