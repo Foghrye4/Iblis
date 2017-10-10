@@ -3,7 +3,6 @@ package iblis.init;
 import iblis.IblisMod;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class IblisSounds {
 	public static SoundEvent book_reading;

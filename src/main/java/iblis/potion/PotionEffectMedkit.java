@@ -13,13 +13,15 @@ public class PotionEffectMedkit extends PotionEffect {
 		applyFrequency = 1 + (int) (256 / ++medicalAidSkillIn);
 	}
 
+	@Override
 	public boolean onUpdate(EntityLivingBase entityIn) {
 		if (entityIn.getHealth() >= entityIn.getMaxHealth())
 			return false;
 		return super.onUpdate(entityIn);
 	}
 	
-    public void performEffect(EntityLivingBase entityIn)
+    @Override
+	public void performEffect(EntityLivingBase entityIn)
     {
 		if (this.getDuration() % applyFrequency == 0)
 			super.performEffect(entityIn);

@@ -14,7 +14,6 @@ import iblis.loot.LootTableParsingEventHandler;
 import iblis.player.IblisEventHandler;
 import iblis.player.EntityPlayerZombie;
 import iblis.villager.EmeraldForOreDictionaryItems;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
@@ -41,7 +40,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.14";
+    public static final String VERSION = "0.3.17";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")

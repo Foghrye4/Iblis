@@ -8,7 +8,9 @@ import java.util.Map.Entry;
 import iblis.IblisMod;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
-import net.minecraft.client.multiplayer.WorldClient;
+import iblis.player.PlayerUtils;
+import iblis.util.NBTTagsKeys;
+import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,7 +33,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGuideBook extends Item {
 
-	private final static float BOOK_KNOWLEDGE_PENALTY = 0.7f;
+	private final static float BOOK_KNOWLEDGE_PENALTY = 0.9f;
 	private final static String[] GUIDE_LEVEL = new String[] { "beginners", "novice", "experienced", "professional",
 			"experts", "ultimate" };
 
@@ -145,7 +147,7 @@ public class ItemGuideBook extends Item {
 				bookIn.setInteger("id", bookIdIn);
 			}
 			long bookVersionIn = bookIn.getLong("timeOfCreation");
-			NBTTagList books = playerIn.getEntityData().getTagList("exploredBooks", 10);
+			NBTTagList books = playerIn.getEntityData().getTagList(NBTTagsKeys.EXPLORED_BOOKS, 10);
 			NBTTagCompound playerBookNBT = null;
 			int bookIndex = 0;
 			for (; bookIndex < books.tagCount(); bookIndex++) {
@@ -187,12 +189,16 @@ public class ItemGuideBook extends Item {
 					playerBookNBT.setLong("timeOfCreation", bookVersionIn);
 					books.set(bookIndex, playerBookNBT);
 				}
-				NBTTagList diaryBooks = bookIn.getTagList("exploredBooks", 10);
+				NBTTagList diaryBooks = bookIn.getTagList(NBTTagsKeys.EXPLORED_BOOKS, 10);
 				for (int i1 = 0; i1 < diaryBooks.tagCount(); i1++) {
 					if (!isNBTListContainEntryFor(books, diaryBooks.getCompoundTagAt(i1)))
 						books.appendTag(diaryBooks.getCompoundTagAt(i1));
 				}
-				playerIn.getEntityData().setTag("exploredBooks", books);
+				playerIn.getEntityData().setTag(NBTTagsKeys.EXPLORED_BOOKS, books);
+				WorldSavedDataPlayers playersData = PlayerUtils.getOrCreateWorldSavedData(worldIn);
+				playersData.playerDataKeys.add(playerIn.getUniqueID());
+				playersData.playerDataBooks.put(playerIn.getUniqueID(), books);
+				playersData.markDirty();
 				IblisMod.network.sendPlayerBookListInfo((EntityPlayerMP) playerIn);
 				playerIn.sendMessage(new TextComponentString(I18n.format("iblis.youLearnedSomethingNew")));
 			} else {

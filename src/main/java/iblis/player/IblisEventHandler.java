@@ -2,6 +2,7 @@ package iblis.player;
 
 import com.google.common.collect.Multimap;
 
+import iblis.util.NBTTagsKeys;
 import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,7 +17,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.world.World;
@@ -67,9 +67,10 @@ public class IblisEventHandler {
 	public void onLivingFall(LivingFallEvent event) {
 		EntityLivingBase living = event.getEntityLiving();
 		if (event.getDistance() > 2f && living instanceof EntityPlayerMP){
-			PlayerSkills.FALLING.raiseSkill((EntityPlayer) living, 1d);
+			EntityPlayer player = (EntityPlayer) living;
+			PlayerSkills.FALLING.raiseSkill(player, 1d);
 			float distance = event.getDistance();
-			distance -= PlayerSkills.FALLING.getFullSkillValue(living);
+			distance -= PlayerSkills.FALLING.getFullSkillValue(player);
 			event.setDistance(distance);
 		}
 	}
@@ -82,7 +83,7 @@ public class IblisEventHandler {
 		EntityPlayer player = (EntityPlayer) living;
 		if (!PlayerUtils.canJump(player))
 			return;
-		double multiplier = PlayerSkills.JUMPING.getFullSkillValue(living) * 0.1;
+		double multiplier = PlayerSkills.JUMPING.getFullSkillValue(player) * 0.1;
 		float sprintButtonState = (float)PlayerUtils.getSprintButtonCounterState(player) / PlayerUtils.MAX_SPRINT_SPEED;
 		multiplier *= sprintButtonState;
 		multiplier++;
@@ -100,6 +101,8 @@ public class IblisEventHandler {
 	public void onLivingHurt(LivingHurtEvent event) {
 		float damage = event.getAmount();
 		EntityLivingBase living = event.getEntityLiving();
+		if (!(living instanceof EntityPlayerMP))
+			return;
 		if (event.getSource().isExplosion())
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.EXPLOSION_DAMAGE_REDUCTION)
 					.getAttributeValue();
@@ -132,15 +135,16 @@ public class IblisEventHandler {
 		}
 	}
 
+	//Called twice for players
 	@SubscribeEvent
 	public void onLivingEntityAttackedEvent(LivingAttackEvent event) {
+		EntityLivingBase target = event.getEntityLiving();
 		if (event.getSource().isProjectile()) {
 			if (event.getSource() instanceof EntityDamageSourceIndirect) {
 				EntityDamageSourceIndirect dsi = (EntityDamageSourceIndirect) event.getSource();
 				if (dsi.damageType.equals("arrow")) {
 					Entity shooter = dsi.getTrueSource();
 					if (shooter instanceof EntityPlayerMP) {
-						EntityLivingBase target = (EntityLivingBase) event.getEntity();
 						PlayerSkills.ARCHERY.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
 					}
@@ -151,7 +155,6 @@ public class IblisEventHandler {
 				if (dsi.damageType.equals("shotgun")) {
 					Entity shooter = dsi.getTrueSource();
 					if (shooter instanceof EntityPlayerMP) {
-						EntityLivingBase target = (EntityLivingBase) event.getEntity();
 						PlayerSkills.SHARPSHOOTING.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
 					}
@@ -166,7 +169,8 @@ public class IblisEventHandler {
 			return;
 		if(!(event.getItem().getItem() instanceof ItemBow))
 			return;
-		double skillValue = PlayerSkills.ARCHERY.getFullSkillValue(event.getEntityLiving()) + 1.0d;
+		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+		double skillValue = PlayerSkills.ARCHERY.getFullSkillValue(player) + 1.0d;
 		if(event.getDuration() % (int)(128.0d / skillValue) == 0)
 			event.setDuration(event.getDuration() - 1);
 	}
@@ -174,9 +178,9 @@ public class IblisEventHandler {
 
 	@SubscribeEvent
 	public void onEntityConstructingEvent(EntityEvent.EntityConstructing event) {
-		if (event.getEntity() instanceof EntityLivingBase) {
-			EntityLivingBase living = (EntityLivingBase) event.getEntity();
-			SharedIblisAttributes.registerAttributes(living.getAttributeMap());
+		if (event.getEntity() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) event.getEntity();
+			SharedIblisAttributes.registerAttributes(player.getAttributeMap());
 		}
 	}
 
@@ -207,17 +211,24 @@ public class IblisEventHandler {
 			World worldIn = player.world;
 			WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) worldIn.getPerWorldStorage().getOrLoadData(WorldSavedDataPlayers.class, WorldSavedDataPlayers.DATA_IDENTIFIER);
 			NBTTagList attributesNBTList = null;
+			NBTTagList books = null;
 			if (playersData != null) {
-				attributesNBTList = playersData.playerData.remove(player.getUniqueID());
+				attributesNBTList = playersData.playerDataAttributes.remove(player.getUniqueID());
+				books = playersData.playerDataBooks.remove(player.getUniqueID());
 				playersData.markDirty();
 			}
 			if (attributesNBTList != null && noDeathPenalty)
 				SharedMonsterAttributes.setAttributeModifiers(player.getAttributeMap(), attributesNBTList);
+			if (books != null && noDeathPenalty)
+				player.getEntityData().setTag(NBTTagsKeys.EXPLORED_BOOKS, books);
 		}
 	}
 
 	@SubscribeEvent
 	public void onLivingEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
+		if (!(event.getEntity() instanceof EntityPlayer))
+			return;
+		EntityPlayer player = (EntityPlayer) event.getEntity();
 		Multimap<String, AttributeModifier> amto = event.getTo().getAttributeModifiers(event.getSlot());
 		if (event.getSlot().getSlotType() == EntityEquipmentSlot.Type.HAND) {
 			IAttributeInstance aiAttackDamage = event.getEntityLiving().getAttributeMap()
@@ -226,7 +237,7 @@ public class IblisEventHandler {
 			if (amto.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
 				aiAttackDamage.applyModifier(new AttributeModifier(
 						SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER, "Weapon skill modifier",
-						PlayerSkills.SWORDSMANSHIP.getFullSkillValue(event.getEntityLiving()), 0));
+						PlayerSkills.SWORDSMANSHIP.getFullSkillValue(player), 0));
 			}
 		}
 	}
@@ -238,12 +249,9 @@ public class IblisEventHandler {
 		if (noDeathPenalty) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			World worldIn = event.getEntity().world;
-			WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) worldIn.getPerWorldStorage().getOrLoadData(WorldSavedDataPlayers.class, WorldSavedDataPlayers.DATA_IDENTIFIER);
-			if(playersData == null){
-				playersData = new WorldSavedDataPlayers(WorldSavedDataPlayers.DATA_IDENTIFIER);
-				worldIn.getPerWorldStorage().setData(WorldSavedDataPlayers.DATA_IDENTIFIER, playersData);
-			}
-			playersData.playerData.put(player.getUniqueID(), SharedMonsterAttributes.writeBaseAttributeMapToNBT(player.getAttributeMap()));
+			WorldSavedDataPlayers playersData = PlayerUtils.getOrCreateWorldSavedData(worldIn);
+			playersData.playerDataKeys.add(player.getUniqueID());
+			playersData.playerDataAttributes.put(player.getUniqueID(), SharedMonsterAttributes.writeBaseAttributeMapToNBT(player.getAttributeMap()));
 			playersData.markDirty();
 		}
 		if (spawnPlayerZombie) {

@@ -62,6 +62,8 @@ public class ClientGameEventHandler {
 
 	@SubscribeEvent
 	public void onEvent(PlayerTickEvent event) {
+		if (event.player != Minecraft.getMinecraft().player)
+			return;
 		if (event.side != Side.CLIENT)
 			return;
 		if (event.phase == Phase.END) {
@@ -84,8 +86,6 @@ public class ClientGameEventHandler {
 					((ClientNetworkHandler) IblisMod.network).sendPlayerRunnedDistance((float) dsq);
 				}
 				lastSprintCounter = sprintCounter;
-				EntityPlayerSP player = Minecraft.getMinecraft().player;
-				PlayerUtils.applySprintingSpeedModifier(player, sprintCounter);
 				((ClientNetworkHandler) IblisMod.network).sendCommandApplySprintingSpeedModifier(sprintCounter);
 			}
 		} else {

@@ -4,6 +4,9 @@ import javax.annotation.Nonnull;
 
 import iblis.IblisMod;
 import iblis.player.PlayerSkills;
+import iblis.player.PlayerUtils;
+import iblis.util.NBTTagsKeys;
+import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryCrafting;
@@ -13,7 +16,6 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
@@ -43,7 +45,7 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 		}
 		output1.getTagCompound().setTag("skills", skillsNBT);
 		NBTTagList exploredBooksNBTList = new NBTTagList();
-		NBTTagList books = playerIn.getEntityData().getTagList("exploredBooks", 10);
+		NBTTagList books = playerIn.getEntityData().getTagList(NBTTagsKeys.EXPLORED_BOOKS, 10);
 		int diaryTagIndex = -1;
 		for (int bookIndex = 0; bookIndex < books.tagCount(); bookIndex++) {
 			NBTTagCompound playerBookNBT = books.getCompoundTagAt(bookIndex);
@@ -58,7 +60,7 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 			else
 				diaryTagIndex = bookIndex;
 		}
-		output1.getTagCompound().setTag("exploredBooks", exploredBooksNBTList);
+		output1.getTagCompound().setTag(NBTTagsKeys.EXPLORED_BOOKS, exploredBooksNBTList);
 		output1.getTagCompound().setInteger("id", id);
 		output1.getTagCompound().setString("author", playerIn.getName());
 		output1.getTagCompound().setLong("timeOfCreation", timeOfCreation);
@@ -69,9 +71,14 @@ public class PlayerSensitiveShapedRecipe extends ShapedRecipes {
 			books.appendTag(craftedBookInfoNBT);
 		else
 			books.set(diaryTagIndex, craftedBookInfoNBT);
-		playerIn.getEntityData().setTag("exploredBooks", books);
-		if (playerIn instanceof EntityPlayerMP)
+		playerIn.getEntityData().setTag(NBTTagsKeys.EXPLORED_BOOKS, books);
+		if (playerIn instanceof EntityPlayerMP){
 			IblisMod.network.sendPlayerBookListInfo((EntityPlayerMP) playerIn);
+			WorldSavedDataPlayers playersData = PlayerUtils.getOrCreateWorldSavedData(playerIn.getEntityWorld());
+			playersData.playerDataKeys.add(playerIn.getUniqueID());
+			playersData.playerDataBooks.put(playerIn.getUniqueID(), books);
+			playersData.markDirty();
+		}
 		return output1;
 	}
 

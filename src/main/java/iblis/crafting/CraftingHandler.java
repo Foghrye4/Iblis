@@ -19,7 +19,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
@@ -149,16 +148,17 @@ public class CraftingHandler {
 	
 	@SubscribeEvent
 	public void onAnvilRepair(AnvilRepairEvent event) {
+		if (event.getEntityPlayer().getEntityWorld().isRemote)
+			return;
 		ItemStack repairableStack = event.getItemResult();
-			for(PlayerSensitiveRecipeWrapper recipeReplacement: replacements){
-				if(OreDictionary.itemMatches(repairableStack, recipeReplacement.getRecipeOutput(), false)) {
-					double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(event.getEntityPlayer());
-					recipeReplacement.getCraftingResult(event.getItemResult(), skillValue, true);
-					recipeReplacement.raiseSkill(event.getEntityPlayer());
-					return;
-				}
+		for (PlayerSensitiveRecipeWrapper recipeReplacement : replacements) {
+			if (OreDictionary.itemMatches(repairableStack, recipeReplacement.getRecipeOutput(), false)) {
+				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(event.getEntityPlayer());
+				recipeReplacement.getCraftingResult(event.getItemResult(), skillValue, true);
+				recipeReplacement.raiseSkill(event.getEntityPlayer());
+				return;
 			}
-				
+		}
 	}
 
 	private static boolean isArmor(ItemStack is) {
@@ -178,7 +178,6 @@ public class CraftingHandler {
 		int minimalSkill = 0;
 		for(AttributeModifier am :is.getAttributeModifiers(EntityEquipmentSlot.CHEST).get(SharedMonsterAttributes.ARMOR.getName()))
 			minimalSkill+=am.getAmount();
-				
 		for(AttributeModifier am :is.getAttributeModifiers(EntityEquipmentSlot.FEET).get(SharedMonsterAttributes.ARMOR.getName()))
 			minimalSkill+=am.getAmount();
 		for(AttributeModifier am :is.getAttributeModifiers(EntityEquipmentSlot.HEAD).get(SharedMonsterAttributes.ARMOR.getName()))

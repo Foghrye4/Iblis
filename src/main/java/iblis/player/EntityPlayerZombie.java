@@ -47,6 +47,7 @@ public class EntityPlayerZombie extends EntityZombie {
 		inv.clear();
 	}
 
+	@Override
 	public void writeEntityToNBT(NBTTagCompound compound) {
 		super.writeEntityToNBT(compound);
 		NBTTagList nbtTagListIn = new NBTTagList();
@@ -62,6 +63,7 @@ public class EntityPlayerZombie extends EntityZombie {
 		compound.setInteger("experienceValue", this.experienceValue);
 	}
 
+	@Override
 	public void readEntityFromNBT(NBTTagCompound compound) {
 		super.readEntityFromNBT(compound);
 		NBTTagList nbtTagListIn = compound.getTagList("inventoryInherited", 10);
@@ -79,6 +81,7 @@ public class EntityPlayerZombie extends EntityZombie {
 		this.experienceValue = compound.getInteger("experienceValue");
 	}
 
+	@Override
 	protected void dropEquipment(boolean wasRecentlyHit, int lootingModifier) {
 		super.dropEquipment(wasRecentlyHit, lootingModifier);
 		for (ItemStack itemstack : this.inventoryInherited) {

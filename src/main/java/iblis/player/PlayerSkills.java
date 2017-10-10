@@ -1,6 +1,5 @@
 package iblis.player;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,7 +58,7 @@ public enum PlayerSkills {
 		return player.getEntityAttribute(attribute).getBaseValue();
 	}
 	
-	public double getFullSkillValue(EntityLivingBase entityLivingBase) {
+	public double getFullSkillValue(EntityPlayer entityLivingBase) {
 		if(!enabled)
 			return 0d;
 		double value = 0d;

@@ -167,15 +167,15 @@ public class GuiEventHandler {
 		mc.getTextureManager().bindTexture(Gui.ICONS);
 		int health = MathHelper.ceil(player.getHealth());
 		int updateCounter = mc.ingameGUI.getUpdateCounter();
-		boolean highlight = healthUpdateCounter > (long) updateCounter
-				&& (healthUpdateCounter - (long) updateCounter) / 3L % 2L == 1L;
+		boolean highlight = healthUpdateCounter > updateCounter
+				&& (healthUpdateCounter - updateCounter) / 3L % 2L == 1L;
 
 		if (health < this.playerHealth && player.hurtResistantTime > 0) {
 			this.lastSystemTime = Minecraft.getSystemTime();
-			this.healthUpdateCounter = (long) (updateCounter + 20);
+			this.healthUpdateCounter = updateCounter + 20;
 		} else if (health > this.playerHealth && player.hurtResistantTime > 0) {
 			this.lastSystemTime = Minecraft.getSystemTime();
-			this.healthUpdateCounter = (long) (updateCounter + 10);
+			this.healthUpdateCounter = updateCounter + 10;
 		}
 
 		if (Minecraft.getSystemTime() - this.lastSystemTime > 1000L) {
@@ -193,7 +193,7 @@ public class GuiEventHandler {
 
 		int healthRows = MathHelper.ceil((healthMax + absorb) / 2.0F / 10.0F);
 
-		this.rand.setSeed((long) (updateCounter * 312871));
+		this.rand.setSeed(updateCounter * 312871);
 
 		int left = width / 2 - 91;
 		GuiIngameForge.left_height += healthRows + 9;
@@ -213,7 +213,7 @@ public class GuiEventHandler {
 		int absorbRemaining = Math.round(absorb);
 
 		for (int i = 0; i < MathHelper.ceil((healthMax + absorb) / 2.0F); i++) {
-			int row = MathHelper.ceil((float) (i + 1) / 10.0F) - 1;
+			int row = MathHelper.ceil((i + 1) / 10.0F) - 1;
 			int x = left + i % 10 * 8;
 			int y = top - row * 2;
 

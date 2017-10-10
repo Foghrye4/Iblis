@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 
 public class GuiFancyTooltip {
@@ -72,7 +73,7 @@ public class GuiFancyTooltip {
 	public void draw(int cursorX, int cursorY) {
 		if (frame == 0)
 			return;
-		GuiScreen.drawRect(xPos, yPos, xPos + this.width(), xPos + this.height(), frame << 24);
+		Gui.drawRect(xPos, yPos, xPos + this.width(), xPos + this.height(), frame << 24);
 		for (int lineIndex = 0; lineIndex < Math.min(text.size(), height() / fontRenderer.FONT_HEIGHT); lineIndex++) {
 			this.fontRenderer.drawString(fontRenderer.trimStringToWidth(text.get(lineIndex), this.width()), xPos, yPos+this.fontRenderer.FONT_HEIGHT*lineIndex,
 					16768125);

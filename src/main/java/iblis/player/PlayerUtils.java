@@ -2,6 +2,7 @@ package iblis.player;
 
 import java.util.Iterator;
 
+import iblis.world.WorldSavedDataPlayers;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,6 +11,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class PlayerUtils {
 
@@ -91,6 +93,15 @@ public class PlayerUtils {
 
 	public static boolean canJump(EntityPlayer player) {
 		return player.getFoodStats().getFoodLevel() >= 6;
+	}
+
+	public static WorldSavedDataPlayers getOrCreateWorldSavedData(World worldIn) {
+		WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) worldIn.getPerWorldStorage().getOrLoadData(WorldSavedDataPlayers.class, WorldSavedDataPlayers.DATA_IDENTIFIER);
+		if(playersData == null){
+			playersData = new WorldSavedDataPlayers(WorldSavedDataPlayers.DATA_IDENTIFIER);
+			worldIn.getPerWorldStorage().setData(WorldSavedDataPlayers.DATA_IDENTIFIER, playersData);
+		}
+		return playersData;
 	}
 
 }

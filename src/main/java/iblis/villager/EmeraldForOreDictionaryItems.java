@@ -22,7 +22,8 @@ public class EmeraldForOreDictionaryItems implements ITradeList {
         this.priceInfo = priceInfoIn;
     }
 
-    public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random)
+    @Override
+	public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random)
     {
     	for(ItemStack stack: OreDictionary.getOres(buyingItem)){
     		ItemStack itemToBuy = stack.copy();

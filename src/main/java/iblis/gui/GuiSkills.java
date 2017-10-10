@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import iblis.IblisMod;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
 import net.minecraft.client.Minecraft;

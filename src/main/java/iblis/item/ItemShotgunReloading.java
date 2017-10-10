@@ -32,6 +32,7 @@ public class ItemShotgunReloading extends Item {
 		super();
 		this.gunBase = gunBaseIn;
 		this.addPropertyOverride(new ResourceLocation("ammo"), new IItemPropertyGetter() {
+			@Override
 			@SideOnly(Side.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				if (!stack.hasTagCompound())
@@ -127,10 +128,12 @@ public class ItemShotgunReloading extends Item {
 		return stack.getItem() == IblisItems.SHOTGUN_BULLET;
 	}
 
+	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BLOCK;
 	}
 
+	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
 		int[] oreIds = OreDictionary.getOreIDs(repair);
 		for (int oreId : oreIds) {
