@@ -9,17 +9,29 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import iblis.IblisMod;
+import iblis.gui.GuiButtonImageWithTooltip;
 import iblis.init.IblisItems;
 import iblis.init.RegistryEventHandler;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiCrafting;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerRepair;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
@@ -29,18 +41,22 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.AnvilUpdateEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
-public class CraftingHandler {
+public class CraftingHandler  implements IContainerListener{
 	
-	List<PlayerSensitiveRecipeWrapper> replacements = new ArrayList<PlayerSensitiveRecipeWrapper>();
+	List<PlayerSensitiveShapedRecipeWrapper> replacements = new ArrayList<PlayerSensitiveShapedRecipeWrapper>();
 	
-	public void replaceRecipes() {
+	@SubscribeEvent
+	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		IForgeRegistryModifiable<IRecipe> recipeRegistry = (IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES;
 		Iterator<IRecipe> irecipes = recipeRegistry.iterator();
 		List<ResourceLocation> vanillaRecipesToRemove = new ArrayList<ResourceLocation>();
@@ -49,13 +65,13 @@ public class CraftingHandler {
 			ItemStack is = recipe.getRecipeOutput();
 			if (is != null) {
 				if (isArmor(is)) {
-					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
+					PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
 					recipeReplacement.setSesitiveTo(PlayerSkills.ARMORSMITH, getArmorCraftingRequiredSkill(is));
 					recipeReplacement.setRegistryName(recipe.getRegistryName());
 					replacements.add(recipeReplacement);
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
 				} else if (isWeapon(is)) {
-					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
+					PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
 					recipeReplacement.setSesitiveTo(PlayerSkills.WEAPONSMITH, getWeaponCraftingRequiredSkill(is));
 					recipeReplacement.setRegistryName(recipe.getRegistryName());
 					replacements.add(recipeReplacement);
@@ -70,7 +86,7 @@ public class CraftingHandler {
 					modifierNBT.setString("AttributeName", SharedIblisAttributes.PROJECTILE_DAMAGE.getName());
 					attributeModifiersNBTList.appendTag(modifierNBT);
 					is.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
-					PlayerSensitiveRecipeWrapper recipeReplacement = new PlayerSensitiveRecipeWrapper(recipe);
+					PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
 					recipeReplacement.setRegistryName(recipe.getRegistryName());
 					recipeReplacement.setSesitiveTo(PlayerSkills.WEAPONSMITH, getWeaponCraftingRequiredSkill(is));
 					replacements.add(recipeReplacement);
@@ -80,9 +96,10 @@ public class CraftingHandler {
 		}
 		for (ResourceLocation key : vanillaRecipesToRemove)
 			recipeRegistry.remove(key);
+		this.addRecipes(event);
 	}
 
-	public void addRecipes() {
+	private void addRecipes(RegistryEvent.Register<IRecipe> event) {
 		NonNullList<Ingredient> guideRecipeIngridients = NonNullList.from(
 				Ingredient.EMPTY, 
 				Ingredient.fromStacks(new ItemStack(Items.WRITABLE_BOOK,1,0)), 
@@ -128,37 +145,80 @@ public class CraftingHandler {
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
 		medkitRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"medkit"));
-		RegistryEventHandler.recipes.add(recipe1);
-		RegistryEventHandler.recipes.add(recipe2);
-		RegistryEventHandler.recipes.add(medkitRecipe);
+		event.getRegistry().register(recipe1);
+		event.getRegistry().register(recipe2);
+		event.getRegistry().register(medkitRecipe);
 
 		ShapedOreRecipe shotgunRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),IblisItems.SHOTGUN, 
 				"  W",
 				" S ",
 				"S  ", 'W', "plankWood", 'S', "ingotSteel");
-		PlayerSensitiveRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveRecipeWrapper(shotgunRecipe);
+		PlayerSensitiveShapedRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shotgunRecipe);
 		shotgunRecipeWrapper.setSesitiveTo(PlayerSkills.WEAPONSMITH, 20);
 		shotgunRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"shotgun_recipe"));
 		replacements.add(shotgunRecipeWrapper);
-		for(PlayerSensitiveRecipeWrapper recipeReplacement: replacements)
-			RegistryEventHandler.recipes.add(recipeReplacement);
+		for(PlayerSensitiveShapedRecipeWrapper recipeReplacement: replacements)
+			event.getRegistry().register(recipeReplacement);
 		
 		FurnaceRecipes.instance().addSmelting(IblisItems.NONSTERILE_MEDKIT, new ItemStack(IblisItems.MEDKIT), 1.0f);
+
+	}
+	
+	private final List<ContainerRepair> openedContainers = new ArrayList<ContainerRepair>();
+	private boolean skipNextUpdate = false;
+	
+	@SubscribeEvent
+	public void onAnvilUpdate(AnvilUpdateEvent event) {
+		// Hackish way to retrieve output after event.
+		if(skipNextUpdate)
+			return;
+		// First find container responsible for event
+		ContainerRepair container = null;
+		assert !openedContainers.isEmpty();
+		for(ContainerRepair containerIn: openedContainers)
+			if (containerIn.inventorySlots.get(0).getStack() == event.getLeft()) {
+				event.setCanceled(true);
+				skipNextUpdate = true;
+				containerIn.updateRepairOutput();
+				container = containerIn;
+				break;
+			}
+		if(container == null)
+			return;
+		// Second - find player
+		EntityPlayer player = null; 
+		for (IContainerListener listener : container.listeners) {
+			if (listener instanceof EntityPlayerMP) {
+				player = (EntityPlayer) listener;
+				break;
+			}
+		}
+		// Third - find a recipe output
+		ItemStack repairableStack = container.getSlot(2).getStack();
+		for (PlayerSensitiveShapedRecipeWrapper recipeReplacement : replacements) {
+			if (OreDictionary.itemMatches(repairableStack, recipeReplacement.getRecipeOutput(), false)) {
+				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(player);
+				recipeReplacement.getCraftingResult(repairableStack, skillValue, true);
+				break;
+			}
+		}
+		container.detectAndSendChanges();
+		skipNextUpdate = false;		
 	}
 	
 	@SubscribeEvent
-	public void onAnvilRepair(AnvilRepairEvent event) {
-		if (event.getEntityPlayer().getEntityWorld().isRemote)
-			return;
-		ItemStack repairableStack = event.getItemResult();
-		for (PlayerSensitiveRecipeWrapper recipeReplacement : replacements) {
-			if (OreDictionary.itemMatches(repairableStack, recipeReplacement.getRecipeOutput(), false)) {
-				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(event.getEntityPlayer());
-				recipeReplacement.getCraftingResult(event.getItemResult(), skillValue, true);
-				recipeReplacement.raiseSkill(event.getEntityPlayer());
-				return;
-			}
+	public void onPlayerOpenContainerEvent(PlayerContainerEvent.Open event) {
+		if(event.getContainer() instanceof ContainerRepair)
+			openedContainers.add((ContainerRepair) event.getContainer());
+		if(event.getContainer() instanceof ContainerWorkbench) {
+			event.getContainer().listeners.add(this);
 		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerOpenContainerEvent(PlayerContainerEvent.Close event) {
+		if(event.getContainer() instanceof ContainerRepair)
+			openedContainers.remove(event.getContainer());
 	}
 
 	private static boolean isArmor(ItemStack is) {
@@ -212,6 +272,21 @@ public class CraftingHandler {
 		}
 		return minimalSkill;
 	}
+	
+	@Override
+	public void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack) {
+		if (!(containerToSend instanceof ContainerWorkbench))
+			return;
+		EntityPlayerMP player = (EntityPlayerMP) IblisMod.proxy.getPlayer(((ContainerWorkbench)containerToSend).craftMatrix);
+		if(player!=null)
+			IblisMod.network.sendRefreshTrainCraftButton(player);
+	}
 
+	@Override
+	public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {}
+	@Override
+	public void sendAllWindowProperties(Container containerIn, IInventory inventory) {}
+	@Override
+	public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {}
 
 }

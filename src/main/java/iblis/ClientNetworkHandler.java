@@ -2,6 +2,7 @@ package iblis;
 
 import java.io.IOException;
 
+import iblis.gui.GuiEventHandler;
 import iblis.player.PlayerCharacteristics;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -20,7 +21,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 public class ClientNetworkHandler extends ServerNetworkHandler {
 
 	public enum ClientCommands {
-		REFRESH_GUI, SEND_PLAYER_BOOK_LIST_INFO, SPAWN_BLOCK_PARTICLES, SPAWN_PARTICLES;
+		REFRESH_GUI, SEND_PLAYER_BOOK_LIST_INFO, SPAWN_BLOCK_PARTICLES, SPAWN_PARTICLES, REFRESH_CRAFTING_BUTTONS;
 	}
 
 	@SubscribeEvent
@@ -72,6 +73,8 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 						-impactVectorY * 0.5 + world.rand.nextFloat() - 0.8f,
 						-impactVectorZ * 0.5 + world.rand.nextFloat() - 0.5f, 0);
 			break;
+		case REFRESH_CRAFTING_BUTTONS:
+			GuiEventHandler.instance.refreshTrainCraftingButton();
 		default:
 			break;
 		}
@@ -137,6 +140,17 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		byteBufOutputStream.writeInt(player.getEntityId());
 		byteBufOutputStream.writeInt(world.provider.getDimension());
 		byteBufOutputStream.writeInt(sprintButtonCounter);
+		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
+	}
+
+	public void sendCommandTrainCraft() {
+		WorldClient world = Minecraft.getMinecraft().world;
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		ByteBuf bb = Unpooled.buffer(36);
+		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
+		byteBufOutputStream.writeByte(ServerCommands.TRAIN_TO_CRAFT.ordinal());
+		byteBufOutputStream.writeInt(player.getEntityId());
+		byteBufOutputStream.writeInt(world.provider.getDimension());
 		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
 }

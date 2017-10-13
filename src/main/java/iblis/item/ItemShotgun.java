@@ -14,6 +14,7 @@ import iblis.IblisMod;
 import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
+import iblis.player.PlayerUtils;
 import iblis.player.SharedIblisAttributes;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -104,8 +105,9 @@ public class ItemShotgun extends Item {
 				nbt.setInteger("ammo", --ammoIn);
 		        itemstack.damageItem(1, playerIn);
 			}
-			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, playerIn.posX + pLook.x,
-					playerIn.posY + pLook.y + playerIn.eyeHeight, playerIn.posZ + pLook.z, 0, 0.1, 0);
+			Vec3d rightHandPos = PlayerUtils.getRightHandPosition(playerIn);
+			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, playerIn.posX + rightHandPos.x,
+					playerIn.posY + rightHandPos.y + playerIn.eyeHeight, playerIn.posZ + rightHandPos.z, 0, 0.1, 0);
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shoot,
 					SoundCategory.PLAYERS, 1.0f, 1.0f);
 			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);

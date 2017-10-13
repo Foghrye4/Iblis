@@ -17,7 +17,6 @@ public class RegistryEventHandler {
 	public static final List<Item> items = new ArrayList<Item>();
 	public static final List<SoundEvent> sounds = new ArrayList<SoundEvent>();
 	public static final List<VillagerProfession> professions = new ArrayList<VillagerProfession>();
-	public static final List<IRecipe> recipes = new ArrayList<IRecipe>();
 	
 	@SubscribeEvent
 	public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -41,11 +40,5 @@ public class RegistryEventHandler {
 	public void registerVillagerProfession(RegistryEvent.Register<VillagerProfession> event) {
 		for(VillagerProfession profession:professions)
 			event.getRegistry().register(profession);
-	}
-	
-	@SubscribeEvent
-	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
-		for(IRecipe recipe:recipes)
-			event.getRegistry().register(recipe);
 	}
 }

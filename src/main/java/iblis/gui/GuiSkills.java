@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiSkills extends GuiScreen {
 
-	List<GuiFancyTooltip> tooltips = new ArrayList<GuiFancyTooltip>();
 	private EntityPlayerSP player;
 	private final int leftMargin = 40;
 	private final int topMargin = 9;

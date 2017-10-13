@@ -36,12 +36,13 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 import net.minecraftforge.oredict.OreDictionary;
 
-@Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY)
+@Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.17";
+    public static final String VERSION = "0.3.19";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
+    public static final String DEPENDENCIES = "after:landcore;after:tconstruct";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
 	public static ServerProxy proxy;
@@ -62,11 +63,8 @@ public class IblisMod
     	creativeTab = new IblisCreativeTab("iblis.tab");
     	IblisItems.init();
     	IblisSounds.register();
-    	CraftingHandler craftingHandler = new CraftingHandler();
-    	craftingHandler.replaceRecipes();
-    	craftingHandler.addRecipes();
     	RangedAttribute toughness = (RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS;
-    	/**Max armor toughness upper limit is removed**/
+		/* Max armor toughness upper limit is removed */
     	toughness.maximumValue = Double.MAX_VALUE;
     	EntityRegistry.registerModEntity(new ResourceLocation(MODID, "zombie"), EntityPlayerZombie.class, "zombie", 0, this, 80, 3, true);
 		VillagerProfession mechanic = new VillagerProfession(MODID+":mechanic", MODID + ":textures/entity/villager/mechanic.png",
@@ -81,7 +79,7 @@ public class IblisMod
     	proxy.load();
     	network.load();
     	
-    	MinecraftForge.EVENT_BUS.register(craftingHandler);
+    	MinecraftForge.EVENT_BUS.register(new CraftingHandler());
     	MinecraftForge.EVENT_BUS.register(eventHandler);
     	MinecraftForge.EVENT_BUS.register(new LootTableParsingEventHandler());
     	MinecraftForge.EVENT_BUS.register(new RegistryEventHandler());
@@ -93,20 +91,17 @@ public class IblisMod
 	}
     
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+	public void init(FMLInitializationEvent event) {
 		OreDictionary.registerOre("ingotSteel", IblisItems.INGOT_STEEL);
 		for (int meta = 0; meta < 16; meta++)
 			OreDictionary.registerOre("plankWood", new ItemStack(Blocks.PLANKS, 1, meta));
-    }
-    
-    @EventHandler
-    public void serverStarting(FMLServerStartingEvent event)
-    {
-    	network.setServer(event.getServer());
-   		event.registerServerCommand(new CommandSetAttribute());
-   		event.registerServerCommand(new CommandGetAttribute());
-   		event.registerServerCommand(new CommandShowNBT());
-    }
-    
+	}
+
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event) {
+		network.setServer(event.getServer());
+		event.registerServerCommand(new CommandSetAttribute());
+		event.registerServerCommand(new CommandGetAttribute());
+		event.registerServerCommand(new CommandShowNBT());
+	}
 }

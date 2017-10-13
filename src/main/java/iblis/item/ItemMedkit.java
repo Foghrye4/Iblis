@@ -41,6 +41,10 @@ public class ItemMedkit extends Item {
 		});
 
 	}
+	
+	public boolean isEnchantable(ItemStack stack) {
+		return false;
+	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {

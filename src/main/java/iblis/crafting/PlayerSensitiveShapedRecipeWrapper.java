@@ -16,22 +16,27 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class PlayerSensitiveRecipeWrapper extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipes {
 
 	PlayerSkills sensitiveSkill = PlayerSkills.WEAPONSMITH;
 	private int minimalSkill = 0;
 	private IRecipe wrappedRecipe;
 
-	public PlayerSensitiveRecipeWrapper(IRecipe iRecipeIn) {
-		wrappedRecipe = iRecipeIn;
+	public PlayerSensitiveShapedRecipeWrapper(IRecipe recipeIn) {
+		super(recipeIn.getGroup(), 
+			(recipeIn instanceof  ShapedRecipes)?((ShapedRecipes)recipeIn).recipeWidth:3,
+			(recipeIn instanceof  ShapedRecipes)?((ShapedRecipes)recipeIn).recipeHeight:3, 
+			recipeIn.getIngredients(), recipeIn.getRecipeOutput());
+		wrappedRecipe = recipeIn;
 	}
 
-	public PlayerSensitiveRecipeWrapper setSesitiveTo(PlayerSkills skillIn, int minimalSkillIn) {
+	public PlayerSensitiveShapedRecipeWrapper setSesitiveTo(PlayerSkills skillIn, int minimalSkillIn) {
 		sensitiveSkill = skillIn;
 		minimalSkill = minimalSkillIn;
 		return this;
@@ -85,14 +90,14 @@ public class PlayerSensitiveRecipeWrapper extends net.minecraftforge.registries.
 		for (IContainerListener listener : inv.eventHandler.listeners) {
 			if (listener instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) listener;
-				this.raiseSkill(player);
+				this.raiseSkill(player, 1);
 			}
 		}
 		return this.wrappedRecipe.getRemainingItems(inv);
 	}
 	
-	public void raiseSkill(EntityPlayer player){
-		sensitiveSkill.raiseSkill(player, minimalSkill + 1);
+	public void raiseSkill(EntityPlayer player, int times){
+		sensitiveSkill.raiseSkill(player, (minimalSkill + 1) * times);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import iblis.IblisMod;
 import iblis.init.IblisSounds;
@@ -14,6 +15,7 @@ import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -33,10 +35,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemGuideBook extends Item {
 
-	private final static float BOOK_KNOWLEDGE_PENALTY = 0.9f;
+	private final static float BOOK_KNOWLEDGE_PENALTY = 0.7f;
 	private final static String[] GUIDE_LEVEL = new String[] { "beginners", "novice", "experienced", "professional",
 			"experts", "ultimate" };
 
+	private final Random rand = new Random();
+	
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 		return stack.getMetadata() == 0 ? "item.adventurer_diary" : "item.guide";
@@ -55,7 +59,6 @@ public class ItemGuideBook extends Item {
 		skill.setDouble("value", 0.7d);
 		skills.appendTag(skill);
 		guideNBT.setTag("skills", skills);
-		guideNBT.setInteger("id", 0);
 		guideStack.setTagCompound(guideNBT);
 		subItems.add(guideStack);
 		ItemStack diaryStack = new ItemStack(this, 1, 0);
@@ -73,6 +76,8 @@ public class ItemGuideBook extends Item {
 			return;
 		if (!stack.hasTagCompound())
 			return;
+		NBTTagCompound bookIn = stack.getTagCompound();
+		int bookIdIn = bookIn.getInteger("id");
 		if (stack.getMetadata() == 0) {
 			String author = stack.getTagCompound().getString("author");
 			tooltip.add(I18n.format("iblis.diary", author));
@@ -85,10 +90,8 @@ public class ItemGuideBook extends Item {
 				skillValue = GUIDE_LEVEL.length - 1;
 			String skillNameFormatted = I18n.format("iblis." + skillName);
 			String skillValueFormatted = I18n.format("iblis.guideLevel." + GUIDE_LEVEL[skillValue]);
-			tooltip.add(I18n.format("iblis.guideTitle", skillValueFormatted, skillNameFormatted));
+			tooltip.add(I18n.format("iblis.guideTitle", skillValueFormatted, skillNameFormatted, bookIdIn));
 		}
-		NBTTagCompound bookIn = stack.getTagCompound();
-		int bookIdIn = bookIn.getInteger("id");
 		long timeOfCreation = bookIn.getLong("timeOfCreation");
 		long timeGap = (worldIn.getTotalWorldTime() - timeOfCreation) / 20;
 		String dataOfCreation = null;
@@ -133,6 +136,19 @@ public class ItemGuideBook extends Item {
 			}
 		}
 	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		NBTTagCompound bookIn = stack.getTagCompound();
+		if (bookIn == null)
+			return;
+		int bookIdIn = bookIn.getInteger("id");
+		if (bookIdIn == 0) {
+			bookIdIn = rand.nextInt() & 127;
+			bookIn.setInteger("id", bookIdIn);
+		}
+		return;
+	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
@@ -142,10 +158,6 @@ public class ItemGuideBook extends Item {
 			boolean bookNewVersion = false;
 			NBTTagCompound bookIn = itemstack.getTagCompound();
 			int bookIdIn = bookIn.getInteger("id");
-			if (bookIdIn == 0) {
-				bookIdIn = worldIn.rand.nextInt();
-				bookIn.setInteger("id", bookIdIn);
-			}
 			long bookVersionIn = bookIn.getLong("timeOfCreation");
 			NBTTagList books = playerIn.getEntityData().getTagList(NBTTagsKeys.EXPLORED_BOOKS, 10);
 			NBTTagCompound playerBookNBT = null;

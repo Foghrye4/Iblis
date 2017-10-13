@@ -17,7 +17,7 @@ public class ClientProxy extends ServerProxy {
 
 	@Override
 	void load() {
-		MinecraftForge.EVENT_BUS.register(new GuiEventHandler());
+		MinecraftForge.EVENT_BUS.register(GuiEventHandler.instance);
 		MinecraftForge.EVENT_BUS.register(new ItemTooltipEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientGameEventHandler());
 		ModelBakery.registerItemVariants(IblisItems.GUIDE,

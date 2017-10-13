@@ -2,8 +2,10 @@ package iblis.gui;
 
 import java.util.Random;
 
+import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.client.ClientGameEventHandler;
+import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
 import iblis.player.PlayerSkills;
@@ -11,13 +13,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -34,9 +42,11 @@ public class GuiEventHandler {
 	private static final int RECIPE_BOOK_BUTTON_INDEX = 10;
 	private static final int CHARACTERISTICS_BUTTON_INDEX = 4;
 	private static final int SKILLS_BUTTON_INDEX = CHARACTERISTICS_BUTTON_INDEX + 1;
+	private static final int TRAIN_CRAFT_BUTTON_INDEX = 11;
 
 	public static final ResourceLocation IBLIS_ICONS = new ResourceLocation(IblisMod.MODID, "textures/gui/icons.png");
-
+	public static final GuiEventHandler instance = new GuiEventHandler();
+	
 	private long healthUpdateCounter;
 	private int playerHealth;
 	private long lastSystemTime;
@@ -44,6 +54,7 @@ public class GuiEventHandler {
 	private Random rand = new Random();
 	GuiButtonImage characteristicsButton;
 	GuiButtonImage skillsButton;
+	GuiButtonImage trainCraftButton;
 
 	@SubscribeEvent
 	public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
@@ -56,12 +67,13 @@ public class GuiEventHandler {
 			event.getGui().buttonList.add(characteristicsButton);
 			event.getGui().buttonList.add(skillsButton);
 		}
+		refreshTrainCraftingButton();
 	}
 
 	@SubscribeEvent
 	public void onButtonPressed(GuiScreenEvent.ActionPerformedEvent.Post action) {
-		if (action.getGui() instanceof GuiInventory) {
-			GuiInventory gui = (GuiInventory) action.getGui();
+		if (action.getGui() instanceof GuiContainer) {
+			GuiContainer gui = (GuiContainer)action.getGui();
 			Minecraft mc = Minecraft.getMinecraft();
 			switch (action.getButton().id) {
 			case CHARACTERISTICS_BUTTON_INDEX:
@@ -75,6 +87,12 @@ public class GuiEventHandler {
 					characteristicsButton.setPosition(gui.getGuiLeft() + 125, gui.getGuiTop() + 61);
 				if(skillsButton!=null)
 					skillsButton.setPosition(gui.getGuiLeft() + 146, gui.getGuiTop() + 61);
+				if(trainCraftButton!=null)
+					trainCraftButton.setPosition(gui.getGuiLeft() + 122, gui.getGuiTop() + 61);
+				break;
+			case TRAIN_CRAFT_BUTTON_INDEX:
+				ClientNetworkHandler network = (ClientNetworkHandler) IblisMod.network;
+				network.sendCommandTrainCraft();
 				break;
 			}
 		}
@@ -255,7 +273,26 @@ public class GuiEventHandler {
 
 		GlStateManager.disableBlend();
 		mc.mcProfiler.endSection();
-
 	}
-
+	
+	public void refreshTrainCraftingButton() {
+		Minecraft mc = Minecraft.getMinecraft();
+		if (!(mc.currentScreen instanceof GuiCrafting))
+			return;
+		GuiCrafting gui = (GuiCrafting) mc.currentScreen;
+		ContainerWorkbench workBenchContainer = (ContainerWorkbench) gui.inventorySlots;
+		IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, mc.world);
+		if (recipe instanceof PlayerSensitiveShapedRecipeWrapper) {
+			if (trainCraftButton == null)
+				trainCraftButton = new GuiButtonImageWithTooltip(TRAIN_CRAFT_BUTTON_INDEX, gui.getGuiLeft() + 122,
+						gui.getGuiTop() + 61, 20, 18, 60, 220, 18, IBLIS_ICONS,
+						I18n.format("iblis.trainCraftTooltip", new Object[0]));
+			if (!gui.buttonList.contains(trainCraftButton))
+				gui.buttonList.add(trainCraftButton);
+			else
+				trainCraftButton.setPosition(gui.getGuiLeft() + 122, gui.getGuiTop() + 61);
+		} else if (trainCraftButton != null) {
+			gui.buttonList.remove(trainCraftButton);
+		}
+	}
 }

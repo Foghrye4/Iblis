@@ -949,6 +949,956 @@
                     ]
                 }
            ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"MEDICAL_AID_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MEDICAL_AID_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MEDICAL_AID\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"DIGGING_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"DIGGING_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"DIGGING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+                        {
+	    	"name":"RUNNING_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"RUNNING_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"RUNNING_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"RUNNING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"JUMPING_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"JUMPING_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"JUMPING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+        {
+	    	"name":"FALLING_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"FALLING_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"FALLING_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"FALLING_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"FALLING_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"FALLING_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"FALLING_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"FALLING_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"FALLING_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"FALLING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
         }
     ]
 }

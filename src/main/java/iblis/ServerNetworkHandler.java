@@ -3,6 +3,7 @@ package iblis;
 import java.io.IOException;
 
 import iblis.ClientNetworkHandler.ClientCommands;
+import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.init.IblisSounds;
 import iblis.item.ItemShotgun;
 import iblis.player.PlayerCharacteristics;
@@ -12,7 +13,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.ContainerWorkbench;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
@@ -34,7 +39,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 public class ServerNetworkHandler {
 
 	public enum ServerCommands {
-		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER, RUNNED_DISTANCE_INFO, SPRINTING_BUTTON_INFO;
+		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER, RUNNED_DISTANCE_INFO, SPRINTING_BUTTON_INFO, TRAIN_TO_CRAFT;
 	}
 
 	protected static FMLEventChannel channel;
@@ -100,6 +105,21 @@ public class ServerNetworkHandler {
 			int sprintButtonCounter = byteBufInputStream.readInt();
 			PlayerUtils.saveSprintButtonCounterState(player, sprintButtonCounter);
 			break;
+		case TRAIN_TO_CRAFT:
+			playerEntityId = byteBufInputStream.readInt();
+			worldDimensionId = byteBufInputStream.readInt();
+			world = server.getWorld(worldDimensionId);
+			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			if(player.openContainer instanceof ContainerWorkbench){
+				ContainerWorkbench workBenchContainer = (ContainerWorkbench) player.openContainer;
+				IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, world);
+				if (recipe instanceof PlayerSensitiveShapedRecipeWrapper) {
+					Slot slotCrafting = workBenchContainer.getSlotFromInventory(workBenchContainer.craftResult, 0);
+					slotCrafting.onTake(player, slotCrafting.getStack());
+					((PlayerSensitiveShapedRecipeWrapper) recipe).raiseSkill(player, 2);
+				}
+			}
+			break;
 		default:
 			break;
 		}
@@ -108,13 +128,6 @@ public class ServerNetworkHandler {
 
 	public void setServer(MinecraftServer serverIn) {
 		this.server = serverIn;
-	}
-	
-	public void refreshClientGui(EntityPlayerMP player) {
-		ByteBuf bb = Unpooled.buffer(36);
-		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
-		byteBufOutputStream.writeByte(ClientCommands.REFRESH_GUI.ordinal());
-		channel.sendTo(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), player);
 	}
 	
 	@SubscribeEvent
@@ -161,5 +174,12 @@ public class ServerNetworkHandler {
 		byteBufOutputStream.writeDouble(impactVector.z);
 		byteBufOutputStream.writeInt(crit.ordinal());
 		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(playerIn.dimension, targetPos.x, targetPos.y, targetPos.z, 64d));
+	}
+
+	public void sendRefreshTrainCraftButton(EntityPlayerMP player) {
+		ByteBuf bb = Unpooled.buffer(36);
+		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
+		byteBufOutputStream.writeByte(ClientCommands.REFRESH_CRAFTING_BUTTONS.ordinal());
+		channel.sendTo(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), player);
 	}
 }

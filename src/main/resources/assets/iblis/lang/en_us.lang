@@ -38,7 +38,11 @@ iblis.ARCHERY=archery
 iblis.SHARPSHOOTING=sharpshooting
 iblis.WEAPONSMITH=weapon smithing
 iblis.ARMORSMITH=armor smithing
-iblis.ACROBATICS=acrobatics
+iblis.MEDICAL_AID=medical aid
+iblis.DIGGING=mining
+iblis.RUNNING=light athletic
+iblis.JUMPING=acrobatics
+iblis.FALLING=stunt mastery
 
 iblis.seconds=%d seconds
 iblis.minutes=%d minutes
@@ -72,11 +76,11 @@ iblis.diary=%ss' diary
 iblis.youAlreadyReadThatBook=You already read that book.
 iblis.youLearnedSomethingNew=You learned something new from that book.
 iblis.thisBookWasWritten=This book was written %s ago.
-iblis.guideTitle=The %s guide of %s
+iblis.guideTitle=The %s manual of %s, volume #%d
 iblis.guideLevel.beginners=beginners
-iblis.guideLevel.novice=novice
+iblis.guideLevel.novice=novices
 iblis.guideLevel.experienced=experienced
-iblis.guideLevel.professional=professional 
+iblis.guideLevel.professional=professionals
 iblis.guideLevel.experts=experts
 iblis.guideLevel.ultimate=ultimate
 
@@ -91,3 +95,6 @@ item.non-sterile_medkit.name=Sterilize in furnace before use
 item.medkit.name=Medkit
 
 entity.Villager.mechanic=Mechanic
+
+
+iblis.trainCraftTooltip=Do not craft item. Use resources to train only.

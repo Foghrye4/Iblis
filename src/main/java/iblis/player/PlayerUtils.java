@@ -11,6 +11,8 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PlayerUtils {
@@ -92,7 +94,7 @@ public class PlayerUtils {
 	}
 
 	public static boolean canJump(EntityPlayer player) {
-		return player.getFoodStats().getFoodLevel() >= 6;
+		return player.getFoodStats().getFoodLevel() > 6;
 	}
 
 	public static WorldSavedDataPlayers getOrCreateWorldSavedData(World worldIn) {
@@ -104,4 +106,15 @@ public class PlayerUtils {
 		return playersData;
 	}
 
+	public static Vec3d getRightHandPosition(EntityPlayer player) {
+		return getVectorForRotation(player.rotationPitch - 15f, player.rotationYaw + 18f);
+	}
+	
+	private static Vec3d getVectorForRotation(float pitch, float yaw) {
+		float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
+		float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
+		float f2 = -MathHelper.cos(-pitch * 0.017453292F);
+		float f3 = MathHelper.sin(-pitch * 0.017453292F);
+		return new Vec3d((double) (f1 * f2), (double) f3, (double) (f * f2));
+	}
 }
