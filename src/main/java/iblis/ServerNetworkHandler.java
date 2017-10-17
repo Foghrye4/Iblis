@@ -2,8 +2,9 @@ package iblis;
 
 import java.io.IOException;
 
-import iblis.ClientNetworkHandler.ClientCommands;
+import iblis.crafting.IRecipeRaiseSkill;
 import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
+import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.item.ItemShotgun;
 import iblis.player.PlayerCharacteristics;
@@ -37,11 +38,15 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class ServerNetworkHandler {
+	
+	public enum ClientCommands {
+		REFRESH_GUI, SEND_PLAYER_BOOK_LIST_INFO, SPAWN_BLOCK_PARTICLES, SPAWN_PARTICLES, REFRESH_CRAFTING_BUTTONS, SPAWN_CUSTOM_PARTICLE;
+	}
 
 	public enum ServerCommands {
 		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER, RUNNED_DISTANCE_INFO, SPRINTING_BUTTON_INFO, TRAIN_TO_CRAFT;
 	}
-
+	
 	protected static FMLEventChannel channel;
 	private MinecraftServer server;
 
@@ -113,10 +118,10 @@ public class ServerNetworkHandler {
 			if(player.openContainer instanceof ContainerWorkbench){
 				ContainerWorkbench workBenchContainer = (ContainerWorkbench) player.openContainer;
 				IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, world);
-				if (recipe instanceof PlayerSensitiveShapedRecipeWrapper) {
+				if (recipe instanceof IRecipeRaiseSkill) {
 					Slot slotCrafting = workBenchContainer.getSlotFromInventory(workBenchContainer.craftResult, 0);
 					slotCrafting.onTake(player, slotCrafting.getStack());
-					((PlayerSensitiveShapedRecipeWrapper) recipe).raiseSkill(player, 2);
+					((IRecipeRaiseSkill) recipe).raiseSkill(player, 2);
 				}
 			}
 			break;
@@ -181,5 +186,19 @@ public class ServerNetworkHandler {
 		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
 		byteBufOutputStream.writeByte(ClientCommands.REFRESH_CRAFTING_BUTTONS.ordinal());
 		channel.sendTo(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), player);
+	}
+	
+	public void spawnCustomParticle(World world, Vec3d pos, Vec3d speed, IblisParticles particle) {
+		ByteBuf bb = Unpooled.buffer(36);
+		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
+		byteBufOutputStream.writeByte(ClientCommands.SPAWN_CUSTOM_PARTICLE.ordinal());
+		byteBufOutputStream.writeDouble(pos.x);
+		byteBufOutputStream.writeDouble(pos.y);
+		byteBufOutputStream.writeDouble(pos.z);
+		byteBufOutputStream.writeDouble(speed.x);
+		byteBufOutputStream.writeDouble(speed.y);
+		byteBufOutputStream.writeDouble(speed.z);
+		byteBufOutputStream.writeInt(particle.ordinal());
+		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(world.provider.getDimension(), pos.x, pos.y, pos.z, 64d));
 	}
 }

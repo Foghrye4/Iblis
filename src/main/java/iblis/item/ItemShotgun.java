@@ -1,5 +1,6 @@
 package iblis.item;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -12,14 +13,18 @@ import com.google.common.collect.Multimap;
 
 import iblis.IblisMod;
 import iblis.init.IblisItems;
+import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
 import iblis.player.PlayerUtils;
 import iblis.player.SharedIblisAttributes;
+import iblis.util.HeadShotHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -93,14 +98,23 @@ public class ItemShotgun extends Item {
 						.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue();
 				if(isCritical)
 					bulletDamage*=100d;
-				List<Entity> targets = this.findEntitiesOnPath(worldIn, playerIn, vec3d, vec3d2);
+				List<EntityLivingBase>[] targets = this.findEntitiesOnPath(worldIn, playerIn, vec3d, vec3d2);
 				DamageSource damageSource = DamageSource.causePlayerDamage(playerIn);
 				damageSource.setProjectile();
 				damageSource.damageType="shotgun";
-				for (Entity target : targets) {
+				for (EntityLivingBase target : targets[0]) {
 					target.attackEntityFrom(damageSource, (float) bulletDamage);
 					if(isCritical)
 						IblisMod.network.spawnParticles((EntityPlayerMP) playerIn, target.getPositionVector().add(new Vec3d(0,1,0)), pLook, EnumParticleTypes.CRIT);
+				}
+				bulletDamage *= 4f;
+				for (EntityLivingBase target : targets[1]) {
+					if (target.getHealth() < bulletDamage && target instanceof EntitySlime
+							&& ((EntitySlime) target).getSlimeSize() > 1) {
+						((EntitySlime) target).setSlimeSize(0, false);
+					}
+					target.attackEntityFrom(damageSource, (float) bulletDamage);
+					IblisMod.network.spawnCustomParticle(playerIn.world, target.getPositionVector().add(new Vec3d(0,2,0)), new Vec3d(0d, 0.2d, 0d), IblisParticles.HEADSHOT);
 				}
 				nbt.setInteger("ammo", --ammoIn);
 		        itemstack.damageItem(1, playerIn);
@@ -114,19 +128,30 @@ public class ItemShotgun extends Item {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Nullable
-	protected List<Entity> findEntitiesOnPath(World world, Entity shooter, Vec3d start, Vec3d end) {
-		List<Entity> list = world.getEntitiesInAABBexcluding(shooter, new AxisAlignedBB(start, end), BULLET_TARGETS);
+	protected List<EntityLivingBase>[] findEntitiesOnPath(World world, Entity shooter, Vec3d start, Vec3d end) {
+		List<Entity> list = world.getEntitiesInAABBexcluding(shooter, (new AxisAlignedBB(start, end)).grow(0.5d), BULLET_TARGETS);
+		List<EntityLivingBase> headShots = new ArrayList<EntityLivingBase>();
 		Iterator<Entity> ei = list.iterator();
 		while (ei.hasNext()) {
 			Entity entity = ei.next();
+			if(!(entity instanceof EntityLivingBase)) {
+				ei.remove();
+				continue;
+			}
+			if(HeadShotHandler.traceHeadShot((EntityLivingBase) entity, start, end) != null) {
+				headShots.add((EntityLivingBase) entity);
+				ei.remove();
+				continue;
+			}
 			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox();
 			RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
 			if (raytraceresult == null) {
 				ei.remove();
 			}
 		}
-		return list;
+		return new List[] {list, headShots};
 	}
 
 	@Override

@@ -7,7 +7,8 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.InventoryCrafting;
 
 public class ServerProxy {
-	void load(){}
+	void load() {
+	}
 
 	public boolean isClient() {
 		return false;

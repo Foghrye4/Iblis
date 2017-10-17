@@ -3,6 +3,7 @@ package iblis;
 import java.io.IOException;
 
 import iblis.gui.GuiEventHandler;
+import iblis.init.IblisParticles;
 import iblis.player.PlayerCharacteristics;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -20,15 +21,12 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class ClientNetworkHandler extends ServerNetworkHandler {
 
-	public enum ClientCommands {
-		REFRESH_GUI, SEND_PLAYER_BOOK_LIST_INFO, SPAWN_BLOCK_PARTICLES, SPAWN_PARTICLES, REFRESH_CRAFTING_BUTTONS;
-	}
-
 	@SubscribeEvent
 	public void onPacketFromServerToClient(FMLNetworkEvent.ClientCustomPacketEvent event) throws IOException {
 		Minecraft mc = Minecraft.getMinecraft();
 		ByteBuf data = event.getPacket().payload();
 		PacketBuffer byteBufInputStream = new PacketBuffer(data);
+		double posX, posY, posZ, xSpeed, ySpeed, zSpeed;
 		switch (ClientCommands.values()[byteBufInputStream.readByte()]) {
 		case REFRESH_GUI:
 			if (mc.currentScreen != null)
@@ -72,6 +70,16 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 						-impactVectorX * 0.5 + world.rand.nextFloat() - 0.5f,
 						-impactVectorY * 0.5 + world.rand.nextFloat() - 0.8f,
 						-impactVectorZ * 0.5 + world.rand.nextFloat() - 0.5f, 0);
+			break;
+		case SPAWN_CUSTOM_PARTICLE:
+			posX = byteBufInputStream.readDouble();
+			posY = byteBufInputStream.readDouble();
+			posZ = byteBufInputStream.readDouble();
+			xSpeed = byteBufInputStream.readDouble();
+			ySpeed = byteBufInputStream.readDouble();
+			zSpeed = byteBufInputStream.readDouble();
+			particleId  = byteBufInputStream.readInt();
+			((ClientProxy)IblisMod.proxy).spawnParticle(IblisParticles.values()[particleId], posX, posY, posZ, xSpeed, ySpeed, zSpeed);
 			break;
 		case REFRESH_CRAFTING_BUTTONS:
 			GuiEventHandler.instance.refreshTrainCraftingButton();

@@ -17,6 +17,9 @@ public class IblisSounds {
 	public static SoundEvent full_bottle_shaking;
 	public static SoundEvent scissors_clicking;
 	public static SoundEvent tearing_bandage;
+	public static SoundEvent boulder_impact;
+	public static SoundEvent knife_impact;
+	public static SoundEvent knife_impact_stone;
 	
 	public static void register() {
 		book_reading = registerSound("book_reading");
@@ -31,6 +34,9 @@ public class IblisSounds {
 		full_bottle_shaking = registerSound("full_bottle_shaking");
 		scissors_clicking = registerSound("scissors_clicking");
 		tearing_bandage = registerSound("tearing_bandage");
+		boulder_impact = registerSound("boulder_impact");
+		knife_impact = registerSound("knife_impact");
+		knife_impact_stone = registerSound("knife_impact_stone");
 	}
 
 	private static SoundEvent registerSound(String soundNameIn) {

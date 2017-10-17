@@ -30,6 +30,7 @@ public class SharedIblisAttributes {
     public static final IAttribute MARTIAL_ARTS = (new RangedAttribute(WISDOM, "iblis.martial_arts", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Combat mastery").setShouldWatch(true);
     public static final IAttribute SWORDSMANSHIP = (new RangedAttribute(MARTIAL_ARTS, "iblis.swordsmanship", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Sword mastery").setShouldWatch(true);
     public static final IAttribute ARCHERY = (new RangedAttribute(MARTIAL_ARTS, "iblis.archery", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Archery").setShouldWatch(true);
+    public static final IAttribute THROWING = (new RangedAttribute(MARTIAL_ARTS, "iblis.throwing", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Throwing").setShouldWatch(true);
     public static final IAttribute SHARPSHOOTING = (new RangedAttribute(MARTIAL_ARTS, "iblis.sharpshooting", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Sharpshooting").setShouldWatch(true);
     
     public static final IAttribute CRAFTMANSHIP = (new RangedAttribute(WISDOM, "iblis.craftmanship", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Craftmanship").setShouldWatch(true);
@@ -55,6 +56,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(MARTIAL_ARTS);
 		attributeMap.registerAttribute(SWORDSMANSHIP);
 		attributeMap.registerAttribute(ARCHERY);
+		attributeMap.registerAttribute(THROWING);
 		attributeMap.registerAttribute(SHARPSHOOTING);
 		attributeMap.registerAttribute(CRAFTMANSHIP);
 		attributeMap.registerAttribute(WEAPONSMITH);

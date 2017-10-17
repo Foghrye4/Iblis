@@ -71,5 +71,23 @@
     "sounds": [
     	{ "name": "iblis:tearing_bandage", "stream": false }
     ]
+	},
+  "boulder_impact": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:boulder_impact", "stream": false }
+    ]
+	},
+  "knife_impact": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:knife_impact", "stream": false }
+    ]
+	},
+  "knife_impact_stone": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:knife_impact_stone", "stream": false }
+    ]
 	}
 }

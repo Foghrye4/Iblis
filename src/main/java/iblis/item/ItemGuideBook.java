@@ -90,7 +90,10 @@ public class ItemGuideBook extends Item {
 				skillValue = GUIDE_LEVEL.length - 1;
 			String skillNameFormatted = I18n.format("iblis." + skillName);
 			String skillValueFormatted = I18n.format("iblis.guideLevel." + GUIDE_LEVEL[skillValue]);
-			tooltip.add(I18n.format("iblis.guideTitle", skillValueFormatted, skillNameFormatted, bookIdIn));
+			if(bookIdIn != 0)
+				tooltip.add(I18n.format("iblis.guideTitleAndVolume", skillValueFormatted, skillNameFormatted, bookIdIn));
+			else
+				tooltip.add(I18n.format("iblis.guideTitle", skillValueFormatted, skillNameFormatted));
 		}
 		long timeOfCreation = bookIn.getLong("timeOfCreation");
 		long timeGap = (worldIn.getTotalWorldTime() - timeOfCreation) / 20;

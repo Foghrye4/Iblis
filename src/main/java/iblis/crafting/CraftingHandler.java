@@ -21,6 +21,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.inventory.Container;
@@ -31,11 +32,13 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionUtils;
@@ -65,17 +68,9 @@ public class CraftingHandler  implements IContainerListener{
 			ItemStack is = recipe.getRecipeOutput();
 			if (is != null) {
 				if (isArmor(is)) {
-					PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
-					recipeReplacement.setSesitiveTo(PlayerSkills.ARMORSMITH, getArmorCraftingRequiredSkill(is));
-					recipeReplacement.setRegistryName(recipe.getRegistryName());
-					replacements.add(recipeReplacement);
-					vanillaRecipesToRemove.add(recipe.getRegistryName());
+					this.wrapRecipe(is, vanillaRecipesToRemove, recipe, PlayerSkills.ARMORSMITH);
 				} else if (isWeapon(is)) {
-					PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
-					recipeReplacement.setSesitiveTo(PlayerSkills.WEAPONSMITH, getWeaponCraftingRequiredSkill(is));
-					recipeReplacement.setRegistryName(recipe.getRegistryName());
-					replacements.add(recipeReplacement);
-					vanillaRecipesToRemove.add(recipe.getRegistryName());
+					this.wrapRecipe(is, vanillaRecipesToRemove, recipe, PlayerSkills.WEAPONSMITH);
 				} else if (is.getItem() instanceof ItemBow) {
 					if (!is.hasTagCompound())
 						is.setTagCompound(new NBTTagCompound());
@@ -86,17 +81,32 @@ public class CraftingHandler  implements IContainerListener{
 					modifierNBT.setString("AttributeName", SharedIblisAttributes.PROJECTILE_DAMAGE.getName());
 					attributeModifiersNBTList.appendTag(modifierNBT);
 					is.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
-					PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
-					recipeReplacement.setRegistryName(recipe.getRegistryName());
-					recipeReplacement.setSesitiveTo(PlayerSkills.WEAPONSMITH, getWeaponCraftingRequiredSkill(is));
-					replacements.add(recipeReplacement);
-					vanillaRecipesToRemove.add(recipe.getRegistryName());
+					this.wrapRecipe(is, vanillaRecipesToRemove, recipe, PlayerSkills.WEAPONSMITH);
 				}
 			}
 		}
 		for (ResourceLocation key : vanillaRecipesToRemove)
 			recipeRegistry.remove(key);
 		this.addRecipes(event);
+	}
+	
+	private void wrapRecipe(ItemStack is, List<ResourceLocation> vanillaRecipesToRemove, IRecipe recipe, PlayerSkills sensitiveSkill){
+		PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
+		double requiredskill = getWeaponCraftingRequiredSkill(is) + getArmorCraftingRequiredSkill(is);
+		double skillXP = requiredskill + 1.0d;
+		if(is.getItem() instanceof ItemTool){
+			ItemTool isit = (ItemTool) is.getItem();
+			String material = isit.getToolMaterialName();
+			if(material.equalsIgnoreCase("wood"))
+				skillXP = 1.0d; // Nerf tools XP for easily obtained materials
+			if(material.equalsIgnoreCase("stone"))
+				skillXP = 1.0d;
+		}
+		recipeReplacement.setSesitiveTo(sensitiveSkill, requiredskill, skillXP);
+		recipeReplacement.setRegistryName(recipe.getRegistryName());
+		vanillaRecipesToRemove.add(recipe.getRegistryName());
+		replacements.add(recipeReplacement);
+
 	}
 
 	private void addRecipes(RegistryEvent.Register<IRecipe> event) {
@@ -138,23 +148,52 @@ public class CraftingHandler  implements IContainerListener{
 				Ingredient.EMPTY
 				);
 		
+		NonNullList<Ingredient> boulderRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				Ingredient.fromStacks(new ItemStack(Blocks.COBBLESTONE, 1, 0)));
+		NonNullList<Ingredient> cobblestoneRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)));
+		NonNullList<Ingredient> ironThrowingKnifeRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+			Ingredient.EMPTY,Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT, 1, 0)),Ingredient.EMPTY,
+			Ingredient.EMPTY,Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT, 1, 0)),Ingredient.EMPTY,
+			Ingredient.EMPTY,Ingredient.EMPTY,Ingredient.EMPTY);
+		
+		
 		
 		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
 		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
 		ShapedRecipes medkitRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, medkitRecipeIngridients, new ItemStack(IblisItems.NONSTERILE_MEDKIT));
+		ShapedRecipes ironThrowingKnifeRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, ironThrowingKnifeRecipeIngridients, new ItemStack(IblisItems.IRON_THROWING_KNIFE,16,0));
+		ShapedRecipeRaisingSkillWrapper ironThrowingKnifeWrappedRecipe = new ShapedRecipeRaisingSkillWrapper(ironThrowingKnifeRecipe);
+		ShapelessRecipes boulderRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(IblisItems.BOULDER, 9, 0), boulderRecipeIngridients);
+		ShapelessRecipes cobblestoneRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(Blocks.COBBLESTONE, 1, 0), cobblestoneRecipeIngridients);
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
 		medkitRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"medkit"));
+		boulderRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"boulder"));
+		cobblestoneRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"cobblestone_from_boulders"));
+		ironThrowingKnifeWrappedRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"iron_throwing_knife"));
+		ironThrowingKnifeWrappedRecipe.setSesitiveTo(PlayerSkills.WEAPONSMITH, 5);
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
 		event.getRegistry().register(medkitRecipe);
+		event.getRegistry().register(boulderRecipe);
+		event.getRegistry().register(cobblestoneRecipe);
+		event.getRegistry().register(ironThrowingKnifeWrappedRecipe);
 
 		ShapedOreRecipe shotgunRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),IblisItems.SHOTGUN, 
 				"  W",
 				" S ",
 				"S  ", 'W', "plankWood", 'S', "ingotSteel");
 		PlayerSensitiveShapedRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shotgunRecipe);
-		shotgunRecipeWrapper.setSesitiveTo(PlayerSkills.WEAPONSMITH, 20);
+		shotgunRecipeWrapper.setSesitiveTo(PlayerSkills.WEAPONSMITH, 20, 20);
 		shotgunRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"shotgun_recipe"));
 		replacements.add(shotgunRecipeWrapper);
 		for(PlayerSensitiveShapedRecipeWrapper recipeReplacement: replacements)
@@ -222,6 +261,8 @@ public class CraftingHandler  implements IContainerListener{
 	}
 
 	private static boolean isArmor(ItemStack is) {
+		if(is.getMaxStackSize()!=1)
+			return false;
 		String armorkey = SharedMonsterAttributes.ARMOR.getName();
 		if(is.getAttributeModifiers(EntityEquipmentSlot.CHEST).keySet().contains(armorkey))
 			return true;
@@ -234,8 +275,8 @@ public class CraftingHandler  implements IContainerListener{
 		return false;
 	}
 	
-	private static int getArmorCraftingRequiredSkill(ItemStack is) {
-		int minimalSkill = 0;
+	private static double getArmorCraftingRequiredSkill(ItemStack is) {
+		double minimalSkill = 0;
 		for(AttributeModifier am :is.getAttributeModifiers(EntityEquipmentSlot.CHEST).get(SharedMonsterAttributes.ARMOR.getName()))
 			minimalSkill+=am.getAmount();
 		for(AttributeModifier am :is.getAttributeModifiers(EntityEquipmentSlot.FEET).get(SharedMonsterAttributes.ARMOR.getName()))
@@ -260,8 +301,8 @@ public class CraftingHandler  implements IContainerListener{
 		return am.contains(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
 	}
 	
-	private static int getWeaponCraftingRequiredSkill(ItemStack is) {
-		int minimalSkill = 0;
+	private static double getWeaponCraftingRequiredSkill(ItemStack is) {
+		double minimalSkill = 0;
 		if(is.getItem() instanceof ItemBow) {
 			minimalSkill = 5;
 		}

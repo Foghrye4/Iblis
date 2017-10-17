@@ -8,6 +8,7 @@ public enum PlayerSkills {
 
 	SWORDSMANSHIP(SharedIblisAttributes.SWORDSMANSHIP,0.001f),
 	ARCHERY(SharedIblisAttributes.ARCHERY,0.001f),
+	THROWING(SharedIblisAttributes.THROWING,0.001f),
 	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001f),
 	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02f),
 	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02f),

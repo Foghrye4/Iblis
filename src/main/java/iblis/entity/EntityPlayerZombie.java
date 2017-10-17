@@ -1,5 +1,6 @@
-package iblis.player;
+package iblis.entity;
 
+import iblis.player.PlayerCharacteristics;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

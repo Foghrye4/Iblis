@@ -22,23 +22,17 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipes {
+public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkillWrapper {
 
-	PlayerSkills sensitiveSkill = PlayerSkills.WEAPONSMITH;
-	private int minimalSkill = 0;
-	private IRecipe wrappedRecipe;
+	private double minimalSkill = 0;
 
 	public PlayerSensitiveShapedRecipeWrapper(IRecipe recipeIn) {
-		super(recipeIn.getGroup(), 
-			(recipeIn instanceof  ShapedRecipes)?((ShapedRecipes)recipeIn).recipeWidth:3,
-			(recipeIn instanceof  ShapedRecipes)?((ShapedRecipes)recipeIn).recipeHeight:3, 
-			recipeIn.getIngredients(), recipeIn.getRecipeOutput());
-		wrappedRecipe = recipeIn;
+		super(recipeIn);
 	}
 
-	public PlayerSensitiveShapedRecipeWrapper setSesitiveTo(PlayerSkills skillIn, int minimalSkillIn) {
-		sensitiveSkill = skillIn;
-		minimalSkill = minimalSkillIn;
+	public PlayerSensitiveShapedRecipeWrapper setSesitiveTo(PlayerSkills skillIn, double requiredskill, double skillXPIn) {
+		super.setSesitiveTo(skillIn, skillXPIn);
+		minimalSkill = requiredskill;
 		return this;
 	}
 
@@ -72,41 +66,5 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipes {
 		}
 		output1.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
 		return output1;
-	}
-
-
-	@Override
-	public boolean matches(InventoryCrafting inv, World worldIn) {
-		return this.wrappedRecipe.matches(inv, worldIn);
-	}
-
-	@Override
-	public ItemStack getRecipeOutput() {
-		return this.wrappedRecipe.getRecipeOutput();
-	}
-
-	@Override
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-		for (IContainerListener listener : inv.eventHandler.listeners) {
-			if (listener instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) listener;
-				this.raiseSkill(player, 1);
-			}
-		}
-		return this.wrappedRecipe.getRemainingItems(inv);
-	}
-	
-	public void raiseSkill(EntityPlayer player, int times){
-		sensitiveSkill.raiseSkill(player, (minimalSkill + 1) * times);
-	}
-
-	@Override
-	public boolean canFit(int width, int height) {
-		return this.wrappedRecipe.canFit(width, height);
-	}
-	
-	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		return this.wrappedRecipe.getIngredients();
 	}
 }

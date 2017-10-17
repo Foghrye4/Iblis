@@ -1,5 +1,8 @@
 {
     "parent": "iblis:item/medkit_frame_0",
+    "textures": {
+        "layer0": "iblis:items/medkit"
+	 },
      "overrides": [
         { "predicate": { "animation_frame": 1.0000000 }, "model": "iblis:item/medkit_frame_1" },
         { "predicate": { "animation_frame": 2.0000000 }, "model": "iblis:item/medkit_frame_2" },

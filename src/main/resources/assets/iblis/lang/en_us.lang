@@ -22,6 +22,7 @@ iblis.wisdom=Wisdom: %0.1f
 iblis.martial_arts=Martial arts: %0.1f
 iblis.swordsmanship=Swordsmanship: %0.1f
 iblis.archery=Archery: %0.1f
+iblis.throwing=Throwing: %0.1f
 iblis.sharpshooting=Sharpshooting: %0.1f
 iblis.craftmanship=Craftmanship: %0.1f
 iblis.weaponsmith=Weaponsmith: %0.1f
@@ -35,6 +36,7 @@ iblis.falling=Falling: %0.1f
 
 iblis.SWORDSMANSHIP=swordsmanship
 iblis.ARCHERY=archery
+iblis.THROWING=throwing weapons
 iblis.SHARPSHOOTING=sharpshooting
 iblis.WEAPONSMITH=weapon smithing
 iblis.ARMORSMITH=armor smithing
@@ -76,7 +78,8 @@ iblis.diary=%ss' diary
 iblis.youAlreadyReadThatBook=You already read that book.
 iblis.youLearnedSomethingNew=You learned something new from that book.
 iblis.thisBookWasWritten=This book was written %s ago.
-iblis.guideTitle=The %s manual of %s, volume #%d
+iblis.guideTitleAndVolume=The %s manual of %s, volume #%d
+iblis.guideTitle=The %s manual of %s
 iblis.guideLevel.beginners=beginners
 iblis.guideLevel.novice=novices
 iblis.guideLevel.experienced=experienced
@@ -93,6 +96,8 @@ item.shotgun_bullet.name=Shotgun shot
 item.ingot_steel.name=Steel ingot
 item.non-sterile_medkit.name=Sterilize in furnace before use
 item.medkit.name=Medkit
+item.boulder.name=Boulder
+item.iron_throwing_knife.name=Throwing knife
 
 entity.Villager.mechanic=Mechanic
 

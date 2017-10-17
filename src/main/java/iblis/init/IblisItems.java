@@ -5,6 +5,7 @@ import iblis.item.ItemGuideBook;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
+import iblis.item.ItemThrowingWeapon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -20,6 +21,8 @@ public class IblisItems {
 	public static Item INGOT_STEEL;
 	public static Item NONSTERILE_MEDKIT;
 	public static Item MEDKIT;
+	public static Item BOULDER;
+	public static Item IRON_THROWING_KNIFE;
 	
 	public static void init(){
 		GUIDE = new ItemGuideBook();
@@ -29,6 +32,8 @@ public class IblisItems {
 		INGOT_STEEL = new Item();
 		NONSTERILE_MEDKIT = new Item();
 		MEDKIT = new ItemMedkit();
+		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
+		IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
 		
 		GUIDE.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("guide")
@@ -72,7 +77,18 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(10)
 			.setMaxStackSize(1);
-
+		BOULDER.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("boulder")
+			.setRegistryName(IblisMod.MODID, "boulder")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(16);
+		IRON_THROWING_KNIFE.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("iron_throwing_knife")
+			.setRegistryName(IblisMod.MODID, "iron_throwing_knife")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(16);
 		
 		registerItem(GUIDE);
 		registerItem(SHOTGUN);
@@ -81,6 +97,8 @@ public class IblisItems {
 		registerItem(INGOT_STEEL);
 		registerItem(NONSTERILE_MEDKIT);
 		registerItem(MEDKIT);
+		registerItem(BOULDER);
+		registerItem(IRON_THROWING_KNIFE);
 	}
 	
 	private static void registerItem(Item item) {
@@ -119,5 +137,9 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BOULDER, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(IRON_THROWING_KNIFE, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"iron_throwing_knife"), "inventory"));
 	}
 }

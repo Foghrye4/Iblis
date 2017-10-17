@@ -6,13 +6,15 @@ import iblis.command.CommandGetAttribute;
 import iblis.command.CommandSetAttribute;
 import iblis.command.CommandShowNBT;
 import iblis.crafting.CraftingHandler;
+import iblis.entity.EntityBoulder;
+import iblis.entity.EntityPlayerZombie;
+import iblis.entity.EntityThrowingKnife;
 import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.init.RegistryEventHandler;
 import iblis.item.IblisCreativeTab;
 import iblis.loot.LootTableParsingEventHandler;
 import iblis.player.IblisEventHandler;
-import iblis.player.EntityPlayerZombie;
 import iblis.villager.EmeraldForOreDictionaryItems;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -40,7 +42,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.19";
+    public static final String VERSION = "0.3.21";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:tconstruct";
     
@@ -64,9 +66,11 @@ public class IblisMod
     	IblisItems.init();
     	IblisSounds.register();
     	RangedAttribute toughness = (RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS;
-		/* Max armor toughness upper limit is removed */
+		// Max armor toughness upper limit is removed
     	toughness.maximumValue = Double.MAX_VALUE;
     	EntityRegistry.registerModEntity(new ResourceLocation(MODID, "zombie"), EntityPlayerZombie.class, "zombie", 0, this, 80, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "boulder"), EntityBoulder.class, "Boulder", 1, this, 64, 1, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "throwing_knife"), EntityThrowingKnife.class, "ThrowingKnife", 2, this, 64, 1, true);
 		VillagerProfession mechanic = new VillagerProfession(MODID+":mechanic", MODID + ":textures/entity/villager/mechanic.png",
 				MODID + ":textures/entity/villager/zombie_mechanic.png");
 		VillagerCareer mechanicCareer = new VillagerCareer(mechanic, "mechanic");
@@ -75,7 +79,6 @@ public class IblisMod
 		ITradeList trade2 = new EmeraldForOreDictionaryItems("ingotSteel", new PriceInfo(4, 8));
 		mechanicCareer.addTrade(1, trade1, trade2);
 		RegistryEventHandler.professions.add(mechanic);
-
     	proxy.load();
     	network.load();
     	

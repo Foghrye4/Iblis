@@ -5,9 +5,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -27,6 +30,10 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
                     
@@ -48,9 +55,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -69,7 +79,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -90,9 +105,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -111,9 +129,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -132,9 +153,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -153,7 +177,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -174,9 +203,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -195,9 +227,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -217,9 +252,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -238,9 +276,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -259,9 +300,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -280,9 +324,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -301,9 +348,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -322,9 +372,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -343,9 +396,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -364,9 +420,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -380,14 +439,234 @@
                 }
            ]
         },
+                        {
+	    	"name":"THROWING_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"THROWING_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"THROWING_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"THROWING_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"THROWING_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"THROWING_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"THROWING_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"THROWING_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"THROWING_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"THROWING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
                 {
 	    	"name":"SHARPSHOOTING_level_0",
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -407,9 +686,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -428,9 +710,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -449,9 +734,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -470,9 +758,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -491,9 +782,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -512,9 +806,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -533,9 +830,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -554,9 +854,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -575,9 +878,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -597,9 +903,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -618,7 +927,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -639,9 +953,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -660,9 +977,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -681,9 +1001,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -702,9 +1025,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -723,9 +1049,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -744,9 +1073,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -765,9 +1097,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -787,7 +1122,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -808,7 +1148,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -829,7 +1174,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -850,7 +1200,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -871,7 +1226,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -892,7 +1252,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -913,7 +1278,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -934,7 +1304,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -955,7 +1330,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -977,7 +1357,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -998,7 +1383,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1019,7 +1409,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1040,7 +1435,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1061,7 +1461,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1082,7 +1487,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1103,7 +1513,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1124,7 +1539,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1145,7 +1565,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1167,7 +1592,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1188,7 +1618,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1209,7 +1644,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1230,7 +1670,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1251,7 +1696,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1272,7 +1722,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1293,7 +1748,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1314,7 +1774,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1335,7 +1800,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1357,7 +1827,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1378,7 +1853,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1399,7 +1879,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1420,7 +1905,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1441,7 +1931,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1462,7 +1957,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1483,7 +1983,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1504,7 +2009,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1525,7 +2035,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1547,7 +2062,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1568,7 +2088,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1589,7 +2114,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1610,7 +2140,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1631,7 +2166,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1652,9 +2192,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1673,9 +2216,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1694,7 +2240,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1715,9 +2266,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1737,9 +2291,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1758,7 +2315,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1779,9 +2341,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1800,9 +2365,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1821,7 +2389,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
+
                     "name": "iblis:guide",
                     
                     "functions": [
@@ -1842,9 +2415,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1863,9 +2439,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
@@ -1884,9 +2463,12 @@
             "rolls": 1,
             "entries": [
                 {
+                    "type": "empty",
+                    "weight": 2
+				},
+				{
                     "type": "item",
                     "name": "iblis:guide",
-                    
                     "functions": [
 	                    {
 			 			   "function": "set_data",
