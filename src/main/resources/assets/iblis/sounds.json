@@ -89,5 +89,11 @@
     "sounds": [
     	{ "name": "iblis:knife_impact_stone", "stream": false }
     ]
+	},
+  "knife_fall": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:knife_fall", "stream": false }
+    ]
 	}
 }

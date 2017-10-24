@@ -29,13 +29,13 @@ public class RenderThrowingKnife extends Render<EntityThrowingKnife> {
 		GlStateManager.rotate(
 				entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F,
 				1.0F, 0.0F);
-		GlStateManager.rotate(
+		if(!entity.onHardSurface)
+			GlStateManager.rotate(
 				entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F,
 				1.0F);
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		GlStateManager.enableRescaleNormal();
-		GlStateManager.rotate(90f, 1.0f, 0f, 0f);
+		if(!entity.onHardSurface)
+			GlStateManager.rotate(90f, 1.0f, 0f, 0f);
 		GlStateManager.scale(0.05625F, 0.05625F, 0.05625F);
 		GlStateManager.translate(-4.0F, 0.0F, 0.0F);
 
@@ -43,39 +43,8 @@ public class RenderThrowingKnife extends Render<EntityThrowingKnife> {
 			GlStateManager.enableColorMaterial();
 			GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 		}
-		// 1 Top right
-		GlStateManager.glNormal3f(0.0F, 1.0F, 0.2F);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0, 0, 2).tex(0.0d, 23 * texScale).endVertex();
-		bufferbuilder.pos(4, 0, 2).tex(28d * texScale, 23d * texScale).endVertex();
-		bufferbuilder.pos(8, 0, 0).tex(28d * texScale, 19d * texScale).endVertex();
-		bufferbuilder.pos(0, 0.6, 0).tex(0.0D, 19d * texScale).endVertex();
-		tessellator.draw();
-		// 2 Top left
-		GlStateManager.glNormal3f(0.0F, 1.0F, -0.2F);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0, 0.6, 0).tex(0.0d, 20d * texScale).endVertex();
-		bufferbuilder.pos(8, 0, 0).tex(28d * texScale, 20d * texScale).endVertex();
-		bufferbuilder.pos(4, 0, -2).tex(28d * texScale, 16d * texScale).endVertex();
-		bufferbuilder.pos(0, 0, -2).tex(0.0D, 16d * texScale).endVertex();
-		tessellator.draw();
-		// 3 Bottom right
-		GlStateManager.glNormal3f(0.0F, -1.0F, 0.2F);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0, -0.6, 0).tex(0.0d, 20d * texScale).endVertex();
-		bufferbuilder.pos(8, 0, 0).tex(28d * texScale, 20d * texScale).endVertex();
-		bufferbuilder.pos(4, 0, 2).tex(28d * texScale, 16d * texScale).endVertex();
-		bufferbuilder.pos(0, 0, 2).tex(0.0D, 16d * texScale).endVertex();
-		tessellator.draw();
-		// 4 Bottom left
-		GlStateManager.glNormal3f(0.05625F, 0.0F, 0.0F);
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0, 0, -2).tex(0.0d, 23d * texScale).endVertex();
-		bufferbuilder.pos(4, 0, -2).tex(28d * texScale, 23d * texScale).endVertex();
-		bufferbuilder.pos(8, 0, 0).tex(28d * texScale, 20d * texScale).endVertex();
-		bufferbuilder.pos(0, -0.6, 0).tex(0.0D, 19d * texScale).endVertex();
-		tessellator.draw();
-		this.drawBox(-8, -0.6, -2, 0, 0.6, 2, 0, 10 * texScale, 23 * texScale, 33 * texScale);
+		this.drawBlade(0, -0.6, -1, 8, 0.2, 1, 0, 28 * texScale, 16 * texScale, 23 * texScale);
+		this.drawBox(-8, -0.6, -1, 0, 0.2, 1, 0, 10 * texScale, 23 * texScale, 33 * texScale);
 
 		if (this.renderOutlines) {
 			GlStateManager.disableOutlineMode();
@@ -87,6 +56,51 @@ public class RenderThrowingKnife extends Render<EntityThrowingKnife> {
 		GlStateManager.popMatrix();
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
+	
+	private void drawBlade(double x1, double y1, double z1,
+			double x2, double y2, double z2, 
+			double u1, double u2, double v1, double v2){
+		double x15 = x1 * 0.5 + x2 * 0.5;
+		double y15 = y1 * 0.5 + y2 * 0.5;
+		double z15 = z1 * 0.5 + z2 * 0.5;
+		double v15 = v1 * 0.5 + v2 * 0.5;
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		// 1 Top right
+		GlStateManager.glNormal3f(0.0F, 1.0F, 0.2F);
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(x1, y15, z2).tex(u1, v2).endVertex();
+		bufferbuilder.pos(x15, y15, z2).tex(u2, v2).endVertex();
+		bufferbuilder.pos(x2, y15, z15).tex(u2, v15).endVertex();
+		bufferbuilder.pos(x1, y2, z15).tex(u1, v15).endVertex();
+		tessellator.draw();
+		// 2 Top left
+		GlStateManager.glNormal3f(0.0F, 1.0F, -0.2F);
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(x1, y2, z15).tex(u1, v15).endVertex();
+		bufferbuilder.pos(x2, y15, z15).tex(u2, v15).endVertex();
+		bufferbuilder.pos(x15, y15, z1).tex(u2, v1).endVertex();
+		bufferbuilder.pos(x1, y15, z1).tex(u1, v1).endVertex();
+		tessellator.draw();
+		// 3 Bottom right
+		GlStateManager.glNormal3f(0.0F, -1.0F, 0.2F);
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(x1, y1, z15).tex(u1, v15).endVertex();
+		bufferbuilder.pos(x2, y15, z15).tex(u2, v15).endVertex();
+		bufferbuilder.pos(x15, y15, z2).tex(u2, v1).endVertex();
+		bufferbuilder.pos(x1, y15, z2).tex(u1, v1).endVertex();
+		tessellator.draw();
+		// 4 Bottom left
+		GlStateManager.glNormal3f(0.05625F, 0.0F, 0.0F);
+		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(x1, y15, z1).tex(u1, v2).endVertex();
+		bufferbuilder.pos(x15, y15, z1).tex(u2, v2).endVertex();
+		bufferbuilder.pos(x2, y15, z15).tex(u2, v15).endVertex();
+		bufferbuilder.pos(x1, y1, z15).tex(u1, v15).endVertex();
+		tessellator.draw();
+		
+	}
+
 	
 	private void drawBox(double x1, double y1, double z1,
 			double x2, double y2, double z2, 

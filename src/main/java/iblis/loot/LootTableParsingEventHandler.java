@@ -15,7 +15,6 @@ public class LootTableParsingEventHandler {
 
 	private final static int MAX_LOOT_LEVEL = 8;
 	private final ResourceLocation libraryLootTable = new ResourceLocation(IblisMod.MODID, "library_loot");
-	private final ResourceLocation dungeonLootTable = new ResourceLocation(IblisMod.MODID, "dungeon_loot");
 	/** An array of loot tables which will be adjusted by event handler**/
 	private final String[] lootTablesPath = new String[] {"pyramid","city","jungle_temple","simple_dungeon","library","mansion"};
 	private final Set<String> parsedTables = new HashSet<String>();
@@ -30,17 +29,13 @@ public class LootTableParsingEventHandler {
 			return;
 		parsedTables.add(lootTableName);
 		boolean isLibrary = false;
-		boolean isDungeon = false;
 		for(String sequenceInPath: lootTablesPath) {
 			if(lootTableName.contains(sequenceInPath)) {
 				isLibrary = true;
 				break;
 			}
 		}
-		if(lootTableName.contains("dungeon")) {
-			isDungeon = true;
-		}
-		if(!isLibrary && !isDungeon)
+		if(!isLibrary)
 			return;
 		LootTable table = event.getTable();
 		int lootLevel = 0;
@@ -61,12 +56,6 @@ public class LootTableParsingEventHandler {
 				else
 					IblisMod.log.error("Error gaining pool for " + skillName + " and level " + lootLevel);
 			}
-		}
-		if(isDungeon) {
-			LootTable iblisLootTable = event.getLootTableManager().getLootTableFromLocation(dungeonLootTable);
-			LootPool pool = iblisLootTable.getPool("level_"+lootLevel);
-			if(pool!=null)
-				table.addPool(pool);
 		}
 	}
 

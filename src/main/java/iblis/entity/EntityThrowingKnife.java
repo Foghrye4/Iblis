@@ -1,5 +1,6 @@
 package iblis.entity;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,7 +9,10 @@ import javax.annotation.Nullable;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import iblis.ClientProxy;
+import iblis.IblisMod;
 import iblis.init.IblisItems;
+import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
@@ -22,6 +26,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +34,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityThrowingKnife extends EntityArrow {
 	@SuppressWarnings("unchecked")
@@ -49,6 +56,7 @@ public class EntityThrowingKnife extends EntityArrow {
 	private float pitch = 0;
 	private IBlockState inBlock;
 	private BlockPos blockPos = BlockPos.ORIGIN;
+	public boolean onHardSurface = false;
 
 	public EntityThrowingKnife(World worldIn) {
 		super(worldIn);
@@ -70,18 +78,35 @@ public class EntityThrowingKnife extends EntityArrow {
 		if (this.inGround) {
 			if (world.getBlockState(blockPos) != inBlock) {
 				this.inGround = false;
+				this.onHardSurface = false;
 				return;
 			}
 		} else {
 			super.onUpdate();
 		}
 		if (keepYawAndPitch) {
-			if (this.pitch > 0.05f)
-				this.pitch *= 0.9f;
-			this.prevRotationPitch = this.rotationPitch = this.pitch;
-			this.prevRotationYaw = this.rotationYaw = this.yaw;
+			this.prevRotationPitch = this.rotationPitch;
+			this.prevRotationYaw = this.rotationYaw;
+			this.rotationPitch = this.pitch;
+			this.rotationYaw = this.yaw;
 		}
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public void handleStatusUpdate(byte id) {
+		if (id != 3)
+			return;
+		for (int i = 0; i < 8; ++i) {
+			ClientProxy cproxy = (ClientProxy) IblisMod.proxy;
+			double ppx = this.lastTickPosX - this.motionX;
+			double ppy = this.lastTickPosY - this.motionY;
+			double ppz = this.lastTickPosZ - this.motionZ;
+			cproxy.spawnParticle(IblisParticles.SPARK, ppx, ppy, ppz,
+					this.world.rand.nextDouble() - 0.5d - this.motionX*0.1d, this.world.rand.nextDouble() - 0.75d,
+					this.world.rand.nextDouble() - 0.5d - this.motionZ*0.1d);
+		}
+	}
+
 
 	@Override
 	protected ItemStack getArrowStack() {
@@ -132,10 +157,11 @@ public class EntityThrowingKnife extends EntityArrow {
 			double mz = this.motionZ;
 			double velocitySq = mx * mx + my * my + mz * mz;
 			IBlockState state = world.getBlockState(result.getBlockPos());
-			if (!keepYawAndPitch && state.getMaterial() == Material.GLASS || state.getMaterial() == Material.ANVIL
+			boolean isHardSurface = state.getMaterial() == Material.GLASS || state.getMaterial() == Material.ANVIL
 					|| state.getMaterial() == Material.IRON 
 					|| state.getMaterial() == Material.ROCK 
-					|| state.getMaterial() == Material.CLAY) {
+					|| state.getMaterial() == Material.CLAY;
+			if ((!keepYawAndPitch || result.sideHit != EnumFacing.UP) && isHardSurface) {
 				switch (result.sideHit) {
 				case NORTH:
 				case SOUTH:
@@ -156,6 +182,8 @@ public class EntityThrowingKnife extends EntityArrow {
 				this.yaw = this.rotationYaw;
 				world.playSound(null, result.hitVec.x, result.hitVec.y, result.hitVec.z, IblisSounds.knife_impact_stone,
 						SoundCategory.PLAYERS, 1.0f, 1.0f);
+				if (!this.world.isRemote)
+					this.world.setEntityState(this, (byte) 3);
 				return;
 			} else {
 				this.motionX = (double) ((float) (result.hitVec.x - this.posX));
@@ -166,10 +194,24 @@ public class EntityThrowingKnife extends EntityArrow {
 				this.posZ -= this.motionZ / (double) velocitySq * 0.05;
 	            this.inBlock = state;
 	            this.blockPos = result.getBlockPos();
-				if (!keepYawAndPitch)
-					this.playSound(IblisSounds.knife_impact, 0.5F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 				this.setIsCritical(false);
 				this.inGround = true;
+				if (isHardSurface) {
+					List<AxisAlignedBB> collidingBoxes = new ArrayList<AxisAlignedBB>();
+					state.addCollisionBoxToList(world, blockPos, getEntityBoundingBox().expand(1, 1, 1), collidingBoxes,
+							this, false);
+					double minY = Double.MIN_VALUE;
+					for (AxisAlignedBB aabb : collidingBoxes)
+						if (aabb.minY > minY)
+							minY = aabb.minY;//result.sideHit == EnumFacing.UP && 
+					if (minY != Double.MIN_VALUE) {
+						this.posY = minY + 0.1;
+					}
+					this.onHardSurface = true;
+					this.playSound(IblisSounds.knife_fall, 0.5F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+				} else {
+					this.playSound(IblisSounds.knife_impact, 0.5F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+				}
 				if (state.getMaterial() != Material.AIR) {
 					state.getBlock().onEntityCollidedWithBlock(this.world, result.getBlockPos(), state, this);
 				}

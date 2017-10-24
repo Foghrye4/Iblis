@@ -6,7 +6,6 @@ import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.client.ClientGameEventHandler;
 import iblis.crafting.IRecipeRaiseSkill;
-import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
 import iblis.player.PlayerSkills;

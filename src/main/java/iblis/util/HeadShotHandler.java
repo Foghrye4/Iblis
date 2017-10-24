@@ -1,15 +1,33 @@
 package iblis.util;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.monster.EntityEndermite;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityGuardian;
+import net.minecraft.entity.monster.EntityHusk;
+import net.minecraft.entity.monster.EntityPolarBear;
+import net.minecraft.entity.monster.EntityShulker;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityDonkey;
+import net.minecraft.entity.passive.EntityLlama;
+import net.minecraft.entity.passive.EntityMule;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityParrot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntityRabbit;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.server.FMLServerHandler;
 
 public class HeadShotHandler {
 	private static final AxisAlignedBB zero = new AxisAlignedBB(0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d);

@@ -10,6 +10,7 @@ import iblis.entity.EntityBoulder;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
 import iblis.init.IblisItems;
+import iblis.init.IblisPotions;
 import iblis.init.IblisSounds;
 import iblis.init.RegistryEventHandler;
 import iblis.item.IblisCreativeTab;
@@ -22,6 +23,7 @@ import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.entity.passive.EntityVillager.ListItemForEmeralds;
 import net.minecraft.entity.passive.EntityVillager.PriceInfo;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -64,10 +66,12 @@ public class IblisMod
     	log = event.getModLog();
     	creativeTab = new IblisCreativeTab("iblis.tab");
     	IblisItems.init();
+    	IblisPotions.init();
     	IblisSounds.register();
     	RangedAttribute toughness = (RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS;
 		// Max armor toughness upper limit is removed
     	toughness.maximumValue = Double.MAX_VALUE;
+    	Items.SHIELD.setMaxDamage(200);
     	EntityRegistry.registerModEntity(new ResourceLocation(MODID, "zombie"), EntityPlayerZombie.class, "zombie", 0, this, 80, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "boulder"), EntityBoulder.class, "Boulder", 1, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "throwing_knife"), EntityThrowingKnife.class, "ThrowingKnife", 2, this, 64, 1, true);

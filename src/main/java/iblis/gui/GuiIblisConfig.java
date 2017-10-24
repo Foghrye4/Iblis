@@ -2,9 +2,9 @@ package iblis.gui;
 
 import iblis.IblisMod;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.GuiConfig;
 
 public class GuiIblisConfig  extends GuiConfig {
 

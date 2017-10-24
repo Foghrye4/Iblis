@@ -5,10 +5,12 @@
             "rolls": 1,
             "entries": [
                 {
+	               	"weight": 4,
                     "type": "item",
                     "name": "iblis:ingot_steel"
                 },
                 {
+	               	"weight": 4,
                     "type": "item",
                     "name": "iblis:shotgun_bullet",
                     "functions": [
@@ -16,12 +18,11 @@
                             "function": "set_count",
                             "count": {
                                 "min": 1,
-                                "max": 10
+                                "max": 32
                             }
                         }
 					]
                 }
-                
            ]
         }
     ]

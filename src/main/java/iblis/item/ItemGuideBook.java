@@ -147,7 +147,7 @@ public class ItemGuideBook extends Item {
 			return;
 		int bookIdIn = bookIn.getInteger("id");
 		if (bookIdIn == 0) {
-			bookIdIn = rand.nextInt() & 127;
+			bookIdIn = rand.nextInt() & 15;
 			bookIn.setInteger("id", bookIdIn);
 		}
 		return;

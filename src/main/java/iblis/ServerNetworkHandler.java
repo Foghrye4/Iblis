@@ -3,7 +3,6 @@ package iblis;
 import java.io.IOException;
 
 import iblis.crafting.IRecipeRaiseSkill;
-import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.item.ItemShotgun;

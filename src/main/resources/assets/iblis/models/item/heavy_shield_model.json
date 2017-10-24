@@ -1,0 +1,129 @@
+{
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "heavy_shield": "iblis:items/heavy_shield"
+    },
+    "elements": [
+        {
+            "from": [4,0,0],
+            "to": [12,13,1],
+            "faces": {
+                "up": {
+                    "uv": [8,0,16,0.5],
+                    "texture": "#heavy_shield"
+                },
+                "down": {
+                    "uv": [8,15.5,16,16],
+                    "texture": "#heavy_shield"
+                },
+                "west": {
+                    "uv": [15.5,0,16,16],
+                    "texture": "#heavy_shield"
+                },
+                "east": {
+                    "uv": [8,0,8.5,16],
+                    "texture": "#heavy_shield"
+                },
+                "north": {
+                    "uv": [0,2,8,16],
+                    "texture": "#heavy_shield"
+                },
+                "south": {
+                    "uv": [8,2,16,16],
+                    "texture": "#heavy_shield"
+                }
+            }
+        },
+        {
+            "from": [4,14,0],
+            "to": [12,16,1],
+            "faces": {
+                "up": {
+                    "uv": [8,0,16,0.5],
+                    "texture": "#heavy_shield"
+                },
+                "down": {
+                    "uv": [8,15.5,16,16],
+                    "texture": "#heavy_shield"
+                },
+                "west": {
+                    "uv": [15.5,0,16,1.5],
+                    "texture": "#heavy_shield"
+                },
+                "east": {
+                    "uv": [8,0,8.5,1.5],
+                    "texture": "#heavy_shield"
+                },
+                "north": {
+                    "uv": [0,0,8,1.5],
+                    "texture": "#heavy_shield"
+                },
+                "south": {
+                    "uv": [8,0,16,1.5],
+                    "texture": "#heavy_shield"
+                }
+            }
+        },
+        {
+            "from": [4,13,0],
+            "to": [6,14,1],
+            "faces": {
+                "up": {
+                    "uv": [8,0,16,0.5],
+                    "texture": "#heavy_shield"
+                },
+                "down": {
+                    "uv": [8,15.5,16,16],
+                    "texture": "#heavy_shield"
+                },
+                "west": {
+                    "uv": [15.5,1.5,15.5,2],
+                    "texture": "#heavy_shield"
+                },
+                "east": {
+                    "uv": [8,1,8.5,2.5],
+                    "texture": "#heavy_shield"
+                },
+                "north": {
+                    "uv": [6,1,8,2.5],
+                    "texture": "#heavy_shield"
+                },
+                "south": {
+                    "uv": [8,1.5,10,2],
+                    "texture": "#heavy_shield"
+                }
+            }
+        },
+        {
+            "from": [10,13,0],
+            "to": [12,14,1],
+            "faces": {
+                "up": {
+                    "uv": [8,0,16,0.5],
+                    "texture": "#heavy_shield"
+                },
+                "down": {
+                    "uv": [8,15.5,16,16],
+                    "texture": "#heavy_shield"
+                },
+                "west": {
+                    "uv": [15.5,1,16,2],
+                    "texture": "#heavy_shield"
+                },
+                "east": {
+                    "uv": [8,1,8.5,2.5],
+                    "texture": "#heavy_shield"
+                },
+                "north": {
+                    "uv": [0,1,2,2.5],
+                    "texture": "#heavy_shield"
+                },
+                "south": {
+                    "uv": [14,1.5,16,2],
+                    "texture": "#heavy_shield"
+                }
+            }
+        }
+    ]
+}

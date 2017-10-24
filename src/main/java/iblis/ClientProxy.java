@@ -6,6 +6,7 @@ import iblis.client.ClientGameEventHandler;
 import iblis.client.ItemTooltipEventHandler;
 import iblis.client.particle.ParticleBoulderShard;
 import iblis.client.particle.ParticleHeadshot;
+import iblis.client.particle.ParticleSpark;
 import iblis.client.renderer.entity.RenderBoulder;
 import iblis.client.renderer.entity.RenderThrowingKnife;
 import iblis.entity.EntityBoulder;
@@ -22,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ClientProxy extends ServerProxy {
@@ -81,14 +83,18 @@ public class ClientProxy extends ServerProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		Entity renderViewEntity = mc.getRenderViewEntity();
 		double distance = renderViewEntity.getDistanceSq(posX, posY, posZ);
+		distance = MathHelper.sqrt(distance);
 		switch (particle) {
 		case HEADSHOT:
 			entityParticle = new ParticleHeadshot(mc.getTextureManager(), mc.world, 
-					posX, posY, posZ, xSpeedIn, ySpeedIn, zSpeedIn, (float) (distance/1000d+0.1d));
+					posX, posY, posZ, xSpeedIn, ySpeedIn, zSpeedIn, (float) (distance/100d+0.1d));
 			break;
 		case BOULDER:
 			entityParticle = new ParticleBoulderShard(mc.getTextureManager(), mc.world, 
 					posX, posY, posZ, xSpeedIn, ySpeedIn, zSpeedIn, 1.0f);
+			break;
+		case SPARK:
+			entityParticle = new ParticleSpark(mc.world, posX, posY, posZ, xSpeedIn, ySpeedIn, zSpeedIn, -0.04f);
 			break;
 		default:
 			entityParticle = mc.effectRenderer.spawnEffectParticle(10, posX, posY, posZ, 

@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,6 +17,7 @@ public class RegistryEventHandler {
 	public static final List<Item> items = new ArrayList<Item>();
 	public static final List<SoundEvent> sounds = new ArrayList<SoundEvent>();
 	public static final List<VillagerProfession> professions = new ArrayList<VillagerProfession>();
+	public static final List<Potion> potions = new ArrayList<Potion>();
 	
 	@SubscribeEvent
 	public void registerBlocks(RegistryEvent.Register<Block> event) {
@@ -40,5 +41,11 @@ public class RegistryEventHandler {
 	public void registerVillagerProfession(RegistryEvent.Register<VillagerProfession> event) {
 		for(VillagerProfession profession:professions)
 			event.getRegistry().register(profession);
+	}
+	
+	@SubscribeEvent
+	public void registerPotion(RegistryEvent.Register<Potion> event) {
+		for(Potion potion:potions)
+			event.getRegistry().register(potion);
 	}
 }

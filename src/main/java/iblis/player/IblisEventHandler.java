@@ -1,20 +1,25 @@
 package iblis.player;
 
+import java.util.List;
+
 import com.google.common.collect.Multimap;
 
 import iblis.IblisMod;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
 import iblis.init.IblisParticles;
+import iblis.init.IblisPotions;
 import iblis.util.HeadShotHandler;
 import iblis.util.NBTTagsKeys;
 import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -23,8 +28,12 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -164,26 +173,34 @@ public class IblisEventHandler {
 	@SubscribeEvent
 	public void onLivingEntityAttackedEvent(LivingAttackEvent event) {
 		EntityLivingBase target = event.getEntityLiving();
+		DamageSource source = event.getSource();
+		Entity shooter = source.getTrueSource();
+		if (shooter == null)
+			return;
+		if (target instanceof EntityLiving && target instanceof IMob) {
+			List<EntityLivingBase> comrads = target.world.getEntitiesWithinAABB(target.getClass(),
+					(new AxisAlignedBB(target.getPosition()).grow(16, 4, 16)));
+			int d = MathHelper.ceil(target.getDistanceToEntity(shooter));
+			PotionEffect pea = new PotionEffect(IblisPotions.AWARENESS, 1200, d);
+			for (EntityLivingBase comrad : comrads) {
+				((EntityLiving) comrad).addPotionEffect(pea);
+			}
+		}
 		if (event.getSource().isProjectile()) {
 			if (event.getSource() instanceof EntityDamageSourceIndirect) {
-				EntityDamageSourceIndirect dsi = (EntityDamageSourceIndirect) event.getSource();
-				if (dsi.damageType.equals("arrow")) {
-					Entity shooter = dsi.getTrueSource();
+				if (source.damageType.equals("arrow")) {
 					if (shooter instanceof EntityPlayerMP) {
 						PlayerSkills.ARCHERY.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
 					}
-				} else if (dsi.damageType.equals("thrown")) {
-					Entity shooter = dsi.getTrueSource();
+				} else if (source.damageType.equals("thrown")) {
 					if (shooter instanceof EntityPlayerMP) {
 						PlayerSkills.THROWING.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
 					}
 				}
 			} else if (event.getSource() instanceof EntityDamageSource) {
-				EntityDamageSource dsi = (EntityDamageSource) event.getSource();
-				if (dsi.damageType.equals("shotgun")) {
-					Entity shooter = dsi.getTrueSource();
+				if (source.damageType.equals("shotgun")) {
 					if (shooter instanceof EntityPlayerMP) {
 						PlayerSkills.SHARPSHOOTING.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
@@ -215,7 +232,9 @@ public class IblisEventHandler {
 
 	@SubscribeEvent
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
-		if (!event.getWorld().isRemote && event.getEntity() instanceof EntityArrow) {
+		if(event.getWorld().isRemote)
+			return;
+		if (event.getEntity() instanceof EntityArrow) {
 			EntityArrow arrow = (EntityArrow) event.getEntity();
 			if (arrow.shootingEntity instanceof EntityPlayerMP && !(arrow instanceof EntityThrowingKnife)) {
 				EntityPlayerMP player = (EntityPlayerMP) arrow.shootingEntity;

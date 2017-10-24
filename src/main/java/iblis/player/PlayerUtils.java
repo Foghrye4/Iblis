@@ -54,13 +54,28 @@ public class PlayerUtils {
 			baseValue += am.getAmount();
 		}
 		if (isAttributeAffectedByCraftingSkill(attributeName)) {
-			if(additive)
-				return baseValue + skillValue * 0.1d;
-			if (skillValue < 0d)
-				return baseValue / (1d - skillValue * 0.2d);
-			if (skillValue > 0d)
-				return baseValue * skillValue * 0.1d + baseValue;
+			return modifyDoubleValueBySkill(additive, baseValue, skillValue);
 		}
+		return baseValue;
+	}
+	
+	public static double modifyDoubleValueBySkill(boolean additive, double baseValue, double skillValue){
+		if(additive)
+			return baseValue + skillValue * 0.1d;
+		if (skillValue < 0d)
+			return baseValue / (1.0d - skillValue * 0.2d);
+		if (skillValue > 0d)
+			return baseValue * skillValue * 0.1d + baseValue;
+		return baseValue;
+	}
+	
+	public static int modifyIntValueBySkill(boolean additive, int baseValue, double skillValue){
+		if(additive)
+			return MathHelper.ceil(baseValue + skillValue * 0.1d);
+		if (skillValue < 0d)
+			return MathHelper.floor(baseValue / (1.0d - skillValue * 0.2d));
+		if (skillValue > 0d)
+			return MathHelper.ceil(baseValue * skillValue * 0.1d + baseValue);
 		return baseValue;
 	}
 

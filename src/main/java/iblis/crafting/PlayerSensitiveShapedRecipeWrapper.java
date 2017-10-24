@@ -7,20 +7,15 @@ import javax.annotation.Nonnull;
 import iblis.IblisMod;
 import iblis.player.PlayerSkills;
 import iblis.player.PlayerUtils;
+import iblis.util.NBTTagsKeys;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 
 public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkillWrapper {
 
@@ -50,6 +45,11 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkill
 			output1.setTagCompound(new NBTTagCompound());
 		output1.getTagCompound().setInteger("quality", (int) skillValue);
 		NBTTagList attributeModifiersNBTList = new NBTTagList();
+		if(output1.getTagCompound().hasKey(NBTTagsKeys.DURABILITY)){
+			int baseValue = output1.getTagCompound().getInteger(NBTTagsKeys.DURABILITY);
+			int modifiedValue = PlayerUtils.modifyIntValueBySkill(additive, baseValue, skillValue);
+			output1.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, modifiedValue);
+		}
 		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
 			for (Entry<String, AttributeModifier> entry : output1.getAttributeModifiers(slot).entries()) {
 				double modifierValue = PlayerUtils.getQualityModifierValue(skillValue, output1, slot,

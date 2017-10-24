@@ -73,6 +73,7 @@ iblis.bowAttackDamage=Bow quality damage modifier: %0.1f
 attribute.name.iblis.projectile_damage=Projectile damage
 attribute.name.iblis.damage_reduction=Damage reduction
 attribute.name.iblis.intelligence=Intelligence
+attribute.name.iblis.running=Running
 
 iblis.diary=%ss' diary
 iblis.youAlreadyReadThatBook=You already read that book.

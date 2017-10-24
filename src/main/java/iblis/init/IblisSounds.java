@@ -20,6 +20,7 @@ public class IblisSounds {
 	public static SoundEvent boulder_impact;
 	public static SoundEvent knife_impact;
 	public static SoundEvent knife_impact_stone;
+	public static SoundEvent knife_fall;
 	
 	public static void register() {
 		book_reading = registerSound("book_reading");
@@ -37,6 +38,7 @@ public class IblisSounds {
 		boulder_impact = registerSound("boulder_impact");
 		knife_impact = registerSound("knife_impact");
 		knife_impact_stone = registerSound("knife_impact_stone");
+		knife_fall = registerSound("knife_fall");
 	}
 
 	private static SoundEvent registerSound(String soundNameIn) {

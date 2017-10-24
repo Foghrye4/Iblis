@@ -2,6 +2,7 @@ package iblis.init;
 
 import iblis.IblisMod;
 import iblis.item.ItemGuideBook;
+import iblis.item.ItemHeavyShield;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
@@ -23,6 +24,8 @@ public class IblisItems {
 	public static Item MEDKIT;
 	public static Item BOULDER;
 	public static Item IRON_THROWING_KNIFE;
+	public static Item HEAVY_SHIELD;
+	
 	
 	public static void init(){
 		GUIDE = new ItemGuideBook();
@@ -34,6 +37,7 @@ public class IblisItems {
 		MEDKIT = new ItemMedkit();
 		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
 		IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
+		HEAVY_SHIELD = new ItemHeavyShield();
 		
 		GUIDE.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("guide")
@@ -89,6 +93,12 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(0)
 			.setMaxStackSize(16);
+		HEAVY_SHIELD.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("heavy_shield")
+			.setRegistryName(IblisMod.MODID, "heavy_shield")
+			.setHasSubtypes(false)
+			.setMaxDamage(600)
+			.setMaxStackSize(1);
 		
 		registerItem(GUIDE);
 		registerItem(SHOTGUN);
@@ -99,6 +109,7 @@ public class IblisItems {
 		registerItem(MEDKIT);
 		registerItem(BOULDER);
 		registerItem(IRON_THROWING_KNIFE);
+		registerItem(HEAVY_SHIELD);
 	}
 	
 	private static void registerItem(Item item) {
@@ -141,5 +152,7 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(IRON_THROWING_KNIFE, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"iron_throwing_knife"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HEAVY_SHIELD, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"heavy_shield"), "inventory"));
 	}
 }

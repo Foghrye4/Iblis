@@ -169,7 +169,7 @@ public class ItemShotgun extends Item {
 		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
 		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
 			multimap.put(SharedIblisAttributes.PROJECTILE_DAMAGE.getName(),
-					new AttributeModifier(SharedIblisAttributes.BULLET_DAMAGE_MODIFIER, "Weapon modifier", 4.0d, 0));
+					new AttributeModifier(SharedIblisAttributes.BULLET_DAMAGE_MODIFIER, "Weapon modifier", 8.0d, 0));
 			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
 					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -2.4D, 0));
 		}
