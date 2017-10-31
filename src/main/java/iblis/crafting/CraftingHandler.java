@@ -188,7 +188,7 @@ public class CraftingHandler  implements IContainerListener{
 		ItemStack shield = new ItemStack(IblisItems.HEAVY_SHIELD);
 		shield.setTagCompound(new NBTTagCompound());
 		shield.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, 600);
-		ShapedRecipes shieldRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, shieldRecipeIngridients, new ItemStack(IblisItems.HEAVY_SHIELD));
+		ShapedRecipes shieldRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, shieldRecipeIngridients, shield);
 		PlayerSensitiveShapedRecipeWrapper shieldRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shieldRecipe);
 		
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));

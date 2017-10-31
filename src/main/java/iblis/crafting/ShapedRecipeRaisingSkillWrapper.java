@@ -1,5 +1,7 @@
 package iblis.crafting;
 
+import javax.annotation.Nonnull;
+
 import iblis.player.PlayerSkills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IContainerListener;
@@ -29,6 +31,12 @@ public class ShapedRecipeRaisingSkillWrapper extends ShapedRecipes implements IR
 		sensitiveSkill = skillIn;
 		skillXP = skillXPIn;
 		return this;
+	}
+	
+	@Override
+	@Nonnull
+	public ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
+		return wrappedRecipe.getCraftingResult(inv);
 	}
 
 	@Override

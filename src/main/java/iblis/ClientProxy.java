@@ -24,12 +24,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientProxy extends ServerProxy {
 
 	@Override
 	void load() {
+		OBJLoader.INSTANCE.addDomain(IblisMod.MODID);
 		MinecraftForge.EVENT_BUS.register(GuiEventHandler.instance);
 		MinecraftForge.EVENT_BUS.register(new ItemTooltipEventHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientGameEventHandler());
@@ -102,5 +106,12 @@ public class ClientProxy extends ServerProxy {
 			break;
 		}
 		mc.effectRenderer.addEffect(entityParticle);
+	}
+	
+	@SubscribeEvent
+	public void onModelBakeEvent(ModelBakeEvent event)
+	{
+//		OBJLoader.INSTANCE.loadModel(modelLocation);
+	//	event.getModelRegistry().putObject(key, value);
 	}
 }

@@ -36,7 +36,7 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkill
 	public ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
 		double skillValue = IblisMod.proxy.getPlayerSkillValue(sensitiveSkill, inv);
 		skillValue -= minimalSkill;
-		return this.getCraftingResult(this.getRecipeOutput().copy(), skillValue, false);
+		return this.getCraftingResult(super.getCraftingResult(inv), skillValue, false);
 	}
 	
 	/** Modify item stack and return it instance. Does not create a copy. */

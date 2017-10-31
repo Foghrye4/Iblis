@@ -44,9 +44,9 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.21";
+    public static final String VERSION = "0.3.22";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
-    public static final String DEPENDENCIES = "after:landcore;after:tconstruct";
+    public static final String DEPENDENCIES = "after:landcore;after:tconstruct;after:silentgems";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
 	public static ServerProxy proxy;
