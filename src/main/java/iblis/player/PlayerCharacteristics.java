@@ -1,5 +1,6 @@
 package iblis.player;
 
+import iblis.util.PlayerUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -18,13 +19,18 @@ public enum PlayerCharacteristics {
 	LUCK(SharedMonsterAttributes.LUCK,0d,0.1d),
 	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d);
 	
-	private final double pointsPerLevel;
-	private final double startLevel;
+	public final double defaultPointsPerLevel;
+	public final double defaultStartLevel;
+	public double pointsPerLevel;
+	public double startLevel;
 	private final IAttribute attribute;
+	public boolean enabled = true;
 	PlayerCharacteristics(IAttribute attributeIn, double startLevelIn,double pointsPerLevelIn){
 		this.attribute = attributeIn;
 		this.startLevel = startLevelIn;
 		this.pointsPerLevel = pointsPerLevelIn;
+		this.defaultStartLevel = startLevelIn;
+		this.defaultPointsPerLevel = pointsPerLevelIn;
 	}
 	
 	public int getCurrentLevel(EntityPlayer player) {

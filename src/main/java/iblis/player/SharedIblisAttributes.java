@@ -16,6 +16,9 @@ public class SharedIblisAttributes {
     public static final UUID ARMOR_TOUGHNESS_BY_QUALITY_MODIFIER = UUID.fromString("3BA691F-6D892610-857-519C4CDF-9F5F2D7");
     public static final UUID SPRINTING_SPEED_MODIFIER = UUID.fromString("5719796-57EED-AA0D1F1E7-A3-C4A7AC791571C");
 	public static final UUID SHIELD_RUNNING_MODIFIER = UUID.fromString("51E76-57EED-AA0D1F1E7-7E4-E9");
+	public static final UUID EQUILIBRIUM_KNOCKBACK_MODIFIER = new UUID(
+			(long) ("Iblis".hashCode()) + (long) ("equilibrium".hashCode()),
+			(long) ("knockback".hashCode()) + (long) ("modifier".hashCode()));
     
     public static final IAttribute MELEE_DAMAGE_BONUS = (new RangedAttribute((IAttribute)null, "iblis.melee_damage_bonus", 1.0D, 0.0D, Double.MAX_VALUE)).setDescription("Melee damage bonus").setShouldWatch(true);
     public static final IAttribute PROJECTILE_DAMAGE = (new RangedAttribute((IAttribute)null, "iblis.projectile_damage", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Projectile damage").setShouldWatch(true);
@@ -30,6 +33,7 @@ public class SharedIblisAttributes {
     
     public static final IAttribute MARTIAL_ARTS = (new RangedAttribute(WISDOM, "iblis.martial_arts", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Combat mastery").setShouldWatch(true);
     public static final IAttribute SWORDSMANSHIP = (new RangedAttribute(MARTIAL_ARTS, "iblis.swordsmanship", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Sword mastery").setShouldWatch(true);
+    public static final IAttribute PARRY = (new RangedAttribute(MARTIAL_ARTS, "iblis.parry", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Parry").setShouldWatch(true);
     public static final IAttribute ARCHERY = (new RangedAttribute(MARTIAL_ARTS, "iblis.archery", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Archery").setShouldWatch(true);
     public static final IAttribute THROWING = (new RangedAttribute(MARTIAL_ARTS, "iblis.throwing", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Throwing").setShouldWatch(true);
     public static final IAttribute SHARPSHOOTING = (new RangedAttribute(MARTIAL_ARTS, "iblis.sharpshooting", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Sharpshooting").setShouldWatch(true);
@@ -37,6 +41,7 @@ public class SharedIblisAttributes {
     public static final IAttribute CRAFTMANSHIP = (new RangedAttribute(WISDOM, "iblis.craftmanship", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Craftmanship").setShouldWatch(true);
     public static final IAttribute WEAPONSMITH = (new RangedAttribute(CRAFTMANSHIP, "iblis.weaponsmith", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Weaponsmith").setShouldWatch(true);
     public static final IAttribute ARMORSMITH = (new RangedAttribute(CRAFTMANSHIP, "iblis.armorsmith", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Armorsmith").setShouldWatch(true);
+    public static final IAttribute MECHANICS = (new RangedAttribute(CRAFTMANSHIP, "iblis.mechanics", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Mechanics").setShouldWatch(true);
 	public static final IAttribute MEDICAL_AID = (new RangedAttribute(CRAFTMANSHIP, "iblis.medical_aid", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Medical aid").setShouldWatch(true);
 	public static final IAttribute DIGGING = (new RangedAttribute(CRAFTMANSHIP, "iblis.digging", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Digging").setShouldWatch(true);
     
@@ -44,6 +49,7 @@ public class SharedIblisAttributes {
     public static final IAttribute RUNNING = (new RangedAttribute(ACROBATICS, "iblis.running", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Running").setShouldWatch(true);
     public static final IAttribute JUMPING = (new RangedAttribute(ACROBATICS, "iblis.jumping", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Jumping").setShouldWatch(true);
 	public static final IAttribute FALLING = (new RangedAttribute(ACROBATICS, "iblis.falling", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Falling").setShouldWatch(true);
+	public static final IAttribute EQUILIBRIUM = (new RangedAttribute(ACROBATICS, "iblis.equilibrium", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Knockback resitance").setShouldWatch(true);
     
 	public static void registerAttributes(AbstractAttributeMap attributeMap) {
 		attributeMap.registerAttribute(MELEE_DAMAGE_BONUS);
@@ -56,19 +62,20 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(WISDOM);
 		attributeMap.registerAttribute(MARTIAL_ARTS);
 		attributeMap.registerAttribute(SWORDSMANSHIP);
+		attributeMap.registerAttribute(PARRY);
 		attributeMap.registerAttribute(ARCHERY);
 		attributeMap.registerAttribute(THROWING);
 		attributeMap.registerAttribute(SHARPSHOOTING);
 		attributeMap.registerAttribute(CRAFTMANSHIP);
 		attributeMap.registerAttribute(WEAPONSMITH);
 		attributeMap.registerAttribute(ARMORSMITH);
+		attributeMap.registerAttribute(MECHANICS);
 		attributeMap.registerAttribute(MEDICAL_AID);
 		attributeMap.registerAttribute(DIGGING);
 		attributeMap.registerAttribute(ACROBATICS);
 		attributeMap.registerAttribute(RUNNING);
 		attributeMap.registerAttribute(JUMPING);
 		attributeMap.registerAttribute(FALLING);
+		attributeMap.registerAttribute(EQUILIBRIUM);
 	}
-    
-    
 }

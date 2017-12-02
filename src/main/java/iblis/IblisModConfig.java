@@ -1,5 +1,6 @@
 package iblis;
 
+import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -44,6 +45,14 @@ public class IblisModConfig {
 		for(PlayerSkills skill:PlayerSkills.values()){
 			skill.enabled = configuration.getBoolean("enable_"+skill.name().toLowerCase()+"_skill",
 					Configuration.CATEGORY_GENERAL, true, "Turn off to disable skill. Disabled skills always counts as equal to zero.");
+		}
+		for(PlayerCharacteristics ch:PlayerCharacteristics.values()){
+			ch.enabled = configuration.getBoolean("enable_"+ch.name().toLowerCase()+"_characteristic",
+					Configuration.CATEGORY_GENERAL, true, "Turn off to disable characteristic. Disabled characteristics cannot be raised.");
+			ch.startLevel = configuration.getFloat(ch.name().toLowerCase()+"_start_level",
+					Configuration.CATEGORY_GENERAL, (float)ch.defaultStartLevel, 0f, 100f, "Start level of characteristic.");
+			ch.pointsPerLevel = configuration.getFloat(ch.name().toLowerCase()+"_point_per_level",
+					Configuration.CATEGORY_GENERAL, (float)ch.defaultPointsPerLevel, 0f, 100f, "Amount of points added to characteristic every level.");
 		}
 		IblisMod.eventHandler.spawnPlayerZombie = configuration.getBoolean("spawn_player_zombie",
 				Configuration.CATEGORY_GENERAL, true, "Spawn player zombie on players death with all inventory.");

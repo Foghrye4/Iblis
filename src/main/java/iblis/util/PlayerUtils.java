@@ -1,10 +1,16 @@
-package iblis.player;
+package iblis.util;
 
 import java.util.Iterator;
 
+import iblis.player.PlayerCharacteristics;
+import iblis.player.PlayerSkills;
+import iblis.player.SharedIblisAttributes;
 import iblis.world.WorldSavedDataPlayers;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -17,8 +23,12 @@ import net.minecraft.world.World;
 
 public class PlayerUtils {
 
-	public static final int MAX_SPRINT_SPEED = 64;
+	public static final int MAX_SPRINT_SPEED = 32;
+	private static final Int2IntMap knockState = new Int2IntOpenHashMap();
 	private static final Int2IntMap sprintingButtonCounterState = new Int2IntOpenHashMap();
+	private static final Int2ObjectMap<float[]> aimState = new Int2ObjectOpenHashMap<float[]>();
+	public static final int KNOCK_BY_SHIELD = 1;
+	public static final int KNOCK_BY_KICK = 2;
 	
 	private final static String[] ATTRIBUTES_AFFECTED_BY_CRAFTING_SKILL = new String[] {
 			SharedMonsterAttributes.ARMOR.getName(), 
@@ -36,6 +46,8 @@ public class PlayerUtils {
 	}
 
 	public static boolean isCharacteristicCouldBeRaised(PlayerCharacteristics characteristic, EntityPlayer player) {
+		if(!characteristic.enabled)
+			return false;
 		int experienceLevel = player.experienceLevel;
 		long characteristicLevel = characteristic.getCurrentLevel(player);
 		if (characteristicLevel <= experienceLevel
@@ -104,8 +116,17 @@ public class PlayerUtils {
 	}
 	
 	public static int getSprintButtonCounterState(EntityPlayer player) {
-		// Return default value if not specified. '0' for java.
+		// Return default value if not specified. '0' for Java.
 		return sprintingButtonCounterState.get(player.getEntityId());
+	}
+	
+	public static void saveKnockState(EntityPlayer player, int state) {
+		knockState.put(player.getEntityId(), state);
+	}
+	
+	public static int getKnockState(EntityPlayer player) {
+		// Return default value if not specified. '0' for Java.
+		return knockState.get(player.getEntityId());
 	}
 
 	public static boolean canJump(EntityPlayer player) {
@@ -122,14 +143,41 @@ public class PlayerUtils {
 	}
 
 	public static Vec3d getRightHandPosition(EntityPlayer player) {
-		return getVectorForRotation(player.rotationPitch - 15f, player.rotationYaw + 18f);
+		return getVectorForRotation(player.rotationPitch - 15f, player.rotationYaw + 9f);
 	}
 	
-	private static Vec3d getVectorForRotation(float pitch, float yaw) {
+	public static Vec3d getVectorForRotation(float pitch, float yaw) {
 		float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
 		float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
 		float f2 = -MathHelper.cos(-pitch * 0.017453292F);
 		float f3 = MathHelper.sin(-pitch * 0.017453292F);
 		return new Vec3d((double) (f1 * f2), (double) f3, (double) (f * f2));
+	}
+
+	public static double getShootingAccuracyDivider(EntityPlayer playerIn) {
+		int useCount = 0;
+		if(playerIn.isHandActive())
+			useCount = playerIn.getHeldItemMainhand().getMaxItemUseDuration() - playerIn.getItemInUseCount();
+		double sharpshootingSkillValue = PlayerSkills.SHARPSHOOTING.getFullSkillValue(playerIn);
+		return (sharpshootingSkillValue + 1d + useCount * 0.1) * (1d + playerIn.getCooledAttackStrength(0.0F))
+		* (playerIn.isSneaking() ? 2d : 1d) * (playerIn.isSprinting() ? 0.5d : 1d);
+	}
+
+	/**
+	 * @return is pitch and yaw changed for more than 12 degrees **/
+	public static boolean saveAndComparePitchAndYaw(EntityLivingBase player) {
+		float[] savedState = aimState.get(player.getEntityId());
+		if (savedState == null) {
+			savedState = new float[] { player.rotationPitch, player.rotationYaw };
+			aimState.put(player.getEntityId(), savedState);
+			return false;
+		}
+		float dp = savedState[0] - player.rotationPitch;
+		float dy = savedState[1] - player.rotationYaw;
+		savedState[0] = player.rotationPitch;
+		savedState[1] = player.rotationYaw;
+		if(dp*dp+dy*dy>144f)
+			return true;
+		return false;
 	}
 }

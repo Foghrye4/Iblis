@@ -37,4 +37,7 @@ public class ServerProxy {
 		}
 		return null;
 	}
+
+	public void registerRenders() {
+	}
 }

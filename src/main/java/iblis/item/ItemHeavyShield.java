@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import iblis.constants.NBTTagsKeys;
 import iblis.player.SharedIblisAttributes;
-import iblis.util.NBTTagsKeys;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;

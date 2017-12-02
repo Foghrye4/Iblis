@@ -1,8 +1,5 @@
 package iblis.loot;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import iblis.IblisMod;
 import iblis.player.PlayerSkills;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +14,6 @@ public class LootTableParsingEventHandler {
 	private final ResourceLocation libraryLootTable = new ResourceLocation(IblisMod.MODID, "library_loot");
 	/** An array of loot tables which will be adjusted by event handler**/
 	private final String[] lootTablesPath = new String[] {"pyramid","city","jungle_temple","simple_dungeon","library","mansion"};
-	private final Set<String> parsedTables = new HashSet<String>();
 	
 	@SubscribeEvent
 	public void onLootTableParseEvent(LootTableLoadEvent event) {
@@ -25,9 +21,6 @@ public class LootTableParsingEventHandler {
 		if(lootTableDomain.equals(IblisMod.MODID))
 			return;
 		String lootTableName = event.getName().getResourcePath();
-		if(parsedTables.contains(lootTableName))
-			return;
-		parsedTables.add(lootTableName);
 		boolean isLibrary = false;
 		for(String sequenceInPath: lootTablesPath) {
 			if(lootTableName.contains(sequenceInPath)) {

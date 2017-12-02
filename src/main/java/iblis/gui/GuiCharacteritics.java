@@ -5,7 +5,7 @@ import java.io.IOException;
 import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.player.PlayerCharacteristics;
-import iblis.player.PlayerUtils;
+import iblis.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
@@ -49,19 +49,20 @@ public class GuiCharacteritics extends GuiScreen {
 		this.labelList.clear();
 		int row = 0;
 		for (PlayerCharacteristics characteristic : PlayerCharacteristics.values()) {
-				if (PlayerUtils.isCharacteristicCouldBeRaised(characteristic, player)) {
+			if (!characteristic.enabled)
+				continue;
+			if (PlayerUtils.isCharacteristicCouldBeRaised(characteristic, player)) {
 				GuiButtonImage raiseCB = new GuiButtonImage(characteristic.ordinal(), leftMargin,
 						topMargin + (buttonSize + 1) * row, 20, 18, 40, 220, 18, GuiEventHandler.IBLIS_ICONS);
-					this.buttonList.add(raiseCB);
-				}
-				GuiLabelFormatted label = new GuiLabelFormatted(fontRenderer, characteristic.ordinal(),
-						leftMargin + buttonSize + 1, topMargin + 2 + (buttonSize + 1) * row, buttonSize, buttonSize,
-						0xFFAA33);
-				label.addLine(characteristic.getNiceName(),
-						Integer.valueOf(characteristic.getCurrentLevel(player)),
-						Float.valueOf((float) characteristic.getCurrentValue(player)));
-				this.labelList.add(label);
-				row++;
+				this.buttonList.add(raiseCB);
+			}
+			GuiLabelFormatted label = new GuiLabelFormatted(fontRenderer, characteristic.ordinal(),
+					leftMargin + buttonSize + 1, topMargin + 2 + (buttonSize + 1) * row, buttonSize, buttonSize,
+					0xFFAA33);
+			label.addLine(characteristic.getNiceName(), Integer.valueOf(characteristic.getCurrentLevel(player)),
+					Float.valueOf((float) characteristic.getCurrentValue(player)));
+			this.labelList.add(label);
+			row++;
 		}
 	}
 

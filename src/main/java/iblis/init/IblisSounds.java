@@ -21,6 +21,10 @@ public class IblisSounds {
 	public static SoundEvent knife_impact;
 	public static SoundEvent knife_impact_stone;
 	public static SoundEvent knife_fall;
+
+	public static SoundEvent crossbow_cock;
+	public static SoundEvent crossbow_putting_bolt;
+	public static SoundEvent crossbow_shot;
 	
 	public static void register() {
 		book_reading = registerSound("book_reading");
@@ -39,6 +43,9 @@ public class IblisSounds {
 		knife_impact = registerSound("knife_impact");
 		knife_impact_stone = registerSound("knife_impact_stone");
 		knife_fall = registerSound("knife_fall");
+		crossbow_cock = registerSound("crossbow_cock");
+		crossbow_putting_bolt = registerSound("crossbow_putting_bolt");
+		crossbow_shot = registerSound("crossbow_shot");
 	}
 
 	private static SoundEvent registerSound(String soundNameIn) {

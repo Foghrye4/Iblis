@@ -3,9 +3,9 @@ package iblis.crafting;
 import javax.annotation.Nonnull;
 
 import iblis.IblisMod;
+import iblis.constants.NBTTagsKeys;
 import iblis.player.PlayerSkills;
-import iblis.player.PlayerUtils;
-import iblis.util.NBTTagsKeys;
+import iblis.util.PlayerUtils;
 import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

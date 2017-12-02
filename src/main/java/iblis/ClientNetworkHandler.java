@@ -2,6 +2,7 @@ package iblis;
 
 import java.io.IOException;
 
+import iblis.client.ClientRenderEventHandler;
 import iblis.gui.GuiEventHandler;
 import iblis.init.IblisParticles;
 import iblis.player.PlayerCharacteristics;
@@ -10,11 +11,12 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
@@ -27,6 +29,9 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		ByteBuf data = event.getPacket().payload();
 		PacketBuffer byteBufInputStream = new PacketBuffer(data);
 		double posX, posY, posZ, xSpeed, ySpeed, zSpeed;
+		WorldClient world = mc.world;
+		int playerId = 0;
+		Entity entity;
 		switch (ClientCommands.values()[byteBufInputStream.readByte()]) {
 		case REFRESH_GUI:
 			if (mc.currentScreen != null)
@@ -49,7 +54,6 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			double impactVectorY = byteBufInputStream.readDouble();
 			double impactVectorZ = byteBufInputStream.readDouble();
 			int blockStateId = byteBufInputStream.readInt();
-			World world = mc.world;
 			for (int i = 0; i < world.rand.nextInt(8) + 2; i++)
 				world.spawnParticle(EnumParticleTypes.BLOCK_DUST, targetX, targetY, targetZ,
 						-impactVectorX * 0.5 + world.rand.nextFloat() - 0.5f,
@@ -64,7 +68,6 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			impactVectorY = byteBufInputStream.readDouble();
 			impactVectorZ = byteBufInputStream.readDouble();
 			int particleId = byteBufInputStream.readInt();
-			world = mc.world;
 			for (int i = 0; i < world.rand.nextInt(8) + 2; i++)
 				world.spawnParticle(EnumParticleTypes.values()[particleId], targetX, targetY, targetZ,
 						-impactVectorX * 0.5 + world.rand.nextFloat() - 0.5f,
@@ -81,8 +84,46 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			particleId  = byteBufInputStream.readInt();
 			((ClientProxy)IblisMod.proxy).spawnParticle(IblisParticles.values()[particleId], posX, posY, posZ, xSpeed, ySpeed, zSpeed);
 			break;
+		case SPAWN_CUSTOM_PARTICLES:
+			posX = byteBufInputStream.readDouble();
+			posY = byteBufInputStream.readDouble();
+			posZ = byteBufInputStream.readDouble();
+			xSpeed = byteBufInputStream.readDouble();
+			ySpeed = byteBufInputStream.readDouble();
+			zSpeed = byteBufInputStream.readDouble();
+			particleId  = byteBufInputStream.readInt();
+			for (int i = 0; i < world.rand.nextInt(8) + 2; i++) {
+				xSpeed+=world.rand.nextFloat()*0.2f-0.1f;
+				ySpeed+=world.rand.nextFloat()*0.2f-0.1f;
+				zSpeed+=world.rand.nextFloat()*0.2f-0.1f;
+				((ClientProxy)IblisMod.proxy).spawnParticle(IblisParticles.values()[particleId], posX, posY, posZ, xSpeed, ySpeed, zSpeed);
+			}
+			break;
 		case REFRESH_CRAFTING_BUTTONS:
 			GuiEventHandler.instance.refreshTrainCraftingButton();
+			break;
+		case LAUNCH_KICK_ANIMATION:
+			playerId = byteBufInputStream.readInt();
+			float power = byteBufInputStream.readFloat();
+			ClientRenderEventHandler.playerKickAnimationState.put(playerId,
+					ClientRenderEventHandler.PLAYER_KICK_ANIMATION_LENGTH);
+			entity = world.getEntityByID(playerId);
+			if (entity instanceof EntityLivingBase) {
+				EntityLivingBase living = (EntityLivingBase) entity;
+				living.limbSwingAmount = Math.min(1.5f, living.limbSwingAmount + power);
+				if(entity == Minecraft.getMinecraft().player)
+					ClientRenderEventHandler.renderFirstPersonPlayerkickAnimation = 1.7f;
+
+			}
+			break;
+		case LAUNCH_SWING_ANIMATION:
+			playerId = byteBufInputStream.readInt();
+			entity = world.getEntityByID(playerId);
+			if (entity instanceof EntityLivingBase) {
+				EntityLivingBase living = (EntityLivingBase) entity;
+				living.swingArm(living.getActiveHand());
+			}
+			break;
 		default:
 			break;
 		}
@@ -102,17 +143,6 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 
 	@Override
 	public void sendPlayerBookListInfo(EntityPlayerMP playerIn) {
-	}
-
-	public void sendCommandReloadWeapon() {
-		WorldClient world = Minecraft.getMinecraft().world;
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
-		ByteBuf bb = Unpooled.buffer(36);
-		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
-		byteBufOutputStream.writeByte(ServerCommands.RELOAD_WEAPON.ordinal());
-		byteBufOutputStream.writeInt(player.getEntityId());
-		byteBufOutputStream.writeInt(world.provider.getDimension());
-		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
 
 	public void sendCommandApplySprintingSpeedModifier(int sprintCounter) {
@@ -151,12 +181,12 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
 
-	public void sendCommandTrainCraft() {
+	public void sendCommand(ServerCommands command) {
 		WorldClient world = Minecraft.getMinecraft().world;
 		EntityPlayerSP player = Minecraft.getMinecraft().player;
 		ByteBuf bb = Unpooled.buffer(36);
 		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
-		byteBufOutputStream.writeByte(ServerCommands.TRAIN_TO_CRAFT.ordinal());
+		byteBufOutputStream.writeByte(command.ordinal());
 		byteBufOutputStream.writeInt(player.getEntityId());
 		byteBufOutputStream.writeInt(world.provider.getDimension());
 		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));

@@ -19,7 +19,7 @@ public class GuiSkills extends GuiScreen {
 	private EntityPlayerSP player;
 	private final int leftMargin = 40;
 	private final int topMargin = 9;
-	private final int labelHeight = 50;
+	private final int labelHeight = 60;
 	private final int columnWidth = 140;
 
 	public GuiSkills(EntityPlayerSP playerIn) {

@@ -21,30 +21,36 @@ iblis.sprinting_speed=Sprinting speed %d: %0.1f
 iblis.wisdom=Wisdom: %0.1f
 iblis.martial_arts=Martial arts: %0.1f
 iblis.swordsmanship=Swordsmanship: %0.1f
+iblis.parry=Parry: %0.1f
 iblis.archery=Archery: %0.1f
 iblis.throwing=Throwing: %0.1f
 iblis.sharpshooting=Sharpshooting: %0.1f
 iblis.craftmanship=Craftmanship: %0.1f
 iblis.weaponsmith=Weaponsmith: %0.1f
 iblis.armorsmith=Armorsmith: %0.1f
+iblis.mechanics=Mechanics: %0.1f
 iblis.medical_aid=Medical aid: %0.1f
 iblis.digging=Digging: %0.1f
 iblis.acrobatics=Acrobatics: %0.1f
 iblis.running=Running: %0.1f
 iblis.jumping=Jumping: %0.1f
 iblis.falling=Falling: %0.1f
+iblis.equilibrium=Equilibrium: %0.1f
 
 iblis.SWORDSMANSHIP=swordsmanship
+iblis.PARRY=using shields
 iblis.ARCHERY=archery
 iblis.THROWING=throwing weapons
 iblis.SHARPSHOOTING=sharpshooting
 iblis.WEAPONSMITH=weapon smithing
 iblis.ARMORSMITH=armor smithing
+iblis.MECHANICS=mechanics
 iblis.MEDICAL_AID=medical aid
 iblis.DIGGING=mining
 iblis.RUNNING=light athletic
 iblis.JUMPING=acrobatics
 iblis.FALLING=stunt mastery
+iblis.EQUILIBRIUM=equilibristic
 
 iblis.seconds=%d seconds
 iblis.minutes=%d minutes
@@ -99,8 +105,9 @@ item.non-sterile_medkit.name=Sterilize in furnace before use
 item.medkit.name=Medkit
 item.boulder.name=Boulder
 item.iron_throwing_knife.name=Throwing knife
+item.double_crossbow.name=Double crossbow
+item.crossbow_bolt.name=Crossbow bolt
 
 entity.Villager.mechanic=Mechanic
-
 
 iblis.trainCraftTooltip=Do not craft item. Use resources to train only.

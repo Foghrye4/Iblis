@@ -5,9 +5,9 @@ import java.util.Map.Entry;
 import javax.annotation.Nonnull;
 
 import iblis.IblisMod;
+import iblis.constants.NBTTagsKeys;
 import iblis.player.PlayerSkills;
-import iblis.player.PlayerUtils;
-import iblis.util.NBTTagsKeys;
+import iblis.util.PlayerUtils;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -34,9 +34,12 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkill
 	@Override
 	@Nonnull
 	public ItemStack getCraftingResult(@Nonnull InventoryCrafting inv) {
+		ItemStack output = super.getCraftingResult(inv);
+		if(!this.sensitiveSkill.enabled)
+			return output;
 		double skillValue = IblisMod.proxy.getPlayerSkillValue(sensitiveSkill, inv);
 		skillValue -= minimalSkill;
-		return this.getCraftingResult(super.getCraftingResult(inv), skillValue, false);
+		return this.getCraftingResult(output, skillValue, false);
 	}
 	
 	/** Modify item stack and return it instance. Does not create a copy. */

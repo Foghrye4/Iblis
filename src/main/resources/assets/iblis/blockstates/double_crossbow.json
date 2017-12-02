@@ -1,0 +1,136 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "iblis:double_crossbow.obj",
+    "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 30 }, { "y": 135 }, { "z": 0 } ],
+            "translation": [ -0.2, 0, 0 ],
+            "scale": 0.2
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.5, 0, 0 ],
+            "scale": 1
+          },
+          "firstperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0, 0, 0 ],
+            "scale": 1
+          },
+          "ground": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0, 0.4, 0 ],
+            "scale": 0.375
+          }
+        }
+  },
+  "variants": {
+    "inventory": [
+      {
+	      "model": "iblis:double_crossbow_arming_lower_2.obj"
+      }
+    ],
+    "inventory_ammo_1": [
+      {
+	      "model": "iblis:double_crossbow_arming_upper_2.obj"
+      }
+    ],
+    "inventory_no_ammo": [
+      {
+	      "model": "iblis:double_crossbow_discharged.obj"
+      }
+    ],
+   "aiming": [
+      {
+	      "model": "iblis:double_crossbow_arming_lower_2.obj",
+          "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 30 }, { "y": 135 }, { "z": 0 } ],
+            "translation": [ -0.2, 0, 0 ],
+            "scale": 0.2
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": -0.06 }, { "y": -0.13 }, { "z": 0 } ],
+            "translation": [ 0.448, 0.65, -3 ],
+            "scale": 2
+          }
+        }
+      }
+    ],
+   "aiming_ammo_1": [
+      {
+	      "model": "iblis:double_crossbow_arming_upper_2.obj",
+          "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 30 }, { "y": 135 }, { "z": 0 } ],
+            "translation": [ -0.2, 0, 0 ],
+            "scale": 0.2
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": -0.06 }, { "y": -0.13 }, { "z": 0 } ],
+            "translation": [ 0.448, 0.65, -3 ],
+            "scale": 2
+          }
+        }
+      }
+    ],
+   "aiming_no_ammo": [
+      {
+	      "model": "iblis:double_crossbow_discharged.obj",
+          "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 30 }, { "y": 135 }, { "z": 0 } ],
+            "translation": [ -0.2, 0, 0 ],
+            "scale": 0.2
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": -0.06 }, { "y": -0.13 }, { "z": 0 } ],
+            "translation": [ 0.448, 0.65, -3 ],
+            "scale": 2
+          }
+        }
+      }
+    ]
+  }
+}

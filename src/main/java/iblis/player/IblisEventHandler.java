@@ -5,12 +5,15 @@ import java.util.List;
 import com.google.common.collect.Multimap;
 
 import iblis.IblisMod;
+import iblis.constants.NBTTagsKeys;
+import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
 import iblis.init.IblisParticles;
 import iblis.init.IblisPotions;
 import iblis.util.HeadShotHandler;
-import iblis.util.NBTTagsKeys;
+import iblis.util.ModIntegrationUtil;
+import iblis.util.PlayerUtils;
 import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -24,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
@@ -32,6 +36,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -50,11 +55,86 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class IblisEventHandler {
 
 	public boolean spawnPlayerZombie = true;
 	public boolean noDeathPenalty = false;
+
+	@SubscribeEvent
+	public void onPlayerTickEvent(PlayerTickEvent event) {
+		if(event.phase != TickEvent.Phase.START)
+			return;
+		if (event.side == Side.CLIENT)
+			return;
+		EntityPlayer player = event.player;
+		if (player.isSpectator())
+			return;
+		int knock = PlayerUtils.getKnockState(player);
+		if (knock == 0)
+			return;
+		PlayerUtils.saveKnockState(player, 0);
+		if (knock == PlayerUtils.KNOCK_BY_SHIELD && !player.isActiveItemStackBlocking())
+			return;
+		float power = player.getCooledAttackStrength(0);
+		if (power < 0.1f)
+			return;
+		player.resetCooldown();
+		World world = player.world;
+		float f = player.rotationYaw * 0.017453292F;
+		double fx = (double) (-MathHelper.sin(f) * 1.2F);
+		double fz = (double) (MathHelper.cos(f) * 1.2F);
+		List<Entity> list = world.getEntitiesInAABBexcluding(player, player.getEntityBoundingBox().expand(fx, 0, fz),
+				EntitySelectors.getTeamCollisionPredicate(player));
+		double skill = 0;
+		if (knock == PlayerUtils.KNOCK_BY_SHIELD) {
+			skill = PlayerSkills.PARRY.getFullSkillValue(player) + 1.5d;
+			IblisMod.network.launchSwingAnimation(player);
+		}
+		if (knock == PlayerUtils.KNOCK_BY_KICK) {
+			skill = PlayerSkills.SWORDSMANSHIP.getFullSkillValue(player) + 1.5d;
+			IblisMod.network.launchKickAnimation(player, power);
+		}
+		if (list.isEmpty())
+			return;
+		float playerSize = player.height * player.width;
+		boolean playSound = false;
+		float raiseParrySkill = 0f;
+		for (Entity entity : list) {
+			if (player.isRidingSameEntity(entity) || entity.noClip || entity.isBeingRidden())
+				continue;
+			if (!(entity instanceof EntityLivingBase))
+				continue;
+			EntityLivingBase living = (EntityLivingBase) entity;
+			float entitySize = entity.height * entity.width;
+			if (entitySize <= 0.1f)
+				entitySize = 0.1f;
+			double dx = entity.posX - player.posX;
+			double dz = entity.posZ - player.posZ;
+			dx *= fx;
+			dz *= fz;
+			if (dx >= 0d && dz >= 0d) {
+				float strength = (float) skill * (1.0F - entity.entityCollisionReduction) * playerSize / entitySize
+						* 0.2f * power;
+				raiseParrySkill += entitySize;
+				if (strength > 0.3f)
+					living.attackEntityFrom(DamageSource.causePlayerDamage(player), strength);
+				living.knockBack(player, strength, -fx, -fz);
+				playSound = true;
+			}
+		}
+		if (raiseParrySkill > 1f) {
+			if (knock == PlayerUtils.KNOCK_BY_KICK)
+				PlayerSkills.SWORDSMANSHIP.raiseSkill(player, raiseParrySkill);
+			if (knock == PlayerUtils.KNOCK_BY_SHIELD)
+				PlayerSkills.PARRY.raiseSkill(player, raiseParrySkill);
+		}
+		if (playSound)
+			player.playSound(SoundEvents.ITEM_SHIELD_BLOCK, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
+	}
 
 	@SubscribeEvent
 	public void onPlayerGetBreakSpeed(PlayerEvent.BreakSpeed event) {
@@ -173,6 +253,8 @@ public class IblisEventHandler {
 	@SubscribeEvent
 	public void onLivingEntityAttackedEvent(LivingAttackEvent event) {
 		EntityLivingBase target = event.getEntityLiving();
+		if (target.getEntityWorld().isRemote)
+			return;
 		DamageSource source = event.getSource();
 		Entity shooter = source.getTrueSource();
 		if (shooter == null)
@@ -200,7 +282,7 @@ public class IblisEventHandler {
 					}
 				}
 			} else if (event.getSource() instanceof EntityDamageSource) {
-				if (source.damageType.equals("shotgun")) {
+				if (source.damageType.equals("shotgun") || source.damageType.equals("crossbow")) {
 					if (shooter instanceof EntityPlayerMP) {
 						PlayerSkills.SHARPSHOOTING.raiseSkill((EntityPlayer) shooter, target.getAttributeMap()
 								.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
@@ -208,10 +290,24 @@ public class IblisEventHandler {
 				}
 			}
 		}
+		if (target instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) target;
+			IAttributeInstance kr = player.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
+			double svalue = PlayerSkills.EQUILIBRIUM.getFullSkillValue(player);
+			kr.removeModifier(SharedIblisAttributes.EQUILIBRIUM_KNOCKBACK_MODIFIER);
+			kr.applyModifier(new AttributeModifier(
+					SharedIblisAttributes.EQUILIBRIUM_KNOCKBACK_MODIFIER, "Equilibrium modifier",
+					1 - 1 / ++svalue, 0));
+			if (player.canBlockDamageSource(source))
+				PlayerSkills.PARRY.raiseSkill(player, 1.0d);
+			PlayerSkills.EQUILIBRIUM.raiseSkill(player, 1.0d);
+		}
 	}
 
 	@SubscribeEvent
 	public void onNockEvent(LivingEntityUseItemEvent event) {
+		if (!PlayerSkills.ARCHERY.enabled)
+			return;
 		if (!(event.getEntityLiving() instanceof EntityPlayer))
 			return;
 		if (!(event.getItem().getItem() instanceof ItemBow))
@@ -232,21 +328,63 @@ public class IblisEventHandler {
 
 	@SubscribeEvent
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
-		if(event.getWorld().isRemote)
+		if (event.getWorld().isRemote)
 			return;
-		if (event.getEntity() instanceof EntityArrow) {
+		if (ModIntegrationUtil.isArrow(event.getEntity())) {
+			if (!PlayerSkills.ARCHERY.enabled && !PlayerSkills.MECHANICS.enabled)
+				return;
 			EntityArrow arrow = (EntityArrow) event.getEntity();
-			if (arrow.shootingEntity instanceof EntityPlayerMP && !(arrow instanceof EntityThrowingKnife)) {
+			if (arrow.shootingEntity instanceof EntityPlayerMP) {
 				EntityPlayerMP player = (EntityPlayerMP) arrow.shootingEntity;
 				double arrowDamage = (arrow.getDamage() - 3.0d + player.getAttributeMap()
-						.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue())
-						* (PlayerSkills.ARCHERY.getFullSkillValue(player) + 0.2d);
+						.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue());
+				if (PlayerSkills.ARCHERY.enabled)
+					arrowDamage *= PlayerSkills.ARCHERY.getFullSkillValue(player) + 0.2d;
 				if (arrowDamage > 0.25d)
 					arrow.setDamage(arrowDamage);
 				else
 					arrow.setDamage(0.25d);
 			} else {
 				arrow.setDamage(arrow.getDamage() * 0.5);
+			}
+		}
+		else if(ModIntegrationUtil.isCustomModBolt(event.getEntity())){
+			EntityArrow bolt = (EntityArrow) event.getEntity();
+			if (bolt.shootingEntity instanceof EntityPlayerMP && PlayerSkills.SHARPSHOOTING.enabled) {
+				EntityPlayerMP player = (EntityPlayerMP) bolt.shootingEntity;
+				double divider = PlayerUtils.getShootingAccuracyDivider(player) / 10f;
+				double aimRandX = event.getWorld().rand.nextDouble() - 0.5d;
+				double aimRandY = event.getWorld().rand.nextDouble() - 0.5d;
+				double aimRandZ = event.getWorld().rand.nextDouble() - 0.5d;
+				aimRandX/=divider;
+				aimRandY/=divider;
+				aimRandZ/=divider;
+				bolt.motionX+=aimRandX;
+				bolt.motionY+=aimRandY;
+				bolt.motionZ+=aimRandZ;
+				PlayerSkills.SHARPSHOOTING.raiseSkill(player, 1.0);
+			}
+		}
+		else if(ModIntegrationUtil.isCustomModThrowable(event.getEntity())){
+			EntityArrow bolt = (EntityArrow) event.getEntity();
+			if (bolt.shootingEntity instanceof EntityPlayerMP && PlayerSkills.THROWING.enabled) {
+				EntityPlayerMP player = (EntityPlayerMP) bolt.shootingEntity;
+				double skill = PlayerSkills.THROWING.getFullSkillValue(player) + 1.0d;
+				double divider = skill / 2f;
+				float speedMultiplier = (float) skill / 10f;
+				double aimRandX = event.getWorld().rand.nextDouble() - 0.5d;
+				double aimRandY = event.getWorld().rand.nextDouble() - 0.5d;
+				double aimRandZ = event.getWorld().rand.nextDouble() - 0.5d;
+				aimRandX/=divider;
+				aimRandY/=divider;
+				aimRandZ/=divider;	
+				bolt.motionX+=aimRandX;
+				bolt.motionY+=aimRandY;
+				bolt.motionZ+=aimRandZ;
+				bolt.motionX*=speedMultiplier;
+				bolt.motionY*=speedMultiplier;
+				bolt.motionZ*=speedMultiplier;
+				PlayerSkills.THROWING.raiseSkill(player, 1.0);
 			}
 		}
 		if (event.getEntity() instanceof EntityPlayerMP) {

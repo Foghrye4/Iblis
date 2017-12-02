@@ -1,6 +1,8 @@
 package iblis.init;
 
 import iblis.IblisMod;
+import iblis.item.ItemCrossbow;
+import iblis.item.ItemCrossbowReloading;
 import iblis.item.ItemGuideBook;
 import iblis.item.ItemHeavyShield;
 import iblis.item.ItemMedkit;
@@ -19,6 +21,9 @@ public class IblisItems {
 	public static Item SHOTGUN;
 	public static Item SHOTGUN_RELOADING;
 	public static Item SHOTGUN_BULLET;
+	public static Item CROSSBOW;
+	public static Item CROSSBOW_RELOADING;
+	public static Item CROSSBOW_BOLT;
 	public static Item INGOT_STEEL;
 	public static Item NONSTERILE_MEDKIT;
 	public static Item MEDKIT;
@@ -26,12 +31,14 @@ public class IblisItems {
 	public static Item IRON_THROWING_KNIFE;
 	public static Item HEAVY_SHIELD;
 	
-	
 	public static void init(){
 		GUIDE = new ItemGuideBook();
 		SHOTGUN = new ItemShotgun();
 		SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
 		SHOTGUN_BULLET = new Item();
+		CROSSBOW = new ItemCrossbow();
+		CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
+		CROSSBOW_BOLT = new Item();
 		INGOT_STEEL = new Item();
 		NONSTERILE_MEDKIT = new Item();
 		MEDKIT = new ItemMedkit();
@@ -60,6 +67,24 @@ public class IblisItems {
 		SHOTGUN_BULLET.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("shotgun_bullet")
 			.setRegistryName(IblisMod.MODID, "shotgun_bullet")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(64);
+		CROSSBOW.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("double_crossbow")
+			.setRegistryName(IblisMod.MODID, "double_crossbow")
+			.setHasSubtypes(false)
+			.setMaxDamage(1561)
+			.setMaxStackSize(1);
+		CROSSBOW_RELOADING.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("double_crossbow")
+			.setRegistryName(IblisMod.MODID, "double_crossbow_reloading")
+			.setHasSubtypes(true)
+			.setMaxDamage(1561)
+			.setMaxStackSize(1);
+		CROSSBOW_BOLT.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("crossbow_bolt")
+			.setRegistryName(IblisMod.MODID, "crossbow_bolt")
 			.setHasSubtypes(false)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
@@ -99,11 +124,13 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(600)
 			.setMaxStackSize(1);
-		
 		registerItem(GUIDE);
 		registerItem(SHOTGUN);
 		registerItem(SHOTGUN_RELOADING);
 		registerItem(SHOTGUN_BULLET);
+		registerItem(CROSSBOW);
+		registerItem(CROSSBOW_RELOADING);
+		registerItem(CROSSBOW_BOLT);
 		registerItem(INGOT_STEEL);
 		registerItem(NONSTERILE_MEDKIT);
 		registerItem(MEDKIT);
@@ -124,22 +151,6 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 2,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide_opened"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 1,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading_1"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 2,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading_2"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 3,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading_3"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 4,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading_4"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 5,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading_5"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_RELOADING, 6,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"six_barrels_shotgun_reloading_6"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_BULLET, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_bullet"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT_STEEL, 0,

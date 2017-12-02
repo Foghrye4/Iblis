@@ -222,7 +222,228 @@
                 }
            ]
         },
+        {
+	    	"name":"PARRY_level_0",
+            "rolls": 1,
+            "entries": [
                 {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"PARRY_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"PARRY_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"PARRY_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"PARRY_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"PARRY_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"PARRY_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"PARRY_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"PARRY_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"PARRY\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+        {
 	    	"name":"ARCHERY_level_0",
             "rolls": 1,
             "entries": [
@@ -1320,6 +1541,227 @@
 						{
                             "function": "minecraft:set_nbt",
                             "tag": "{skills:[{name:\"WEAPONSMITH\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"MECHANICS_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"MECHANICS_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"MECHANICS\",value:2.0d}]}"
                       	}
                     ]
                 }
@@ -2477,6 +2919,227 @@
 						{
                             "function": "minecraft:set_nbt",
                             "tag": "{skills:[{name:\"FALLING\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_1",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"EQUILIBRIUM_level_3",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_5",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_7",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"EQUILIBRIUM_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{skills:[{name:\"EQUILIBRIUM\",value:2.0d}]}"
                       	}
                     ]
                 }

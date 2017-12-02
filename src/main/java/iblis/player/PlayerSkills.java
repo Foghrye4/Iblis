@@ -7,16 +7,19 @@ import net.minecraft.entity.player.EntityPlayer;
 public enum PlayerSkills {
 
 	SWORDSMANSHIP(SharedIblisAttributes.SWORDSMANSHIP,0.001f),
+	PARRY(SharedIblisAttributes.PARRY,0.001f),
 	ARCHERY(SharedIblisAttributes.ARCHERY,0.001f),
 	THROWING(SharedIblisAttributes.THROWING,0.0002f),
 	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001f),
 	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02f),
 	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02f),
+	MECHANICS(SharedIblisAttributes.MECHANICS,0.02f),
 	MEDICAL_AID(SharedIblisAttributes.MEDICAL_AID,0.02f),
 	DIGGING(SharedIblisAttributes.DIGGING,0.001f),
 	RUNNING(SharedIblisAttributes.RUNNING,0.0001f),
 	JUMPING(SharedIblisAttributes.JUMPING,0.001f), 
-	FALLING(SharedIblisAttributes.FALLING,0.02f);
+	FALLING(SharedIblisAttributes.FALLING,0.02f),
+	EQUILIBRIUM(SharedIblisAttributes.EQUILIBRIUM,0.001f);
 	
 	public double pointsPerLevel;
 	public final float defaultPointsPerLevel;

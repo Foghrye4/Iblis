@@ -3,6 +3,7 @@ package iblis.init;
 import java.util.ArrayList;
 import java.util.List;
 
+import iblis.IblisMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -29,6 +30,7 @@ public class RegistryEventHandler {
 	public void registerItems(RegistryEvent.Register<Item> event) {
 		for(Item item:items)
 			event.getRegistry().register(item);
+		IblisMod.proxy.registerRenders();
 	}
 	
 	@SubscribeEvent

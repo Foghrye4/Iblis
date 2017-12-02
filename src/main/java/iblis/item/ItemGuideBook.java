@@ -7,10 +7,10 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import iblis.IblisMod;
+import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
-import iblis.player.PlayerUtils;
-import iblis.util.NBTTagsKeys;
+import iblis.util.PlayerUtils;
 import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;

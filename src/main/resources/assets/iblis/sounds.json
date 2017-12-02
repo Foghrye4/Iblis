@@ -95,5 +95,23 @@
     "sounds": [
     	{ "name": "iblis:knife_fall", "stream": false }
     ]
+	},
+  "crossbow_shot": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:crossbow_shot", "stream": false }
+    ]
+	},
+  "crossbow_putting_bolt": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:crossbow_putting_bolt", "stream": false }
+    ]
+	},
+  "crossbow_cock": {
+    "category": "neutral",
+    "sounds": [
+    	{ "name": "iblis:crossbow_cock", "stream": false }
+    ]
 	}
 }
