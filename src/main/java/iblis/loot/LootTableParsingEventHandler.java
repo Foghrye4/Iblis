@@ -5,50 +5,78 @@ import iblis.player.PlayerSkills;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableManager;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LootTableParsingEventHandler {
 
-	private final static int MAX_LOOT_LEVEL = 8;
+	private final static int MAX_LOOT_LEVEL = 16;
 	private final ResourceLocation libraryLootTable = new ResourceLocation(IblisMod.MODID, "library_loot");
-	/** An array of loot tables which will be adjusted by event handler**/
-	private final String[] lootTablesPath = new String[] {"pyramid","city","jungle_temple","simple_dungeon","library","mansion"};
-	
+	private final ResourceLocation dungeonLootTable = new ResourceLocation(IblisMod.MODID, "dungeon_loot");
+	/** An array of loot tables which will be adjusted by event handler **/
+	private final String[] lootTablesPath = new String[] { "pyramid", "city", "jungle_temple", "simple_dungeon",
+			"library", "mansion" };
+
 	@SubscribeEvent
 	public void onLootTableParseEvent(LootTableLoadEvent event) {
 		String lootTableDomain = event.getName().getResourceDomain();
-		if(lootTableDomain.equals(IblisMod.MODID))
+		if (lootTableDomain.equals(IblisMod.MODID))
 			return;
 		String lootTableName = event.getName().getResourcePath();
-		boolean isLibrary = false;
-		for(String sequenceInPath: lootTablesPath) {
-			if(lootTableName.contains(sequenceInPath)) {
-				isLibrary = true;
+		if (lootTableDomain.equals("labyrinth")) {
+			this.handleLabyrinthLootTables(event.getLootTableManager(), event.getTable(), lootTableName);
+			return;
+		}
+		boolean skipLoadLoot = true;
+		for(String allowedLoot:lootTablesPath){
+			if(lootTableName.contains(allowedLoot)) {
+				skipLoadLoot = false;
 				break;
 			}
 		}
-		if(!isLibrary)
+		if(skipLoadLoot)
 			return;
 		LootTable table = event.getTable();
-		int lootLevel = 0;
-		if (lootTableName.contains("level")) {
-			String intInput = trimNonNumericCharacters(lootTableName);
-			if (!intInput.isEmpty())
-				lootLevel = Integer.parseInt(intInput);
-			if (lootLevel > MAX_LOOT_LEVEL)
-				lootLevel = MAX_LOOT_LEVEL;
+		LootTable iblisLootTable = event.getLootTableManager().getLootTableFromLocation(libraryLootTable);
+		for (PlayerSkills skill : PlayerSkills.values()) {
+			String skillName = skill.name();
+			LootPool pool = iblisLootTable.getPool(skillName + "_level_" + 0);
+			if (pool != null)
+				table.addPool(pool);
 		}
-		if(isLibrary) {
-			LootTable iblisLootTable = event.getLootTableManager().getLootTableFromLocation(libraryLootTable);
-			for (PlayerSkills skill : PlayerSkills.values()) {
-				String skillName = skill.name();
-				LootPool pool = iblisLootTable.getPool(skillName + "_level_" + lootLevel);
-				if (pool != null)
-					table.addPool(pool);
-				else
-					IblisMod.log.error("Error gaining pool for " + skillName + " and level " + lootLevel);
-			}
+	}
+
+	private void handleLabyrinthLootTables(LootTableManager lootTableManager, LootTable lootTable,
+			String lootTableName) {
+		int lootLevel = 0;
+		String intInput = trimNonNumericCharacters(lootTableName);
+		if (!intInput.isEmpty())
+			lootLevel = Integer.parseInt(intInput);
+		if (lootLevel > MAX_LOOT_LEVEL)
+			lootLevel = MAX_LOOT_LEVEL;
+		if (lootTableName.contains("library_loot_tables"))
+			handleLabyrinthLibraryLootTable(lootTableManager, lootTable, lootLevel);
+		else if (lootTableName.contains("dungeon_loot_tables"))
+			handleLabyrinthDungeonLootTable(lootTableManager, lootTable, lootLevel);
+	}
+
+	private void handleLabyrinthDungeonLootTable(LootTableManager lootTableManager, LootTable lootTable,
+			int lootLevel) {
+		LootTable iblisLootTable = lootTableManager.getLootTableFromLocation(dungeonLootTable);
+		LootPool pool = iblisLootTable.getPool("level_" + lootLevel);
+		if (pool != null)
+			lootTable.addPool(pool);
+	}
+
+	private void handleLabyrinthLibraryLootTable(LootTableManager lootTableManager, LootTable lootTable,
+			int lootLevel) {
+		LootTable iblisLootTable = lootTableManager.getLootTableFromLocation(libraryLootTable);
+		for (PlayerSkills skill : PlayerSkills.values()) {
+			String skillName = skill.name();
+			LootPool pool = iblisLootTable.getPool(skillName + "_level_" + lootLevel);
+			if (pool != null)
+				lootTable.addPool(pool);
 		}
 	}
 

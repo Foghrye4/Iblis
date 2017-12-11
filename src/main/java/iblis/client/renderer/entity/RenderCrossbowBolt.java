@@ -1,5 +1,7 @@
 package iblis.client.renderer.entity;
 
+import org.lwjgl.opengl.GL11;
+
 import iblis.entity.EntityCrossbowBolt;
 import iblis.init.IblisItems;
 import net.minecraft.client.renderer.GlStateManager;
@@ -38,8 +40,8 @@ public class RenderCrossbowBolt extends Render<EntityCrossbowBolt> {
 				entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F,
 				1.0F, 0.0F);
 		GlStateManager.rotate(
-				entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F,
-				1.0F);
+				entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, -1.0F, 0.0F,
+				0.0F);
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.alphaFunc(516, 0.1F);
 		GlStateManager.enableBlend();

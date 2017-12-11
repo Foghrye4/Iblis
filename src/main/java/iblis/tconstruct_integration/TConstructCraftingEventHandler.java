@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import slimeknights.tconstruct.library.events.TinkerCraftingEvent;
 import slimeknights.tconstruct.library.tools.TinkerToolCore;
 import slimeknights.tconstruct.library.tools.ranged.ProjectileLauncherCore;
 import slimeknights.tconstruct.library.utils.Tags;
-import slimeknights.tconstruct.library.events.TinkerCraftingEvent;
 
 public class TConstructCraftingEventHandler {
 
@@ -39,6 +39,8 @@ public class TConstructCraftingEventHandler {
 
 	@SubscribeEvent
 	public void onTinkerCraftingEvent(TinkerCraftingEvent event) {
+		if (event.getPlayer() != null)
+			return;
 		if (event.getPlayer() == null)
 			return;
 		ItemStack tool = event.getItemStack();
@@ -63,19 +65,19 @@ public class TConstructCraftingEventHandler {
 		skillValue = sensitiveSkill.getFullSkillValue(event.getPlayer());
 		skillValue -= requiredSkill;
 		tag.setInteger("quality", (int) skillValue);
-		int durability = statsBase.getInteger(Tags.DURABILITY);
+		int durability = stats.getInteger(Tags.DURABILITY);
 		durability = PlayerUtils.modifyIntValueBySkill(false, durability, skillValue);
 		stats.setInteger(Tags.DURABILITY, durability);
 		if (sensitiveSkill == PlayerSkills.MECHANICS)
-			this.handleProjectileLauncherTags(stats, statsBase, skillValue);
+			this.handleProjectileLauncherTags(stats, skillValue);
 		if (sensitiveSkill == PlayerSkills.WEAPONSMITH)
-			this.handleToolsTags(stats, statsBase, skillValue);
+			this.handleToolsTags(stats, skillValue);
 	}
 
-	private void handleProjectileLauncherTags(NBTTagCompound tag, NBTTagCompound tagBase, double skillValue) {
-		float drawSpeed = tagBase.getFloat(Tags.DRAWSPEED);
-		float range = tagBase.getFloat(Tags.RANGE);
-		float damage = tagBase.getFloat(Tags.PROJECTILE_BONUS_DAMAGE);
+	private void handleProjectileLauncherTags(NBTTagCompound tag, double skillValue) {
+		float drawSpeed = tag.getFloat(Tags.DRAWSPEED);
+		float range = tag.getFloat(Tags.RANGE);
+		float damage = tag.getFloat(Tags.PROJECTILE_BONUS_DAMAGE);
 		drawSpeed = (float) PlayerUtils.modifyDoubleValueBySkill(false, drawSpeed, skillValue);
 		tag.setFloat(Tags.DRAWSPEED, drawSpeed);
 		range = (float) PlayerUtils.modifyDoubleValueBySkill(false, range, skillValue);
@@ -84,15 +86,14 @@ public class TConstructCraftingEventHandler {
 		tag.setFloat(Tags.PROJECTILE_BONUS_DAMAGE, damage);
 	}
 
-	private void handleToolsTags(NBTTagCompound tag, NBTTagCompound tagBase, double skillValue) {
-		float attack = tagBase.getFloat(Tags.ATTACK);
-		float speed = tagBase.getFloat(Tags.MININGSPEED);
-		float attackSpeedMultiplier = tagBase.getFloat(Tags.ATTACKSPEEDMULTIPLIER);
+	private void handleToolsTags(NBTTagCompound tag, double skillValue) {
+		float attack = tag.getFloat(Tags.ATTACK);
+		float speed = tag.getFloat(Tags.MININGSPEED);
+		float attackSpeedMultiplier = tag.getFloat(Tags.ATTACKSPEEDMULTIPLIER);
 		attack = (float) PlayerUtils.modifyDoubleValueBySkill(false, attack, skillValue);
 		tag.setFloat(Tags.ATTACK, attack);
 		speed = (float) PlayerUtils.modifyDoubleValueBySkill(false, speed, skillValue);
 		tag.setFloat(Tags.MININGSPEED, speed);
-		tagBase.setFloat(Tags.MININGSPEED, speed);
 		attackSpeedMultiplier = (float) PlayerUtils.modifyDoubleValueBySkill(false, attackSpeedMultiplier, skillValue);
 		tag.setFloat(Tags.ATTACKSPEEDMULTIPLIER, attackSpeedMultiplier);
 	}
@@ -103,7 +104,7 @@ public class TConstructCraftingEventHandler {
 		float attack = tagBase.getFloat(Tags.ATTACK);
 		float speed = tagBase.getFloat(Tags.MININGSPEED);
 		float attackSpeedMultiplier = tagBase.getFloat(Tags.ATTACKSPEEDMULTIPLIER);
-		double requiredSkill = durability / 300d - 5.0d;
+		double requiredSkill = durability / 500d - 5.0d;
 		requiredSkill += attack;
 		requiredSkill += speed;
 		requiredSkill += harvestLevel;
@@ -116,7 +117,7 @@ public class TConstructCraftingEventHandler {
 		float drawSpeed = tagBase.getFloat(Tags.DRAWSPEED);
 		float range = tagBase.getFloat(Tags.RANGE);
 		float damage = tagBase.getFloat(Tags.PROJECTILE_BONUS_DAMAGE);
-		double requiredSkill = durability / 300d - 5.0d;
+		double requiredSkill = durability / 500d - 5.0d;
 		requiredSkill += drawSpeed;
 		requiredSkill += range;
 		requiredSkill += damage;

@@ -11,7 +11,10 @@ import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.player.SharedIblisAttributes;
 import iblis.util.PlayerUtils;
+import iblis.util.IblisMathHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -22,11 +25,16 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemShotgun extends ItemFirearmsBase {
@@ -54,8 +62,36 @@ public class ItemShotgun extends ItemFirearmsBase {
 		RayTraceResult rtr = worldIn.rayTraceBlocks(vec3d, vec3d2, false, true, true);
 		if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
 			vec3d2 = rtr.hitVec;
-			int bsId = Block.getStateId(worldIn.getBlockState(rtr.getBlockPos()));
+			BlockPos pos = rtr.getBlockPos();
+			IBlockState bstate = worldIn.getBlockState(pos);
+			while(rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK 
+					&& bstate.getMaterial() == Material.LEAVES){
+				Vec3d vec3d3 = vec3d2.addVector(aim.x * 1.8, aim.y * 1.8, aim.z * 1.8);
+				Vec3d vec3d4 = vec3d2.addVector(aim.x * blockReachDistance, aim.y * blockReachDistance,
+						aim.z * blockReachDistance);
+				rtr = worldIn.rayTraceBlocks(vec3d3, vec3d4, false, true, true);
+				vec3d2 = rtr.hitVec;
+				pos = rtr.getBlockPos();
+				bstate = worldIn.getBlockState(pos);
+			}
+			int bsId = Block.getStateId(bstate);
 			IblisMod.network.spawnBlockParticles((EntityPlayerMP) playerIn, vec3d2, aim, bsId);
+			if ((bstate.getMaterial() == Material.GLASS || bstate.getMaterial() == Material.ICE)
+					&& bstate.getBlockHardness(worldIn, pos) < 0.6f) {
+				if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(worldIn, pos, bstate, playerIn))) {
+	                IblisMod.network.playEvent(playerIn, 2001, pos, Block.getStateId(bstate));
+					Block block = bstate.getBlock();
+					// Explosion to avoid NPE
+					Explosion explosion = new Explosion(worldIn, playerIn, vec3d2.x, vec3d2.y, vec3d2.z, 1, false, true);
+					if (block.canDropFromExplosion(explosion)) {
+						bstate.getBlock().dropBlockAsItemWithChance(worldIn, pos, bstate, 1.0F, 0);
+					}
+					block.onBlockExploded(worldIn, pos, explosion);
+				}
+			}
+			else {
+				IblisMod.network.addDecal(worldIn, vec3d2, IblisParticles.BULLET_HOLE, rtr.sideHit);
+			}
 		}
 		double bulletDamage = playerIn.getAttributeMap()
 				.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue();
@@ -82,9 +118,11 @@ public class ItemShotgun extends ItemFirearmsBase {
 					target.getPositionVector().add(new Vec3d(0, 2, 0)), new Vec3d(0d, 0.2d, 0d),
 					IblisParticles.HEADSHOT);
 		}
-		Vec3d rightHandPos = PlayerUtils.getRightHandPosition(playerIn);
-		worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, playerIn.posX + rightHandPos.x,
-				playerIn.posY + rightHandPos.y + playerIn.eyeHeight, playerIn.posZ + rightHandPos.z, 0, 0.1, 0);
+		Vec3d rightHandPos = Vec3d.ZERO;
+		if(!playerIn.isHandActive())
+			rightHandPos = PlayerUtils.getRightHandPosition(playerIn);
+		IblisMod.network.spawnParticle(playerIn, playerIn.posX + rightHandPos.x, playerIn.posY + rightHandPos.y + playerIn.eyeHeight, playerIn.posZ + rightHandPos.z, 
+				0.0d,0.1d,0.0d,EnumParticleTypes.SMOKE_NORMAL);
 		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shoot,
 				SoundCategory.PLAYERS, 1.0f, 1.0f);
 	}
@@ -112,9 +150,12 @@ public class ItemShotgun extends ItemFirearmsBase {
 	}
 
 	@Override
-	public void playReloadingSoundEffect(EntityPlayerMP player) {
+	public void playReloadingSoundEffect(EntityPlayer player) {
 		World world = player.getEntityWorld();
 		world.playSound(null, player.posX, player.posY, player.posZ, IblisSounds.shotgun_charging,
 				SoundCategory.PLAYERS, 1.0f, world.rand.nextFloat() * 0.2f + 0.8f);
 	}
+
+	@Override
+	public void playDropBowstringSoundEffect(EntityPlayer playerIn) {}
 }

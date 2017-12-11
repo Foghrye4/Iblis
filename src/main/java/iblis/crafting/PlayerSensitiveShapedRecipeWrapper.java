@@ -70,4 +70,8 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkill
 		output1.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
 		return output1;
 	}
+
+	public double getRequiredSkill() {
+		return this.minimalSkill;
+	}
 }

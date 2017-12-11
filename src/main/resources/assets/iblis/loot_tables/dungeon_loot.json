@@ -7,6 +7,17 @@
                 {
 	               	"weight": 4,
                     "type": "item",
+                    "name": "iblis:trigger_spring"
+                }
+           ]
+        },
+        {
+	    	"name":"level_9",
+            "rolls": 1,
+            "entries": [
+                {
+	               	"weight": 4,
+                    "type": "item",
                     "name": "iblis:ingot_steel"
                 },
                 {
@@ -25,5 +36,6 @@
                 }
            ]
         }
+        
     ]
 }

@@ -101,7 +101,6 @@ public class RenderThrowingKnife extends Render<EntityThrowingKnife> {
 		
 	}
 
-	
 	private void drawBox(double x1, double y1, double z1,
 			double x2, double y2, double z2, 
 			double u1, double u2, double v1, double v2){

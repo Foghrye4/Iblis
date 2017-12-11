@@ -9,6 +9,7 @@ import iblis.constants.NBTTagsKeys;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
+import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
 import iblis.init.IblisPotions;
 import iblis.util.HeadShotHandler;
@@ -37,6 +38,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -306,15 +308,29 @@ public class IblisEventHandler {
 
 	@SubscribeEvent
 	public void onNockEvent(LivingEntityUseItemEvent event) {
-		if (!PlayerSkills.ARCHERY.enabled)
-			return;
 		if (!(event.getEntityLiving() instanceof EntityPlayer))
 			return;
-		if (!(event.getItem().getItem() instanceof ItemBow))
+		boolean isBow = event.getItem().getItem() instanceof ItemBow;
+		boolean isCrossbow = event.getItem().getItem() == IblisItems.CROSSBOW_RELOADING;
+		if (!(isBow || isCrossbow))
+			return;
+		if (isBow && !PlayerSkills.ARCHERY.enabled)
+			return;
+		if (isCrossbow && !PlayerSkills.SHARPSHOOTING.enabled)
 			return;
 		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-		double skillValue = PlayerSkills.ARCHERY.getFullSkillValue(player) + 1.0d;
-		if (event.getDuration() % (int) (128.0d / skillValue) == 0)
+		double skillValue = 0d;
+		if(isBow)
+			skillValue = PlayerSkills.ARCHERY.getFullSkillValue(player) + 1.0d;
+		else
+			skillValue = PlayerSkills.SHARPSHOOTING.getFullSkillValue(player) + 1.0d;
+		int duration = event.getDuration();
+		int use = player.getItemInUseCount();
+		int max = player.getItemInUseMaxCount();
+		// To avoid skipping crossbow animation
+		if (isCrossbow && (max <= 14 || use <= 8))
+			return;
+		if (duration % (int) (128.0d / skillValue) == 0)
 			event.setDuration(event.getDuration() - 1);
 	}
 

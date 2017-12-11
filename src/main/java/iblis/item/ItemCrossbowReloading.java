@@ -6,6 +6,7 @@ import iblis.init.IblisSounds;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem {
 
 	private final Item gunBase;
+	public final static int ARMING_ONE_BOLT_TIME = 130;
 
 	public ItemCrossbowReloading(Item gunBaseIn) {
 		super();
@@ -33,7 +35,7 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 			stack.setTagCompound(nbt);
 		}
 		int ammoAmount = nbt.getInteger(NBTTagsKeys.AMMO);
-		if(ammoAmount>=2) {
+		if (ammoAmount >= 2) {
 			ItemStack loadedGunStack = new ItemStack(gunBase, 1, stack.getItemDamage());
 			loadedGunStack.setTagCompound(nbt);
 			playerIn.resetCooldown();
@@ -55,8 +57,25 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 			nbt = new NBTTagCompound();
 			stack.setTagCompound(nbt);
 		}
-		ItemStack ammo = this.findAmmo(playerIn);
-		this.reloadAmmo(worldIn, ammo, playerIn, nbt, stack.getTagCompound().getInteger(NBTTagsKeys.AMMO));
+		int cockedBowstring = 0;
+		int ammo = 0;
+		if (stack.hasTagCompound()) {
+			cockedBowstring = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
+			ammo = stack.getTagCompound().getInteger(NBTTagsKeys.AMMO);
+		}
+		if (ammo >= 2) {
+			ItemStack loadedGunStack = new ItemStack(gunBase, 1, stack.getItemDamage());
+			loadedGunStack.setTagCompound(nbt);
+			return loadedGunStack;
+		}
+		if (ammo >= cockedBowstring) {
+			cockedBowstring++;
+			stack.getTagCompound().setInteger(NBTTagsKeys.COCKED_STATE, cockedBowstring);
+			return stack;
+		} else {
+			ItemStack ammoStack = this.findAmmo((EntityPlayer) playerIn);
+			this.reloadAmmo(worldIn, ammoStack, (EntityPlayer) playerIn, stack.getTagCompound(), ammo);
+		}
 		return stack;
 	}
 
@@ -68,28 +87,33 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 			player.inventory.deleteStack(ammo);
 		}
 	}
-	
+
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return 130;
-    }
+		int cockedBowstring = 0;
+		int ammo = 0;
+		if (stack.hasTagCompound()) {
+			cockedBowstring = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
+			ammo = stack.getTagCompound().getInteger(NBTTagsKeys.AMMO);
+		}
+		if (ammo >= cockedBowstring)
+			return 15;
+		else
+			return ARMING_ONE_BOLT_TIME - 15;
+	}
 
 	private ItemStack findAmmo(EntityPlayer player) {
 		if (this.isShot(player.getHeldItem(EnumHand.OFF_HAND))) {
 			return player.getHeldItem(EnumHand.OFF_HAND);
 		} else if (this.isShot(player.getHeldItem(EnumHand.MAIN_HAND))) {
 			return player.getHeldItem(EnumHand.MAIN_HAND);
-		} else {
-			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-				ItemStack itemstack = player.inventory.getStackInSlot(i);
-
-				if (this.isShot(itemstack)) {
-					return itemstack;
-				}
-			}
-
-			return ItemStack.EMPTY;
 		}
+		for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
+			ItemStack itemstack = player.inventory.getStackInSlot(i);
+			if (this.isShot(itemstack))
+				return itemstack;
+		}
+		return ItemStack.EMPTY;
 	}
 
 	protected boolean isShot(ItemStack stack) {
@@ -109,15 +133,25 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 		playerIn.resetCooldown();
 		playerIn.setHeldItem(handIn, loadedGunStack);
 	}
-	
+
+	// 'count' value is in decreasing order. Here only sound.
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase playerIn, int count) {
+		if (!(playerIn instanceof EntityPlayer))
+			return;
+		if (count != 4)
+			return;
 		World worldIn = playerIn.world;
-		int maxDuration = this.getMaxItemUseDuration(stack);
-		if (count == maxDuration - 14) {
+		int cockedBowstring = 0;
+		int ammo = 0;
+		if (stack.hasTagCompound()) {
+			cockedBowstring = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
+			ammo = stack.getTagCompound().getInteger(NBTTagsKeys.AMMO);
+		}
+		if (ammo >= cockedBowstring) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.crossbow_cock,
 					SoundCategory.PLAYERS, 0.8f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
-		} else if (count == 16) {
+		} else {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.crossbow_putting_bolt,
 					SoundCategory.PLAYERS, 0.4f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 		}

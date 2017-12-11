@@ -7,12 +7,15 @@ import iblis.IblisMod;
 import iblis.ServerNetworkHandler.ServerCommands;
 import iblis.client.ClientGameEventHandler;
 import iblis.crafting.IRecipeRaiseSkill;
+import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.init.IblisItems;
 import iblis.item.ItemFirearmsBase;
 import iblis.item.ItemShotgunReloading;
+import iblis.player.PlayerSkills;
 import iblis.util.ModIntegrationUtil;
 import iblis.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButtonImage;
 import net.minecraft.client.gui.ScaledResolution;
@@ -22,6 +25,7 @@ import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -59,6 +63,9 @@ public class GuiEventHandler {
 	GuiButtonImage characteristicsButton;
 	GuiButtonImage skillsButton;
 	GuiButtonImage trainCraftButton;
+	
+	private String currentSkillHint = "";
+	private String requiredOrExpSkillHint = "";
 
 	@SubscribeEvent
 	public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
@@ -76,8 +83,14 @@ public class GuiEventHandler {
 
 	@SubscribeEvent
 	public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Post event) {
-		if (trainCraftButton != null && trainCraftButton.isMouseOver() && event.getGui() instanceof GuiCrafting) {
-			Minecraft mc = Minecraft.getMinecraft();
+		if(!(event.getGui() instanceof GuiCrafting))
+			return;
+		Minecraft mc = Minecraft.getMinecraft();
+		GuiCrafting gc = (GuiCrafting) event.getGui();
+		GlStateManager.color(1f, 1f, 1f, 1f);
+		mc.fontRenderer.drawString(currentSkillHint, gc.getGuiLeft() + 88, gc.getGuiTop() + 6, 4210752);
+		mc.fontRenderer.drawString(requiredOrExpSkillHint, gc.getGuiLeft() + 88, gc.getGuiTop() + 19, 4210752);
+		if (trainCraftButton != null && trainCraftButton.isMouseOver()) {
 			mc.currentScreen.drawHoveringText(trainCraftButton.displayString, event.getMouseX(), event.getMouseY());
 		}
 	}
@@ -129,7 +142,7 @@ public class GuiEventHandler {
 				int centerX = screenWidth / 2 + 1;
 				int centerY = screenHeight / 2 + 1;
 				double divider = PlayerUtils.getShootingAccuracyDivider(player);
-				int frameSize = Math.min((int) (4 * screenHeight / divider), screenHeight - 4);
+				int frameSize = Math.min((int) (2 * screenHeight / divider), screenHeight - 4);
 				int colour = 0x44ff9600;
 				// Top line left
 				Gui.drawRect(centerX - frameSize / 2 - 1, centerY - frameSize / 2, centerX - frameSize / 3,
@@ -310,8 +323,35 @@ public class GuiEventHandler {
 			if (!gui.buttonList.contains(trainCraftButton))
 				gui.buttonList.add(trainCraftButton);
 			trainCraftButton.setPosition(gui.getGuiLeft() + 122, gui.getGuiTop() + 61);
-		} else if (trainCraftButton != null) {
+
+			IRecipeRaiseSkill rsr = (IRecipeRaiseSkill)recipe;
+			EntityPlayerSP player = mc.player;
+			IAttribute attribute = rsr.getSensitiveSkill().getAttribute();
+			this.currentSkillHint = I18n.format(attribute.getName(),
+					Math.round(rsr.getSensitiveSkill().getFullSkillValue(player) * 10)
+					/ 10d);
+			this.requiredOrExpSkillHint = I18n.format("iblis.skillExp",this.formatSkillExp(player, rsr.getSensitiveSkill(), rsr.getSkillExp()));
+			if (recipe instanceof PlayerSensitiveShapedRecipeWrapper) {
+			PlayerSensitiveShapedRecipeWrapper r = (PlayerSensitiveShapedRecipeWrapper)recipe;
+			this.requiredOrExpSkillHint = I18n.format("iblis.requiredSkill",
+					Math.round(r.getRequiredSkill() * 10)
+					/ 10d);
+			}
+			
+		} else{
+			this.currentSkillHint = "";
+			this.requiredOrExpSkillHint = "";
+			if (trainCraftButton != null)
 			gui.buttonList.remove(trainCraftButton);
 		}
+	}
+	
+	private String formatSkillExp(EntityPlayer player, PlayerSkills sensitiveSkill, double xpValue){
+		double currentValue = sensitiveSkill.getCurrentValue(player);
+		double xpReal = sensitiveSkill.pointsPerLevel * xpValue / (currentValue + 1.0d);
+		if(xpReal>0.1d)
+			return Double.toString(Math.round(xpReal * 10)/ 10d);
+		else
+			return "1/"+Math.round(1/xpReal);
 	}
 }

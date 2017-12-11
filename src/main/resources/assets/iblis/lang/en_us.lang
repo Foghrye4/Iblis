@@ -62,6 +62,9 @@ iblis.minute=one minute
 iblis.hour=one hour
 iblis.day=one day
 
+iblis.skillExp=Skill XP: %s
+iblis.requiredSkill=Required: %0.1f
+
 iblis.qualityLevel.worthless=worthless
 iblis.qualityLevel.trash=trash
 iblis.qualityLevel.miserable=miserable
@@ -107,6 +110,8 @@ item.boulder.name=Boulder
 item.iron_throwing_knife.name=Throwing knife
 item.double_crossbow.name=Double crossbow
 item.crossbow_bolt.name=Crossbow bolt
+item.nugget_steel.name=Steel nugget
+item.trigger_spring.name=Trigger spring
 
 entity.Villager.mechanic=Mechanic
 

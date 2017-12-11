@@ -4,5 +4,6 @@ public enum IblisParticles {
 	HEADSHOT,
 	BOULDER,
 	SPARK, 
-	SLIVER
+	SLIVER, 
+	BULLET_HOLE
 }

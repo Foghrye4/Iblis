@@ -1,17 +1,24 @@
 package iblis;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import iblis.client.ClientGameEventHandler;
 import iblis.client.ClientRenderEventHandler;
 import iblis.client.ItemTooltipEventHandler;
 import iblis.client.particle.ParticleBoulderShard;
+import iblis.client.particle.ParticleDecal;
 import iblis.client.particle.ParticleHeadshot;
 import iblis.client.particle.ParticleSliver;
 import iblis.client.particle.ParticleSpark;
 import iblis.client.renderer.entity.RenderBoulder;
 import iblis.client.renderer.entity.RenderCrossbowBolt;
 import iblis.client.renderer.entity.RenderThrowingKnife;
+import iblis.client.renderer.item.CrossbowItemMeshDefinition;
+import iblis.client.renderer.item.CrossbowReloadingItemMeshDefinition;
+import iblis.client.util.DecalHelper;
 import iblis.constants.NBTTagsKeys;
 import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
@@ -20,6 +27,7 @@ import iblis.gui.GuiEventHandler;
 import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
 import iblis.player.PlayerSkills;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.particle.Particle;
@@ -30,22 +38,33 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientProxy extends ServerProxy {
+
+	@SubscribeEvent
+	void onWorldLoadedEvent(WorldEvent.Load event){
+		if(!event.getWorld().isRemote)
+			return;
+		event.getWorld().addEventListener(ClientGameEventHandler.instance);
+	}
 
 	@Override
 	void load() {
 		OBJLoader.INSTANCE.addDomain(IblisMod.MODID);
 		MinecraftForge.EVENT_BUS.register(GuiEventHandler.instance);
 		MinecraftForge.EVENT_BUS.register(new ItemTooltipEventHandler());
-		MinecraftForge.EVENT_BUS.register(new ClientGameEventHandler());
+		MinecraftForge.EVENT_BUS.register(ClientGameEventHandler.instance);
 		MinecraftForge.EVENT_BUS.register(new ClientRenderEventHandler());
 	}
 
@@ -108,135 +127,13 @@ public class ClientProxy extends ServerProxy {
 		ModelBakery.registerItemVariants(IblisItems.SHOTGUN_RELOADING,
 				new ResourceLocation[] { m0, m1, m2, m3, m4, m5, m6 });
 
-		final ModelResourceLocation mCrossbowNoAmmo = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow", "inventory_no_ammo");
-		final ModelResourceLocation mCrossbowAmmo1 = new ModelResourceLocation(IblisMod.MODID + ":" + "double_crossbow",
-				"inventory_ammo_1");
-		final ModelResourceLocation mCrossbowAmmo2 = new ModelResourceLocation(IblisMod.MODID + ":" + "double_crossbow",
-				"inventory");
-		final ModelResourceLocation mCrossbowAimNoAmmo = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow", "aiming_no_ammo");
-		final ModelResourceLocation mCrossbowAimAmmo1 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow", "aiming_ammo_1");
-		final ModelResourceLocation mCrossbowAimAmmo2 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow", "aiming");
-		ModelLoader.setCustomMeshDefinition(IblisItems.CROSSBOW, new ItemMeshDefinition() {
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-				EntityPlayerSP player = Minecraft.getMinecraft().player;
-				if (player != null && player.isHandActive() && player.getActiveItemStack() == stack) {
-					if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTTagsKeys.AMMO))
-						return mCrossbowAimNoAmmo;
-					switch (stack.getTagCompound().getInteger(NBTTagsKeys.AMMO)) {
-					case 0:
-						return mCrossbowAimNoAmmo;
-					case 1:
-						return mCrossbowAimAmmo1;
-					default:
-						return mCrossbowAimAmmo2;
-					}
-				}
-				if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTTagsKeys.AMMO))
-					return mCrossbowNoAmmo;
-				switch (stack.getTagCompound().getInteger(NBTTagsKeys.AMMO)) {
-				case 0:
-					return mCrossbowNoAmmo;
-				case 1:
-					return mCrossbowAmmo1;
-				default:
-					return mCrossbowAmmo2;
-				}
-			}
-		});
-		ModelBakery.registerItemVariants(IblisItems.CROSSBOW, new ResourceLocation[] { mCrossbowNoAmmo, mCrossbowAmmo1,
-				mCrossbowAmmo2, mCrossbowAimNoAmmo, mCrossbowAimAmmo1, mCrossbowAimAmmo2 });
-
-		final ModelResourceLocation m1_f0 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "inventory");
-		final ModelResourceLocation m1_f1 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_upper_1");
-		final ModelResourceLocation m1_f2 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_upper_2");
-		final ModelResourceLocation m1_f3 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_upper_3");
-		final ModelResourceLocation m1_f4 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_upper_4");
-		final ModelResourceLocation m1_f5 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_upper_5");
-		final ModelResourceLocation m1_f6 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "arming_upper_1");
-		final ModelResourceLocation m1_f7 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "arming_upper_2");
-		final ModelResourceLocation m2_f1 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_lower_1");
-		final ModelResourceLocation m2_f2 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_lower_2");
-		final ModelResourceLocation m2_f3 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_lower_3");
-		final ModelResourceLocation m2_f4 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_lower_4");
-		final ModelResourceLocation m2_f5 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "stretching_lower_5");
-		final ModelResourceLocation m2_f6 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "arming_lower_1");
-		final ModelResourceLocation m2_f7 = new ModelResourceLocation(
-				IblisMod.MODID + ":" + "double_crossbow_reloading", "arming_lower_2");
-
-		ModelLoader.setCustomMeshDefinition(IblisItems.CROSSBOW_RELOADING, new ItemMeshDefinition() {
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-				EntityPlayerSP player = Minecraft.getMinecraft().player;
-				if (player != null && player.isHandActive() && player.getActiveItemStack() == stack) {
-					int max = player.getItemInUseMaxCount();
-					int current = player.getItemInUseCount();
-					if (!stack.hasTagCompound() || stack.getTagCompound().getInteger(NBTTagsKeys.AMMO) == 0) {
-						if (current <= 4)
-							return m1_f7;
-						else if (current <= 8)
-							return m1_f6;
-						else if (max <= 10)
-							return m1_f0;
-						else if (max <= 11)
-							return m1_f1;
-						else if (max <= 12)
-							return m1_f2;
-						else if (max <= 13)
-							return m1_f3;
-						else if (max <= 14)
-							return m1_f4;
-						else
-							return m1_f5;
-					}
-					if (current <= 4)
-						return m2_f7;
-					else if (current <= 8)
-						return m2_f6;
-					else if (max <= 10)
-						return m1_f7;
-					else if (max <= 11)
-						return m2_f1;
-					else if (max <= 12)
-						return m2_f2;
-					else if (max <= 13)
-						return m2_f3;
-					else if (max <= 14)
-						return m2_f4;
-					else
-						return m2_f5;
-				}
-				if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTTagsKeys.AMMO))
-					return mCrossbowNoAmmo;
-				switch (stack.getTagCompound().getInteger(NBTTagsKeys.AMMO)) {
-				case 0:
-					return mCrossbowNoAmmo;
-				case 1:
-					return mCrossbowAmmo1;
-				default:
-					return mCrossbowAmmo2;
-				}
-			}
-		});
-		ModelBakery.registerItemVariants(IblisItems.CROSSBOW_BOLT, new ResourceLocation[] {m1_f1,m1_f2,m1_f3,m1_f4,m1_f5,m1_f6,m1_f7,m2_f1,m2_f2,m2_f3,m2_f4,m2_f5,m2_f6,m2_f7});
+		CrossbowItemMeshDefinition crossbowMeshDef = new CrossbowItemMeshDefinition();
+		ModelLoader.setCustomMeshDefinition(IblisItems.CROSSBOW, crossbowMeshDef);
+		crossbowMeshDef.registerVariants();
+		CrossbowReloadingItemMeshDefinition crossbowReloadMeshDef = new CrossbowReloadingItemMeshDefinition();
+		ModelLoader.setCustomMeshDefinition(IblisItems.CROSSBOW_RELOADING, crossbowReloadMeshDef);
+		crossbowReloadMeshDef.registerVariants();
+		
 		final ModelResourceLocation crossbow_bolt = new ModelResourceLocation(IblisMod.MODID + ":" + "crossbow_bolt",
 				"inventory");
 		ModelLoader.setCustomModelResourceLocation(IblisItems.CROSSBOW_BOLT, 0, crossbow_bolt);
@@ -315,5 +212,68 @@ public class ClientProxy extends ServerProxy {
 			break;
 		}
 		mc.effectRenderer.addEffect(entityParticle);
+	}
+	
+	public void addDecal(@Nonnull IblisParticles decalIn, double posX, double posY, double posZ, @Nonnull EnumFacing facingIn) {
+		Minecraft mc = Minecraft.getMinecraft();
+		switch (decalIn) {
+		case BULLET_HOLE:
+			float size = 0.6f;
+			AxisAlignedBB particleBB = new AxisAlignedBB(posX - size / 2, posY - size / 2, posZ - size / 2,
+					posX + size / 2, posY + size / 2, posZ + size / 2);
+			List<AxisAlignedBB> collidingBoxes = new ArrayList<AxisAlignedBB>();
+			int x1 = MathHelper.floor(posX - size / 2);
+			int y1 = MathHelper.floor(posY - size / 2);
+			int z1 = MathHelper.floor(posZ - size / 2);
+			int x2 = MathHelper.ceil(posX - size / 2);
+			int y2 = MathHelper.ceil(posY - size / 2);
+			int z2 = MathHelper.ceil(posZ - size / 2);
+			for(int x = x1;x<=x2;x++)
+				for(int y = y1;y<=y2;y++)
+					for(int z = z1;z<=z2;z++) {
+						BlockPos pos = new BlockPos(x,y,z);
+						IBlockState bstate = mc.world.getBlockState(pos);
+						// For a custom cases when collision box not match display borders.
+						DecalHelper.addDecalDisplayBoxToList(mc.world, pos, particleBB, collidingBoxes, bstate);
+						if(!collidingBoxes.isEmpty()){
+							int packedLight = bstate.getPackedLightmapCoords(mc.world, pos.offset(facingIn));
+							int layer = ClientGameEventHandler.instance.getDecalLayer(pos);
+							for (AxisAlignedBB cbb : collidingBoxes) {
+								double posX1 = posX;
+								double posY1 = posY;
+								double posZ1 = posZ;
+								switch(facingIn){
+								case DOWN:
+									posY1 = Math.max(posY, cbb.minY);
+									break;
+								case UP:
+									posY1 = Math.min(posY, cbb.maxY);
+									break;
+								case NORTH:
+									posZ1 = Math.max(posZ, cbb.minZ);
+									break;
+								case SOUTH:
+									posZ1 = Math.min(posZ, cbb.maxZ);
+									break;
+								case WEST:
+									posX1 = Math.max(posX, cbb.minX);
+									break;
+								case EAST:
+									posX1 = Math.min(posX, cbb.maxX);
+									break;
+								}
+								ParticleDecal decal = new ParticleDecal(mc.getTextureManager(), mc.world, posX1, posY1, posZ1,
+										facingIn, cbb, size, DecalHelper.getDecalColour(mc.world, pos, bstate), packedLight, layer);
+								mc.effectRenderer.addEffect(decal);
+								ClientGameEventHandler.instance.attachParticleToBlock(decal, pos);
+							}
+							collidingBoxes.clear();
+						}
+					}
+			return;
+		default:
+			IblisMod.log.error("Incorrect/unhandled decal recieved on client: " + decalIn.name());
+			break;
+		}
 	}
 }

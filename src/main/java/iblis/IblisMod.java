@@ -47,7 +47,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.26";
+    public static final String VERSION = "0.3.28";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:tconstruct;after:silentgems";
     
@@ -106,13 +106,6 @@ public class IblisMod
 		proxy.init();
 	}
     
-    @EventHandler
-	public void init(FMLInitializationEvent event) {
-		OreDictionary.registerOre("ingotSteel", IblisItems.INGOT_STEEL);
-		for (int meta = 0; meta < 16; meta++)
-			OreDictionary.registerOre("plankWood", new ItemStack(Blocks.PLANKS, 1, meta));
-	}
-
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		network.setServer(event.getServer());

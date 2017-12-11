@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -62,8 +63,9 @@ public class ClientRenderEventHandler {
 			return;
 		}
 		EntityPlayer player = Minecraft.getMinecraft().player;
-		if (!player.isHandActive() || player.getActiveItemStack().getItem() != IblisItems.CROSSBOW_RELOADING)
+		if (!player.isHandActive() || player.getActiveItemStack().getItem() != IblisItems.CROSSBOW_RELOADING) {
 			return;
+		}
 		GlStateManager.rotate(pitch - 90f, 1f, 0f, 0f);
 	}
 	

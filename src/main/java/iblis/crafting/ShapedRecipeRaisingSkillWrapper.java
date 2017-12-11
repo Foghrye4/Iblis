@@ -74,4 +74,15 @@ public class ShapedRecipeRaisingSkillWrapper extends ShapedRecipes implements IR
 	public NonNullList<Ingredient> getIngredients() {
 		return this.wrappedRecipe.getIngredients();
 	}
+	
+
+	@Override
+	public PlayerSkills getSensitiveSkill() {
+		return this.sensitiveSkill;
+	}
+
+	@Override
+	public double getSkillExp() {
+		return this.skillXP;
+	}
 }

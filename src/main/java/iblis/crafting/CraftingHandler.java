@@ -26,6 +26,7 @@ import net.minecraft.inventory.ContainerWorkbench;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
@@ -48,6 +49,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 public class CraftingHandler  implements IContainerListener{
@@ -85,6 +87,13 @@ public class CraftingHandler  implements IContainerListener{
 					shieldsWrapper.setRegistryName(recipe.getRegistryName());
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
 					replacements2.add(shieldsWrapper);
+				} else if (isMechanism(is)) {
+					ShapedRecipeRaisingSkillWrapper mechanismWrapper = new ShapedRecipeRaisingSkillWrapper(recipe);
+					mechanismWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 1);
+					mechanismWrapper.setRegistryName(recipe.getRegistryName());
+					vanillaRecipesToRemove.add(recipe.getRegistryName());
+					replacements2.add(mechanismWrapper);
+					
 				}
 			}
 		}
@@ -93,6 +102,15 @@ public class CraftingHandler  implements IContainerListener{
 		this.addRecipes(event);
 	}
 	
+	private boolean isMechanism(ItemStack is) {
+		Item item = is.getItem();
+		return item == Item.getItemFromBlock(Blocks.PISTON) 
+				|| item == Items.CLOCK
+				|| item == Item.getItemFromBlock(Blocks.NOTEBLOCK)
+				|| item == Item.getItemFromBlock(Blocks.DISPENSER)
+				|| item == Item.getItemFromBlock(Blocks.JUKEBOX);
+	}
+
 	private void wrapRecipe(ItemStack is, List<ResourceLocation> vanillaRecipesToRemove, IRecipe recipe, PlayerSkills sensitiveSkill){
 		PlayerSensitiveShapedRecipeWrapper recipeReplacement = new PlayerSensitiveShapedRecipeWrapper(recipe);
 		double requiredskill = getWeaponCraftingRequiredSkill(is) + getArmorCraftingRequiredSkill(is);
@@ -167,6 +185,7 @@ public class CraftingHandler  implements IContainerListener{
 		Ingredient ironIngot = Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT));
 		Ingredient planks = new OreIngredient("plankWood");
 		Ingredient leather = Ingredient.fromItem(Items.LEATHER);
+		ItemStack spring = new ItemStack(IblisItems.TRIGGER_SPRING);
 		
 		NonNullList<Ingredient> crossbowRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),
@@ -177,18 +196,12 @@ public class CraftingHandler  implements IContainerListener{
 				planks,
 				Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),
 				Ingredient.fromStacks(new ItemStack(Items.STRING, 1, 0)),
-				Ingredient.EMPTY);
+				Ingredient.fromStacks(spring));
 		
 		NonNullList<Ingredient> crossbowBoltRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
-				Ingredient.EMPTY,
-				ironIngot,
-				Ingredient.EMPTY,
-				Ingredient.EMPTY,
-				Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),
-				Ingredient.EMPTY,
-				planks,
-				Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),
-				planks);
+				Ingredient.EMPTY, Ingredient.fromStacks(new ItemStack(Items.IRON_NUGGET, 1, 0)), Ingredient.EMPTY,
+				Ingredient.EMPTY, planks, Ingredient.EMPTY,
+				Ingredient.EMPTY, Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),Ingredient.EMPTY);
 
 		NonNullList<Ingredient> ironThrowingKnifeRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 			Ingredient.EMPTY,ironIngot,Ingredient.EMPTY,
@@ -220,8 +233,13 @@ public class CraftingHandler  implements IContainerListener{
 		ShapedRecipes crossbowRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowRecipeIngridients, crossbow);
 		PlayerSensitiveShapedRecipeWrapper crossbowRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(crossbowRecipe);
 		
-		ShapedRecipes crossbowBoltRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowBoltRecipeIngridients, new ItemStack(IblisItems.CROSSBOW_BOLT,32,0));
+		ShapedRecipes crossbowBoltRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowBoltRecipeIngridients, new ItemStack(IblisItems.CROSSBOW_BOLT,8,0));
 		ShapedRecipeRaisingSkillWrapper crossbowBoltWrappedRecipe = new ShapedRecipeRaisingSkillWrapper(crossbowBoltRecipe);
+		
+		ShapedOreRecipe triggerSpringRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),spring, 
+				"N  ",
+				" N ",
+				"   ", 'N', "nuggetSteel");
 
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
@@ -233,9 +251,10 @@ public class CraftingHandler  implements IContainerListener{
 		shieldRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"heavy_shield"));
 		shieldRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 4, 4);
 		crossbowRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"double_crossbow"));
-		crossbowRecipeWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 2, 10);
+		crossbowRecipeWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 4, 4);
 		crossbowBoltWrappedRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"crossbow_bolt"));
 		crossbowBoltWrappedRecipe.setSesitiveTo(PlayerSkills.WEAPONSMITH, 2);
+		triggerSpringRecipe.setRegistryName(IblisMod.MODID, "trigger_spring");
 		
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
@@ -246,25 +265,48 @@ public class CraftingHandler  implements IContainerListener{
 		event.getRegistry().register(shieldRecipeWrapper);
 		event.getRegistry().register(crossbowRecipeWrapper);
 		event.getRegistry().register(crossbowBoltWrappedRecipe);
+		event.getRegistry().register(triggerSpringRecipe);
+		this.addShapelessNuggetsOrShradsRecipe("ingotSteel", "nuggetSteel", "steel_ingot_from_nuggets", "nugget_steel", event.getRegistry());
 
 		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);
 		shotgun.setTagCompound(new NBTTagCompound());
 		shotgun.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, 600);
 		ShapedOreRecipe shotgunRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),shotgun, 
 				"  W",
-				" S ",
-				"S  ", 'W', "plankWood", 'S', "ingotSteel");
+				" ST",
+				"S  ", 'W', "plankWood", 'S', "ingotSteel", 'T', spring);
 		PlayerSensitiveShapedRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shotgunRecipe);
-		shotgunRecipeWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 4, 20);
+		shotgunRecipeWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 12, 20);
 		shotgunRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"shotgun_recipe"));
 		replacements.add(shotgunRecipeWrapper);
 		for(PlayerSensitiveShapedRecipeWrapper recipeReplacement: replacements)
 			event.getRegistry().register(recipeReplacement);
 		for(ShapedRecipeRaisingSkillWrapper recipeReplacement: replacements2)
 			event.getRegistry().register(recipeReplacement);
-		
 		FurnaceRecipes.instance().addSmelting(IblisItems.NONSTERILE_MEDKIT, new ItemStack(IblisItems.MEDKIT), 1.0f);
-
+	}
+	
+	private void addShapelessNuggetsOrShradsRecipe(String ingot, String shard, String accembleName, String breakName,IForgeRegistry<IRecipe> registry){
+		NonNullList<Ingredient> nuggetRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				new OreIngredient(ingot));
+		NonNullList<Ingredient> ingotRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard),
+				new OreIngredient(shard));
+		ItemStack shards = OreDictionary.getOres(shard).get(0);
+		shards.setCount(9);
+		ShapelessRecipes nuggetRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", shards, nuggetRecipeIngridients);
+		ShapelessRecipes ingotRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", OreDictionary.getOres(ingot).get(0), ingotRecipeIngridients);
+		nuggetRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,breakName));
+		ingotRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,accembleName));
+		registry.register(nuggetRecipe);
+		registry.register(ingotRecipe);
 	}
 	
 	private final List<ContainerRepair> openedContainers = new ArrayList<ContainerRepair>();

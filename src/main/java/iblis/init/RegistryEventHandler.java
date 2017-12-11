@@ -11,6 +11,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RegistryEventHandler {
 	
@@ -31,6 +32,8 @@ public class RegistryEventHandler {
 		for(Item item:items)
 			event.getRegistry().register(item);
 		IblisMod.proxy.registerRenders();
+		OreDictionary.registerOre("ingotSteel", IblisItems.INGOT_STEEL);
+		OreDictionary.registerOre("nuggetSteel", IblisItems.NUGGET_STEEL);
 	}
 	
 	@SubscribeEvent

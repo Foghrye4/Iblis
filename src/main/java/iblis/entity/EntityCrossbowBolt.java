@@ -24,6 +24,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -99,7 +100,6 @@ public class EntityCrossbowBolt extends EntityArrow {
 					this.world.rand.nextDouble() - 0.5d - this.motionZ*0.1d);
 		}
 	}
-
 
 	@Override
 	protected ItemStack getArrowStack() {

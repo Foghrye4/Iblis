@@ -25,6 +25,8 @@ public class IblisItems {
 	public static Item CROSSBOW_RELOADING;
 	public static Item CROSSBOW_BOLT;
 	public static Item INGOT_STEEL;
+	public static Item NUGGET_STEEL;
+	public static Item TRIGGER_SPRING;
 	public static Item NONSTERILE_MEDKIT;
 	public static Item MEDKIT;
 	public static Item BOULDER;
@@ -40,6 +42,8 @@ public class IblisItems {
 		CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
 		CROSSBOW_BOLT = new Item();
 		INGOT_STEEL = new Item();
+		NUGGET_STEEL = new Item();
+		TRIGGER_SPRING = new Item();
 		NONSTERILE_MEDKIT = new Item();
 		MEDKIT = new ItemMedkit();
 		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
@@ -58,7 +62,7 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(1561)
 			.setMaxStackSize(1);
-		SHOTGUN_RELOADING.setCreativeTab(IblisMod.creativeTab)
+		SHOTGUN_RELOADING
 			.setUnlocalizedName("six_barrels_shotgun")
 			.setRegistryName(IblisMod.MODID, "six_barrels_shotgun_reloading")
 			.setHasSubtypes(true)
@@ -76,7 +80,7 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(1561)
 			.setMaxStackSize(1);
-		CROSSBOW_RELOADING.setCreativeTab(IblisMod.creativeTab)
+		CROSSBOW_RELOADING
 			.setUnlocalizedName("double_crossbow")
 			.setRegistryName(IblisMod.MODID, "double_crossbow_reloading")
 			.setHasSubtypes(true)
@@ -91,6 +95,18 @@ public class IblisItems {
 		INGOT_STEEL.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("ingot_steel")
 			.setRegistryName(IblisMod.MODID, "ingot_steel")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(64);
+		NUGGET_STEEL.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("nugget_steel")
+			.setRegistryName(IblisMod.MODID, "nugget_steel")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(64);
+		TRIGGER_SPRING.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("trigger_spring")
+			.setRegistryName(IblisMod.MODID, "trigger_spring")
 			.setHasSubtypes(false)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
@@ -132,6 +148,8 @@ public class IblisItems {
 		registerItem(CROSSBOW_RELOADING);
 		registerItem(CROSSBOW_BOLT);
 		registerItem(INGOT_STEEL);
+		registerItem(NUGGET_STEEL);
+		registerItem(TRIGGER_SPRING);
 		registerItem(NONSTERILE_MEDKIT);
 		registerItem(MEDKIT);
 		registerItem(BOULDER);
@@ -155,6 +173,10 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_bullet"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT_STEEL, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_steel"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NUGGET_STEEL, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"nugget_steel"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(TRIGGER_SPRING, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"trigger_spring"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NONSTERILE_MEDKIT, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,

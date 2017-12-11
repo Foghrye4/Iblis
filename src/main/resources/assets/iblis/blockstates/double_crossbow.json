@@ -51,6 +51,70 @@
 	      "model": "iblis:double_crossbow_discharged.obj"
       }
     ],
+   "inventory_stretched_upper": [
+      {
+	    "model": "iblis:double_crossbow_stretching_upper_5.obj"
+      }
+    ],
+   "inventory_stretched_lower": [
+      {
+	    "model": "iblis:double_crossbow_stretching_lower_5.obj"
+      }
+    ],
+   "aiming_stretched_upper": [
+      {
+	      "model": "iblis:double_crossbow_stretching_upper_5.obj",
+          "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 30 }, { "y": 135 }, { "z": 0 } ],
+            "translation": [ -0.2, 0, 0 ],
+            "scale": 0.2
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": -0.06 }, { "y": -0.13 }, { "z": 0 } ],
+            "translation": [ 0.448, 0.65, -3 ],
+            "scale": 2
+          }
+        }
+      }
+    ],
+   "aiming_stretched_lower": [
+      {
+	      "model": "iblis:double_crossbow_stretching_lower_5.obj",
+          "transform": {
+          "thirdperson_lefthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ -0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "thirdperson_righthand": {
+            "rotation": [ { "x": 0 }, { "y": 0 }, { "z": 0 } ],
+            "translation": [ 0.1, 0.15, -0.3 ],
+            "scale": 0.2
+          },
+          "gui": {
+            "rotation": [ { "x": 30 }, { "y": 135 }, { "z": 0 } ],
+            "translation": [ -0.2, 0, 0 ],
+            "scale": 0.2
+          },
+          "firstperson_righthand": {
+            "rotation": [ { "x": -0.06 }, { "y": -0.13 }, { "z": 0 } ],
+            "translation": [ 0.448, 0.65, -3 ],
+            "scale": 2
+          }
+        }
+      }
+    ],
    "aiming": [
       {
 	      "model": "iblis:double_crossbow_arming_lower_2.obj",

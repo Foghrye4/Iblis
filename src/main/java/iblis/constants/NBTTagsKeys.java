@@ -7,5 +7,5 @@ public class NBTTagsKeys {
 	public final static String UUID = "UUID";
 	public static final String DURABILITY = "durability";
 	public static final String AMMO = "ammo";
-
+	public static final String COCKED_STATE = "cockedState";
 }

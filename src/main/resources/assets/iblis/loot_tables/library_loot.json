@@ -26,7 +26,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_1",
+	    	"name":"SWORDSMANSHIP_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -51,7 +51,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_2",
+	    	"name":"SWORDSMANSHIP_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -75,7 +75,7 @@
            ]
         },
                 {
-	    	"name":"SWORDSMANSHIP_level_3",
+	    	"name":"SWORDSMANSHIP_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -101,7 +101,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_4",
+	    	"name":"SWORDSMANSHIP_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -125,7 +125,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_5",
+	    	"name":"SWORDSMANSHIP_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -149,7 +149,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_6",
+	    	"name":"SWORDSMANSHIP_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -173,7 +173,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_7",
+	    	"name":"SWORDSMANSHIP_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -199,7 +199,7 @@
            ]
         },
         {
-	    	"name":"SWORDSMANSHIP_level_8",
+	    	"name":"SWORDSMANSHIP_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -248,7 +248,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_1",
+	    	"name":"PARRY_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -272,7 +272,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_2",
+	    	"name":"PARRY_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -298,7 +298,7 @@
            ]
         },
                 {
-	    	"name":"PARRY_level_3",
+	    	"name":"PARRY_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -322,7 +322,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_4",
+	    	"name":"PARRY_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -346,7 +346,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_5",
+	    	"name":"PARRY_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -372,7 +372,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_6",
+	    	"name":"PARRY_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -396,7 +396,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_7",
+	    	"name":"PARRY_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -420,7 +420,7 @@
            ]
         },
         {
-	    	"name":"PARRY_level_8",
+	    	"name":"PARRY_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -469,7 +469,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_1",
+	    	"name":"ARCHERY_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -493,7 +493,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_2",
+	    	"name":"ARCHERY_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -517,7 +517,7 @@
            ]
         },
                 {
-	    	"name":"ARCHERY_level_3",
+	    	"name":"ARCHERY_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -541,7 +541,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_4",
+	    	"name":"ARCHERY_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -565,7 +565,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_5",
+	    	"name":"ARCHERY_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -589,7 +589,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_6",
+	    	"name":"ARCHERY_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -613,7 +613,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_7",
+	    	"name":"ARCHERY_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -637,7 +637,7 @@
            ]
         },
         {
-	    	"name":"ARCHERY_level_8",
+	    	"name":"ARCHERY_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -686,7 +686,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_1",
+	    	"name":"THROWING_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -710,7 +710,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_2",
+	    	"name":"THROWING_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -734,7 +734,7 @@
            ]
         },
                 {
-	    	"name":"THROWING_level_3",
+	    	"name":"THROWING_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -758,7 +758,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_4",
+	    	"name":"THROWING_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -782,7 +782,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_5",
+	    	"name":"THROWING_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -806,7 +806,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_6",
+	    	"name":"THROWING_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -830,7 +830,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_7",
+	    	"name":"THROWING_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -854,7 +854,7 @@
            ]
         },
         {
-	    	"name":"THROWING_level_8",
+	    	"name":"THROWING_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -903,7 +903,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_1",
+	    	"name":"SHARPSHOOTING_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -927,7 +927,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_2",
+	    	"name":"SHARPSHOOTING_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -951,7 +951,7 @@
            ]
         },
                 {
-	    	"name":"SHARPSHOOTING_level_3",
+	    	"name":"SHARPSHOOTING_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -975,7 +975,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_4",
+	    	"name":"SHARPSHOOTING_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -999,7 +999,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_5",
+	    	"name":"SHARPSHOOTING_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -1023,7 +1023,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_6",
+	    	"name":"SHARPSHOOTING_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -1047,7 +1047,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_7",
+	    	"name":"SHARPSHOOTING_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -1071,7 +1071,7 @@
            ]
         },
         {
-	    	"name":"SHARPSHOOTING_level_8",
+	    	"name":"SHARPSHOOTING_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -1120,7 +1120,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_1",
+	    	"name":"ARMORSMITH_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -1144,7 +1144,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_2",
+	    	"name":"ARMORSMITH_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -1170,7 +1170,7 @@
            ]
         },
                 {
-	    	"name":"ARMORSMITH_level_3",
+	    	"name":"ARMORSMITH_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -1194,7 +1194,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_4",
+	    	"name":"ARMORSMITH_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -1218,7 +1218,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_5",
+	    	"name":"ARMORSMITH_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -1242,7 +1242,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_6",
+	    	"name":"ARMORSMITH_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -1266,7 +1266,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_7",
+	    	"name":"ARMORSMITH_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -1290,7 +1290,7 @@
            ]
         },
         {
-	    	"name":"ARMORSMITH_level_8",
+	    	"name":"ARMORSMITH_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -1339,7 +1339,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_1",
+	    	"name":"WEAPONSMITH_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -1365,7 +1365,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_2",
+	    	"name":"WEAPONSMITH_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -1391,7 +1391,7 @@
            ]
         },
                 {
-	    	"name":"WEAPONSMITH_level_3",
+	    	"name":"WEAPONSMITH_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -1417,7 +1417,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_4",
+	    	"name":"WEAPONSMITH_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -1443,7 +1443,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_5",
+	    	"name":"WEAPONSMITH_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -1469,7 +1469,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_6",
+	    	"name":"WEAPONSMITH_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -1495,7 +1495,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_7",
+	    	"name":"WEAPONSMITH_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -1521,7 +1521,7 @@
            ]
         },
         {
-	    	"name":"WEAPONSMITH_level_8",
+	    	"name":"WEAPONSMITH_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -1572,7 +1572,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_1",
+	    	"name":"MECHANICS_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -1596,7 +1596,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_2",
+	    	"name":"MECHANICS_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -1622,7 +1622,7 @@
            ]
         },
                 {
-	    	"name":"MECHANICS_level_3",
+	    	"name":"MECHANICS_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -1646,7 +1646,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_4",
+	    	"name":"MECHANICS_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -1670,7 +1670,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_5",
+	    	"name":"MECHANICS_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -1696,7 +1696,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_6",
+	    	"name":"MECHANICS_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -1720,7 +1720,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_7",
+	    	"name":"MECHANICS_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -1744,7 +1744,7 @@
            ]
         },
         {
-	    	"name":"MECHANICS_level_8",
+	    	"name":"MECHANICS_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -1795,7 +1795,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_1",
+	    	"name":"MEDICAL_AID_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -1821,7 +1821,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_2",
+	    	"name":"MEDICAL_AID_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -1847,7 +1847,7 @@
            ]
         },
                 {
-	    	"name":"MEDICAL_AID_level_3",
+	    	"name":"MEDICAL_AID_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -1873,7 +1873,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_4",
+	    	"name":"MEDICAL_AID_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -1899,7 +1899,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_5",
+	    	"name":"MEDICAL_AID_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -1925,7 +1925,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_6",
+	    	"name":"MEDICAL_AID_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -1951,7 +1951,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_7",
+	    	"name":"MEDICAL_AID_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -1977,7 +1977,7 @@
            ]
         },
         {
-	    	"name":"MEDICAL_AID_level_8",
+	    	"name":"MEDICAL_AID_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -2030,7 +2030,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_1",
+	    	"name":"DIGGING_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -2056,7 +2056,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_2",
+	    	"name":"DIGGING_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -2082,7 +2082,7 @@
            ]
         },
                 {
-	    	"name":"DIGGING_level_3",
+	    	"name":"DIGGING_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -2108,7 +2108,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_4",
+	    	"name":"DIGGING_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -2134,7 +2134,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_5",
+	    	"name":"DIGGING_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -2160,7 +2160,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_6",
+	    	"name":"DIGGING_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -2186,7 +2186,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_7",
+	    	"name":"DIGGING_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -2212,7 +2212,7 @@
            ]
         },
         {
-	    	"name":"DIGGING_level_8",
+	    	"name":"DIGGING_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -2265,7 +2265,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_1",
+	    	"name":"RUNNING_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -2291,7 +2291,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_2",
+	    	"name":"RUNNING_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -2317,7 +2317,7 @@
            ]
         },
                 {
-	    	"name":"RUNNING_level_3",
+	    	"name":"RUNNING_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -2343,7 +2343,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_4",
+	    	"name":"RUNNING_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -2369,7 +2369,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_5",
+	    	"name":"RUNNING_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -2395,7 +2395,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_6",
+	    	"name":"RUNNING_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -2421,7 +2421,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_7",
+	    	"name":"RUNNING_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -2447,7 +2447,7 @@
            ]
         },
         {
-	    	"name":"RUNNING_level_8",
+	    	"name":"RUNNING_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -2500,7 +2500,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_1",
+	    	"name":"JUMPING_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -2526,7 +2526,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_2",
+	    	"name":"JUMPING_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -2552,7 +2552,7 @@
            ]
         },
                 {
-	    	"name":"JUMPING_level_3",
+	    	"name":"JUMPING_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -2578,7 +2578,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_4",
+	    	"name":"JUMPING_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -2604,7 +2604,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_5",
+	    	"name":"JUMPING_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -2630,7 +2630,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_6",
+	    	"name":"JUMPING_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -2654,7 +2654,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_7",
+	    	"name":"JUMPING_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -2678,7 +2678,7 @@
            ]
         },
         {
-	    	"name":"JUMPING_level_8",
+	    	"name":"JUMPING_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -2729,7 +2729,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_1",
+	    	"name":"FALLING_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -2753,7 +2753,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_2",
+	    	"name":"FALLING_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -2779,7 +2779,7 @@
            ]
         },
                 {
-	    	"name":"FALLING_level_3",
+	    	"name":"FALLING_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -2803,7 +2803,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_4",
+	    	"name":"FALLING_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -2827,7 +2827,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_5",
+	    	"name":"FALLING_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -2853,7 +2853,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_6",
+	    	"name":"FALLING_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -2877,7 +2877,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_7",
+	    	"name":"FALLING_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -2901,7 +2901,7 @@
            ]
         },
         {
-	    	"name":"FALLING_level_8",
+	    	"name":"FALLING_level_16",
             "rolls": 1,
             "entries": [
                 {
@@ -2950,7 +2950,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_1",
+	    	"name":"EQUILIBRIUM_level_2",
             "rolls": 1,
             "entries": [
                 {
@@ -2974,7 +2974,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_2",
+	    	"name":"EQUILIBRIUM_level_4",
             "rolls": 1,
             "entries": [
                 {
@@ -3000,7 +3000,7 @@
            ]
         },
                 {
-	    	"name":"EQUILIBRIUM_level_3",
+	    	"name":"EQUILIBRIUM_level_6",
             "rolls": 1,
             "entries": [
                 {
@@ -3024,7 +3024,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_4",
+	    	"name":"EQUILIBRIUM_level_8",
             "rolls": 1,
             "entries": [
                 {
@@ -3048,7 +3048,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_5",
+	    	"name":"EQUILIBRIUM_level_10",
             "rolls": 1,
             "entries": [
                 {
@@ -3074,7 +3074,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_6",
+	    	"name":"EQUILIBRIUM_level_12",
             "rolls": 1,
             "entries": [
                 {
@@ -3098,7 +3098,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_7",
+	    	"name":"EQUILIBRIUM_level_14",
             "rolls": 1,
             "entries": [
                 {
@@ -3122,7 +3122,7 @@
            ]
         },
         {
-	    	"name":"EQUILIBRIUM_level_8",
+	    	"name":"EQUILIBRIUM_level_16",
             "rolls": 1,
             "entries": [
                 {

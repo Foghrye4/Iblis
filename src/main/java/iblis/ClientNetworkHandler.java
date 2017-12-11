@@ -8,6 +8,7 @@ import iblis.init.IblisParticles;
 import iblis.player.PlayerCharacteristics;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -16,7 +17,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
@@ -30,6 +34,7 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		PacketBuffer byteBufInputStream = new PacketBuffer(data);
 		double posX, posY, posZ, xSpeed, ySpeed, zSpeed;
 		WorldClient world = mc.world;
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
 		int playerId = 0;
 		Entity entity;
 		switch (ClientCommands.values()[byteBufInputStream.readByte()]) {
@@ -38,7 +43,6 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 				mc.currentScreen.initGui();
 			break;
 		case SEND_PLAYER_BOOK_LIST_INFO:
-			EntityPlayerSP player = Minecraft.getMinecraft().player;
 			NBTTagList books = new NBTTagList();
 			int tagCount = byteBufInputStream.readInt();
 			for (int i = 0; i < tagCount; i++) {
@@ -60,6 +64,17 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 						-impactVectorY * 0.5 + world.rand.nextFloat() - 0.8f,
 						-impactVectorZ * 0.5 + world.rand.nextFloat() - 0.5f, blockStateId);
 			break;
+		case SPAWN_PARTICLE:
+			targetX = byteBufInputStream.readDouble();
+			targetY = byteBufInputStream.readDouble();
+			targetZ = byteBufInputStream.readDouble();
+			double speedX = byteBufInputStream.readDouble();
+			double speedY = byteBufInputStream.readDouble();
+			double speedZ = byteBufInputStream.readDouble();
+			int particleId = byteBufInputStream.readInt();
+			world.spawnParticle(EnumParticleTypes.values()[particleId], targetX, targetY, targetZ, speedX, speedY,
+					speedZ, 0);
+			break;
 		case SPAWN_PARTICLES:
 			targetX = byteBufInputStream.readDouble();
 			targetY = byteBufInputStream.readDouble();
@@ -67,7 +82,7 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			impactVectorX = byteBufInputStream.readDouble();
 			impactVectorY = byteBufInputStream.readDouble();
 			impactVectorZ = byteBufInputStream.readDouble();
-			int particleId = byteBufInputStream.readInt();
+			particleId = byteBufInputStream.readInt();
 			for (int i = 0; i < world.rand.nextInt(8) + 2; i++)
 				world.spawnParticle(EnumParticleTypes.values()[particleId], targetX, targetY, targetZ,
 						-impactVectorX * 0.5 + world.rand.nextFloat() - 0.5f,
@@ -99,6 +114,15 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 				((ClientProxy)IblisMod.proxy).spawnParticle(IblisParticles.values()[particleId], posX, posY, posZ, xSpeed, ySpeed, zSpeed);
 			}
 			break;
+			
+		case ADD_DECAL:
+			posX = byteBufInputStream.readDouble();
+			posY = byteBufInputStream.readDouble();
+			posZ = byteBufInputStream.readDouble();
+			IblisParticles decal = IblisParticles.values()[byteBufInputStream.readInt()];
+			EnumFacing facing  = EnumFacing.VALUES[byteBufInputStream.readInt()];
+			((ClientProxy)IblisMod.proxy).addDecal(decal, posX, posY, posZ, facing);
+			break;
 		case REFRESH_CRAFTING_BUTTONS:
 			GuiEventHandler.instance.refreshTrainCraftingButton();
 			break;
@@ -123,6 +147,19 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 				EntityLivingBase living = (EntityLivingBase) entity;
 				living.swingArm(living.getActiveHand());
 			}
+			break;
+		case RESET_COOLDOWN_AND_ACTIVE_HAND:
+			if (player.isHandActive()) {
+				player.resetActiveHand();
+				player.setActiveHand(EnumHand.MAIN_HAND);
+			}
+			player.resetCooldown();
+			break;
+		case PLAY_EVENT:
+			int eventNumber = byteBufInputStream.readInt();
+			BlockPos pos = byteBufInputStream .readBlockPos();
+			int eventData = byteBufInputStream.readInt();
+			world.playEvent(player, eventNumber, pos, eventData);
 			break;
 		default:
 			break;

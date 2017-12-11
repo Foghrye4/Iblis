@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 
+import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisSounds;
 import iblis.util.HeadShotHandler;
@@ -50,18 +51,18 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
-	
+
 	@Override
 	public boolean onEntitySwing(EntityLivingBase entityLiving, ItemStack stack) {
 		return true;
 	}
-	
+
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-		if(attacker instanceof EntityPlayer)
+		if (attacker instanceof EntityPlayer)
 			this.onShoot(attacker.world, (EntityPlayer) attacker, EnumHand.MAIN_HAND);
 		return false;
 	}
-	
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
@@ -70,43 +71,52 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 	}
 
 	@Override
-	public void onLeftClick(World world, EntityPlayerMP player, EnumHand mainHand){
+	public void onLeftClick(World world, EntityPlayerMP player, EnumHand mainHand) {
 		this.onShoot(world, player, EnumHand.MAIN_HAND);
 	}
 
+	// Server side only
 	public void onShoot(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		if (itemstack.getTagCompound() == null)
 			return;
 		NBTTagCompound nbt = itemstack.getTagCompound();
 		int ammoIn = nbt.getInteger(NBTTagsKeys.AMMO);
-		if (!worldIn.isRemote)
-			playerIn.getEntityData().setInteger("reload_tick", 0);
-		if (ammoIn == 0) {
+		int cockedBowString = nbt.getInteger(NBTTagsKeys.COCKED_STATE);
+		playerIn.getEntityData().setInteger("reload_tick", 0);
+		if (cockedBowString > ammoIn) {
+			this.playDropBowstringSoundEffect(playerIn);
+			nbt.setInteger(NBTTagsKeys.COCKED_STATE, --cockedBowString);
+			return;
+		} else if (ammoIn <= 0) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shotgun_hammer_click,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 			return;
-		} else {
-			playerIn.resetCooldown();
-			Vec3d pLook = playerIn.getLookVec();
-			if (!worldIn.isRemote) {
-				Random rand = worldIn.rand;
-				double divider = PlayerUtils.getShootingAccuracyDivider(playerIn);
-				double luckValue = playerIn.getEntityAttribute(SharedMonsterAttributes.LUCK).getAttributeValue();
-				boolean isCritical = rand.nextDouble() < (divider + luckValue - 4d) / 100d;
-				pLook = pLook.addVector((rand.nextFloat() - .5f) / divider, (rand.nextFloat() - .5f) / divider,
-						(rand.nextFloat() - .5f) / divider);
-				this.shoot(worldIn, pLook, playerIn, isCritical, divider);
-				nbt.setInteger(NBTTagsKeys.AMMO, --ammoIn);
-				itemstack.damageItem(1, playerIn);
-				playerIn.resetActiveHand();
-				playerIn.setActiveHand(EnumHand.MAIN_HAND);
-			}
 		}
+		Vec3d pLook = playerIn.getLookVec();
+		Random rand = worldIn.rand;
+		double divider = PlayerUtils.getShootingAccuracyDivider(playerIn);
+		double luckValue = playerIn.getEntityAttribute(SharedMonsterAttributes.LUCK).getAttributeValue();
+		boolean isCritical = rand.nextDouble() < (divider + luckValue - 4d) / 100d;
+		pLook = pLook.addVector((rand.nextFloat() - .5f) / divider, (rand.nextFloat() - .5f) / divider,
+				(rand.nextFloat() - .5f) / divider);
+		this.shoot(worldIn, pLook, playerIn, isCritical, divider);
+		if (!playerIn.capabilities.isCreativeMode) {
+			nbt.setInteger(NBTTagsKeys.AMMO, --ammoIn);
+			if (cockedBowString > 0)
+				nbt.setInteger(NBTTagsKeys.COCKED_STATE, --cockedBowString);
+			itemstack.damageItem(1, playerIn);
+		}
+		if (playerIn.isHandActive()) {
+			playerIn.resetActiveHand();
+			playerIn.setActiveHand(EnumHand.MAIN_HAND);
+		}
+		playerIn.resetCooldown();
+		IblisMod.network.resetCooldownAndActiveHand(playerIn);
 	}
-	
+
 	protected abstract void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy);
-	
+
 	@SuppressWarnings("unchecked")
 	@Nullable
 	protected List<EntityLivingBase>[] findEntitiesOnPath(World world, Entity shooter, Vec3d start, Vec3d end) {
@@ -133,7 +143,7 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 		}
 		return new List[] { list, headShots };
 	}
-	
+
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NBTTagsKeys.DURABILITY))
@@ -141,8 +151,9 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 		return super.getMaxDamage(stack);
 	}
 
-
 	public abstract ItemStack getReloading(ItemStack stack);
 
-	public abstract void playReloadingSoundEffect(EntityPlayerMP player);
+	public abstract void playReloadingSoundEffect(EntityPlayer player);
+
+	public abstract void playDropBowstringSoundEffect(EntityPlayer playerIn);
 }

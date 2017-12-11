@@ -69,10 +69,11 @@ public class ItemCrossbow extends ItemFirearmsBase {
 						playerIn.posY + playerIn.getEyeHeight(), playerIn.posZ);
 			}
 			else {
-				Vec3d rightHandPos = PlayerUtils.getVectorForRotation(rotationPitchIn, rotationYawIn + 4f);
+				Vec3d rightHandPos = PlayerUtils.getVectorForRotation(rotationPitchIn+4f, rotationYawIn + 4f);
 				entity = new EntityCrossbowBolt(worldIn, playerIn, playerIn.posX + rightHandPos.x,
 						playerIn.posY + rightHandPos.y + playerIn.getEyeHeight(), playerIn.posZ + rightHandPos.z);
 				rotationYawIn--;
+				rotationPitchIn--;
 			}
 			float speed = 4f;
 			double mx = playerIn.motionX;
@@ -87,11 +88,16 @@ public class ItemCrossbow extends ItemFirearmsBase {
 			entity.setDamage(damage);
 			playerIn.resetCooldown();
 			worldIn.spawnEntity((Entity) entity);
-			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.crossbow_shot,
-					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
+			this.playDropBowstringSoundEffect(playerIn);
 	}
-
+	
 	@Override
-	public void playReloadingSoundEffect(EntityPlayerMP player) {
+	public void playDropBowstringSoundEffect(EntityPlayer playerIn) {
+		World worldIn = playerIn.world;
+		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.crossbow_shot,
+				SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 	}
+	
+	@Override
+	public void playReloadingSoundEffect(EntityPlayer player) {}
 }

@@ -88,8 +88,8 @@ public class ItemThrowingWeapon extends Item {
 	}
 
 	public enum ThrowableType {
-		BOULDER(2.0f, 0.25f), 
-		IRON_KNIFE(1.0f, 1.0f);
+		BOULDER(2.0f, 1.0f), 
+		IRON_KNIFE(1.0f, 2.0f);
 		public final float weight;
 		public final float damage;
 
