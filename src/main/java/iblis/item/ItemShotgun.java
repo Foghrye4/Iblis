@@ -11,7 +11,6 @@ import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.player.SharedIblisAttributes;
 import iblis.util.PlayerUtils;
-import iblis.util.IblisMathHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

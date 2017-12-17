@@ -325,10 +325,8 @@ public class IblisEventHandler {
 		else
 			skillValue = PlayerSkills.SHARPSHOOTING.getFullSkillValue(player) + 1.0d;
 		int duration = event.getDuration();
-		int use = player.getItemInUseCount();
-		int max = player.getItemInUseMaxCount();
-		// To avoid skipping crossbow animation
-		if (isCrossbow && (max <= 14 || use <= 8))
+		// To avoid skipping crossbow reload animation
+		if (isCrossbow && duration <= 6)
 			return;
 		if (duration % (int) (128.0d / skillValue) == 0)
 			event.setDuration(event.getDuration() - 1);

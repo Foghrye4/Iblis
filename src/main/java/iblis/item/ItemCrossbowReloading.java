@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem {
 
 	private final Item gunBase;
-	public final static int ARMING_ONE_BOLT_TIME = 130;
+	public final static int ARMING_ONE_BOLT_TIME = 60;
 
 	public ItemCrossbowReloading(Item gunBaseIn) {
 		super();
@@ -49,9 +49,13 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 
 	@Override
 	public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityIn) {
-		if (!(entityIn instanceof EntityPlayer) || worldIn.isRemote)
+		if (!(entityIn instanceof EntityPlayer))
 			return stack;
 		EntityPlayer playerIn = (EntityPlayer) entityIn;
+		playerIn.resetActiveHand();
+		playerIn.setActiveHand(EnumHand.MAIN_HAND);
+		if(worldIn.isRemote)
+			return stack;
 		NBTTagCompound nbt = stack.getTagCompound();
 		if (nbt == null) {
 			nbt = new NBTTagCompound();

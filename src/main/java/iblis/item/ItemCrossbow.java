@@ -62,7 +62,7 @@ public class ItemCrossbow extends ItemFirearmsBase {
 	@Override
 	protected void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy) {
 			EntityCrossbowBolt entity = null;
-			float rotationPitchIn = playerIn.rotationPitch - 1;
+			float rotationPitchIn = playerIn.rotationPitch - 1f;
 			float rotationYawIn = playerIn.rotationYaw;
 			if(playerIn.isHandActive()) {
 				entity = new EntityCrossbowBolt(worldIn, playerIn, playerIn.posX,
@@ -75,7 +75,7 @@ public class ItemCrossbow extends ItemFirearmsBase {
 				rotationYawIn--;
 				rotationPitchIn--;
 			}
-			float speed = 4f;
+			float speed = 8f;
 			double mx = playerIn.motionX;
 			double my = playerIn.motionY;
 			double mz = playerIn.motionZ;
