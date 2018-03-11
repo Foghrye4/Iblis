@@ -80,7 +80,10 @@ iblis.quality=Quality: %s (%d)
 iblis.bowAttackDamage=Bow quality damage modifier: %0.1f
 
 attribute.name.iblis.projectile_damage=Projectile damage
-attribute.name.iblis.damage_reduction=Damage reduction
+attribute.name.iblis.projectile_damage_reduction=Incoming projectile damage reduction
+attribute.name.iblis.explosion_damage_reduction=Incoming explosion damage reduction
+attribute.name.iblis.melee_damage_reduction=Incoming melee damage reduction
+attribute.name.iblis.fire_damage_reduction=Incoming fire damage reduction
 attribute.name.iblis.intelligence=Intelligence
 attribute.name.iblis.running=Running
 
@@ -112,7 +115,13 @@ item.double_crossbow.name=Double crossbow
 item.crossbow_bolt.name=Crossbow bolt
 item.nugget_steel.name=Steel nugget
 item.trigger_spring.name=Trigger spring
+item.steel_helmet.name=Steel helmet
+item.steel_chestplate.name=Steel chestplate
+item.steel_leggins.name=Steel leggins
+item.steel_boots.name=Steel boots
 
 entity.Villager.mechanic=Mechanic
+awareness=A smell of enemy
+overheating=Overheating
 
 iblis.trainCraftTooltip=Do not craft item. Use resources to train only.

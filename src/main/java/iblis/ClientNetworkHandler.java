@@ -124,7 +124,11 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			((ClientProxy)IblisMod.proxy).addDecal(decal, posX, posY, posZ, facing);
 			break;
 		case REFRESH_CRAFTING_BUTTONS:
-			GuiEventHandler.instance.refreshTrainCraftingButton();
+			mc.addScheduledTask(new Runnable(){
+				@Override
+				public void run() {
+					GuiEventHandler.instance.refreshTrainCraftingButton();
+				}});
 			break;
 		case LAUNCH_KICK_ANIMATION:
 			playerId = byteBufInputStream.readInt();

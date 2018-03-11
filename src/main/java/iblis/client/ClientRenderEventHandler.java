@@ -1,5 +1,6 @@
 package iblis.client;
 
+import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisItems;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -11,11 +12,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EnumPlayerModelParts;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.EntityViewRenderEvent.CameraSetup;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientRenderEventHandler {
@@ -24,8 +27,10 @@ public class ClientRenderEventHandler {
 	public static final int PLAYER_KICK_ANIMATION_LENGTH = 15;
 	public static float renderFirstPersonPlayerkickAnimation = 0f;
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
+		if(event.isCanceled())
+			return;
 		GlStateManager.pushMatrix();
 		EntityPlayer player = event.getEntityPlayer();
         float limbSwingAmount = player.prevLimbSwingAmount + (player.limbSwingAmount - player.prevLimbSwingAmount) * event.getPartialRenderTick();
@@ -54,19 +59,23 @@ public class ClientRenderEventHandler {
 	public void onRenderMainHandFirstPerson(RenderSpecificHandEvent event) {
 		float pitch = event.getInterpolatedPitch();
 		if (event.getHand() == EnumHand.OFF_HAND) {
-			if(renderFirstPersonPlayerkickAnimation < 0)
+			if (renderFirstPersonPlayerkickAnimation < 0)
 				return;
 			GlStateManager.pushMatrix();
 			this.renderLegsFirstPerson(event.getPartialTicks(), pitch);
 			GlStateManager.popMatrix();
-			renderFirstPersonPlayerkickAnimation-=0.1f;
+			renderFirstPersonPlayerkickAnimation -= 0.1f;
 			return;
 		}
 		EntityPlayer player = Minecraft.getMinecraft().player;
-		if (!player.isHandActive() || player.getActiveItemStack().getItem() != IblisItems.CROSSBOW_RELOADING) {
+		ItemStack stack = player.getActiveItemStack();
+		if (!player.isHandActive() || stack.getItem() != IblisItems.CROSSBOW_RELOADING) {
 			return;
 		}
-		GlStateManager.rotate(pitch - 90f, 1f, 0f, 0f);
+		int cockedBowstring = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
+		int ammo = stack.getTagCompound().getInteger(NBTTagsKeys.AMMO);
+		if (ammo == cockedBowstring)
+			GlStateManager.rotate(pitch - 90f, 1f, 0f, 0f);
 	}
 	
     private void renderLegsFirstPerson(float partialTicks, float pitch)

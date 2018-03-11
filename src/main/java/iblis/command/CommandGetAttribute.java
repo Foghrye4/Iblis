@@ -35,6 +35,8 @@ public class CommandGetAttribute extends CommandBase {
 			return;
 		EntityPlayerMP player = (EntityPlayerMP) command_sender;
 		double value = player.getAttributeMap().getAttributeInstanceByName(args[0]).getBaseValue();
+		double full_value = player.getAttributeMap().getAttributeInstanceByName(args[0]).getAttributeValue();
 		command_sender.sendMessage(new TextComponentString("Attribute base value: " + value));
+		command_sender.sendMessage(new TextComponentString("Attribute current value: " + full_value));
 	}
 }

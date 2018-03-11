@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LootTableParsingEventHandler {
 
-	private final static int MAX_LOOT_LEVEL = 16;
+	private final static int MAX_LOOT_LEVEL = 15;
 	private final ResourceLocation libraryLootTable = new ResourceLocation(IblisMod.MODID, "library_loot");
 	private final ResourceLocation dungeonLootTable = new ResourceLocation(IblisMod.MODID, "dungeon_loot");
 	/** An array of loot tables which will be adjusted by event handler **/
@@ -75,8 +75,17 @@ public class LootTableParsingEventHandler {
 		for (PlayerSkills skill : PlayerSkills.values()) {
 			String skillName = skill.name();
 			LootPool pool = iblisLootTable.getPool(skillName + "_level_" + lootLevel);
-			if (pool != null)
+			if (pool != null) {
 				lootTable.addPool(pool);
+			} else {
+				while (--lootLevel > 0) {
+					pool = iblisLootTable.getPool(skillName + "_level_" + lootLevel);
+					if (pool != null) {
+						lootTable.addPool(pool);
+						return;
+					}
+				}
+			}
 		}
 	}
 

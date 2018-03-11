@@ -28,7 +28,7 @@ public class ParticleDecal extends Particle {
 	/** The Rendering Engine. */
 	private final TextureManager textureManager;
 	public final EnumFacing faceDirection;
-	private final static double FACE_OFFSET_START = 0.0004;
+	private final static double FACE_OFFSET_START = 0.001;
 	private final static double FACE_OFFSET = 0.0001;
 	private final double x1;
 	private final double x2;

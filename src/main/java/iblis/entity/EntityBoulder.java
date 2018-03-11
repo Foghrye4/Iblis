@@ -34,7 +34,7 @@ public class EntityBoulder extends EntityThrowable {
 		double damageBase = playerIn.getAttributeMap().getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE)
 				.getAttributeValue();
 		double skill = PlayerSkills.THROWING.getFullSkillValue(playerIn);
-		this.damage = (float) (damageBase * (skill + 0.2));
+		this.damage = (float) (damageBase * (skill * 0.1 + 0.2));
 		this.ignoreEntity = playerIn;
 		this.thrower = playerIn;
 	}

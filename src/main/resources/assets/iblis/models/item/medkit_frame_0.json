@@ -23,6 +23,7 @@
         }
     },
     "textures": {
+        "layer0": "iblis:items/non-sterile_medkit",
         "0": "iblis:items/non-sterile_medkit",
         "1": "iblis:items/medkit"
     },

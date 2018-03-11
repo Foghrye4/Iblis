@@ -25,6 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemMedkit extends Item {
 	
+	public boolean instantHealing = false;
+
 	public ItemMedkit() {
 		super();
 		this.addPropertyOverride(new ResourceLocation("animation_frame"), new IItemPropertyGetter() {
@@ -53,12 +55,25 @@ public class ItemMedkit extends Item {
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 		if (playerIn.getHealth() >= playerIn.getMaxHealth())
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
+		if(instantHealing) {
+			itemstack.damageItem(1, playerIn);
+			playerIn.addExhaustion(1f);
+			float healAmount = (float) PlayerSkills.MEDICAL_AID.getFullSkillValue(playerIn);
+			playerIn.heal(healAmount + 1f);
+			if(!playerIn.world.isRemote)
+				PlayerSkills.MEDICAL_AID.raiseSkill(playerIn, 1d);
+			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.tearing_bandage,
+					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
+			return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+		}
 		playerIn.setActiveHand(handIn);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 	}
 
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
+		if(instantHealing)
+			return 0;
 		return 128;
 	}
 

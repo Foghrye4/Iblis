@@ -28,6 +28,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -215,9 +216,9 @@ public class ItemGuideBook extends Item {
 				playersData.playerDataBooks.put(playerIn.getUniqueID(), books);
 				playersData.markDirty();
 				IblisMod.network.sendPlayerBookListInfo((EntityPlayerMP) playerIn);
-				playerIn.sendMessage(new TextComponentString(I18n.format("iblis.youLearnedSomethingNew")));
+				playerIn.sendMessage(new TextComponentTranslation("iblis.youLearnedSomethingNew"));
 			} else {
-				playerIn.sendMessage(new TextComponentString(I18n.format("iblis.youAlreadyReadThatBook")));
+				playerIn.sendMessage(new TextComponentTranslation("iblis.youAlreadyReadThatBook"));
 			}
 			if (itemstack.getMetadata() == 0) {
 				worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.book_reading,

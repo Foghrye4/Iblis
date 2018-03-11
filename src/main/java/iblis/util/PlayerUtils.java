@@ -34,7 +34,12 @@ public class PlayerUtils {
 			SharedMonsterAttributes.ARMOR.getName(), 
 			SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
 			SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
-			SharedIblisAttributes.PROJECTILE_DAMAGE.getName()};
+			SharedIblisAttributes.PROJECTILE_DAMAGE.getName(),
+			SharedIblisAttributes.MELEE_DAMAGE_REDUCTION.getName(),
+			SharedIblisAttributes.PROJECTILE_DAMAGE_REDUCTION.getName(),
+			SharedIblisAttributes.FIRE_DAMAGE_REDUCTION.getName(),
+			SharedIblisAttributes.EXPLOSION_DAMAGE_REDUCTION.getName()
+	};
 
 	public static boolean isCharacteristicsCouldBeRaised(EntityPlayer player) {
 		for (PlayerCharacteristics characteristic : PlayerCharacteristics.values()) {
@@ -75,7 +80,7 @@ public class PlayerUtils {
 		if(additive)
 			return baseValue + skillValue * 0.1d;
 		if (skillValue < 0d)
-			return baseValue / (1.0d - skillValue * 0.2d);
+			return baseValue / (1.0d - skillValue);
 		if (skillValue > 0d)
 			return baseValue * skillValue * 0.1d + baseValue;
 		return baseValue;
@@ -85,7 +90,7 @@ public class PlayerUtils {
 		if(additive)
 			return MathHelper.ceil(baseValue + skillValue * 0.1d);
 		if (skillValue < 0d)
-			return MathHelper.floor(baseValue / (1.0d - skillValue * 0.2d));
+			return MathHelper.floor(baseValue / (1.0d - skillValue));
 		if (skillValue > 0d)
 			return MathHelper.ceil(baseValue * skillValue * 0.1d + baseValue);
 		return baseValue;

@@ -85,12 +85,13 @@ public class GuiEventHandler {
 	public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Post event) {
 		if(!(event.getGui() instanceof GuiCrafting))
 			return;
+		GuiCrafting gui = (GuiCrafting) event.getGui();
 		Minecraft mc = Minecraft.getMinecraft();
 		GuiCrafting gc = (GuiCrafting) event.getGui();
 		GlStateManager.color(1f, 1f, 1f, 1f);
 		mc.fontRenderer.drawString(currentSkillHint, gc.getGuiLeft() + 88, gc.getGuiTop() + 6, 4210752);
 		mc.fontRenderer.drawString(requiredOrExpSkillHint, gc.getGuiLeft() + 88, gc.getGuiTop() + 19, 4210752);
-		if (trainCraftButton != null && trainCraftButton.isMouseOver()) {
+		if (trainCraftButton != null && trainCraftButton.isMouseOver() && gui.buttonList.contains(trainCraftButton)) {
 			mc.currentScreen.drawHoveringText(trainCraftButton.displayString, event.getMouseX(), event.getMouseY());
 		}
 	}
@@ -263,10 +264,26 @@ public class GuiEventHandler {
 			MARGIN += 72;
 		int absorbRemaining = Math.round(absorb);
 
-		for (int i = 0; i < MathHelper.ceil((healthMax + absorb) / 2.0F); i++) {
-			int row = MathHelper.ceil((i + 1) / 10.0F) - 1;
+		int lastIcon = MathHelper.ceil((healthMax + absorb) / 2.0F);
+		int firstIcon = (MathHelper.ceil(health / 2.0F) / 10) * 10;
+		if (lastIcon - firstIcon > 10) {
+			lastIcon = firstIcon + 10;
+		}
+		if (health > 20) {
+			String hphint = "+" + firstIcon;
+			int hintLeft = left+88-hphint.length()*7;
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft+1, top+1, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft-1, top+1, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top+2, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top+1, 0xBB0000);
+			top -= 3;
+		}
+		GlStateManager.color(1.0f, 1.0f, 1.0f);
+		mc.getTextureManager().bindTexture(Gui.ICONS);
+		for (int i = firstIcon; i < lastIcon; i++) {
 			int x = left + i % 10 * 8;
-			int y = top - row * 2;
+			int y = top;
 
 			if (health <= 4)
 				y += rand.nextInt(2);

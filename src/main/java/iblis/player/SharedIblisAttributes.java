@@ -16,9 +16,7 @@ public class SharedIblisAttributes {
     public static final UUID ARMOR_TOUGHNESS_BY_QUALITY_MODIFIER = UUID.fromString("3BA691F-6D892610-857-519C4CDF-9F5F2D7");
     public static final UUID SPRINTING_SPEED_MODIFIER = UUID.fromString("5719796-57EED-AA0D1F1E7-A3-C4A7AC791571C");
 	public static final UUID SHIELD_RUNNING_MODIFIER = UUID.fromString("51E76-57EED-AA0D1F1E7-7E4-E9");
-	public static final UUID EQUILIBRIUM_KNOCKBACK_MODIFIER = new UUID(
-			(long) ("Iblis".hashCode()) + (long) ("equilibrium".hashCode()),
-			(long) ("knockback".hashCode()) + (long) ("modifier".hashCode()));
+	public static final UUID EQUILIBRIUM_KNOCKBACK_MODIFIER = UUID.fromString("FFFFFFFF-FF62-BD91-0000-00001580FE92");
     
     public static final IAttribute MELEE_DAMAGE_BONUS = (new RangedAttribute((IAttribute)null, "iblis.melee_damage_bonus", 1.0D, 0.0D, Double.MAX_VALUE)).setDescription("Melee damage bonus").setShouldWatch(true);
     public static final IAttribute PROJECTILE_DAMAGE = (new RangedAttribute((IAttribute)null, "iblis.projectile_damage", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Projectile damage").setShouldWatch(true);

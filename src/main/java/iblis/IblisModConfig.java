@@ -1,5 +1,6 @@
 package iblis;
 
+import iblis.init.IblisItems;
 import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
 import net.minecraftforge.common.config.Configuration;
@@ -58,6 +59,8 @@ public class IblisModConfig {
 				Configuration.CATEGORY_GENERAL, true, "Spawn player zombie on players death with all inventory.");
 		IblisMod.eventHandler.noDeathPenalty = configuration.getBoolean("no_death_penalty",
 				Configuration.CATEGORY_GENERAL, false, "No death penalty to all skills and characteristics.");
+		IblisItems.MEDKIT.instantHealing = configuration.getBoolean("medkit_instant_healing",
+				Configuration.CATEGORY_GENERAL, false, "Medkit heal instantly on use.");
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}

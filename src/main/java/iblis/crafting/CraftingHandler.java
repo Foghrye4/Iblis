@@ -27,6 +27,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
@@ -240,6 +241,42 @@ public class CraftingHandler  implements IContainerListener{
 				"N  ",
 				" N ",
 				"   ", 'N', "nuggetSteel");
+		ItemStack steelHelmet = new ItemStack(IblisItems.STEEL_HELMET);
+		steelHelmet.setTagCompound(new NBTTagCompound());
+		steelHelmet.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, steelHelmet.getMaxDamage());
+		ItemStack steelChestplate = new ItemStack(IblisItems.STEEL_CHESTPLATE);
+		steelChestplate.setTagCompound(new NBTTagCompound());
+		steelChestplate.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, steelChestplate.getMaxDamage());
+		ItemStack steelLeggins = new ItemStack(IblisItems.STEEL_LEGGINS);
+		steelLeggins.setTagCompound(new NBTTagCompound());
+		steelLeggins.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, steelLeggins.getMaxDamage());
+		ItemStack steelBoots = new ItemStack(IblisItems.STEEL_BOOTS);
+		steelBoots.setTagCompound(new NBTTagCompound());
+		steelBoots.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, steelBoots.getMaxDamage());
+		ShapedOreRecipe steelHelmetRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),steelHelmet,
+				"III",
+				"I I",
+				"   ", 'I', "ingotSteel");
+		ShapedOreRecipe steelChestplateRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),steelChestplate,
+				"I I",
+				"III",
+				"III", 'I', "ingotSteel");
+		ShapedOreRecipe steelLegginsRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),steelLeggins,
+				"III",
+				"I I",
+				"I I", 'I', "ingotSteel");
+		ShapedOreRecipe steelBootsRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),steelBoots,
+				"   ",
+				"I I",
+				"I I", 'I', "ingotSteel");
+		PlayerSensitiveShapedRecipeWrapper steelHelmetRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelHelmetRecipe);
+		PlayerSensitiveShapedRecipeWrapper steelChestplateRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelChestplateRecipe);
+		PlayerSensitiveShapedRecipeWrapper steelLegginsRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelLegginsRecipe);
+		PlayerSensitiveShapedRecipeWrapper steelBootsRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelBootsRecipe);
+		steelHelmetRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		steelChestplateRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		steelLegginsRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		steelBootsRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
 
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
@@ -255,6 +292,10 @@ public class CraftingHandler  implements IContainerListener{
 		crossbowBoltWrappedRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"crossbow_bolt"));
 		crossbowBoltWrappedRecipe.setSesitiveTo(PlayerSkills.WEAPONSMITH, 2);
 		triggerSpringRecipe.setRegistryName(IblisMod.MODID, "trigger_spring");
+		steelHelmetRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_helmet");
+		steelChestplateRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_chestplate");
+		steelLegginsRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_leggins");
+		steelBootsRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_boots");
 		
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
@@ -266,6 +307,10 @@ public class CraftingHandler  implements IContainerListener{
 		event.getRegistry().register(crossbowRecipeWrapper);
 		event.getRegistry().register(crossbowBoltWrappedRecipe);
 		event.getRegistry().register(triggerSpringRecipe);
+		event.getRegistry().register(steelHelmetRecipeWrapper);
+		event.getRegistry().register(steelChestplateRecipeWrapper);
+		event.getRegistry().register(steelLegginsRecipeWrapper);
+		event.getRegistry().register(steelBootsRecipeWrapper);
 		this.addShapelessNuggetsOrShradsRecipe("ingotSteel", "nuggetSteel", "steel_ingot_from_nuggets", "nugget_steel", event.getRegistry());
 
 		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);
@@ -382,6 +427,23 @@ public class CraftingHandler  implements IContainerListener{
 	}
 	
 	private static double getArmorCraftingRequiredSkill(ItemStack is) {
+		if(is.getItem() instanceof ItemArmor){
+			ItemArmor ia = (ItemArmor)is.getItem();
+			switch(ia.getArmorMaterial()){
+			case DIAMOND:
+				return 10d;
+			case IRON:
+				return 6d;
+			case GOLD:
+				return 4d;
+			case CHAIN:
+				return 2d;
+			case LEATHER:
+				return 1d;
+			default:
+				break;
+			}
+		}
 		double minimalSkill = 0;
 		for(AttributeModifier am :is.getAttributeModifiers(EntityEquipmentSlot.CHEST).get(SharedMonsterAttributes.ARMOR.getName()))
 			minimalSkill+=am.getAmount();
@@ -417,6 +479,7 @@ public class CraftingHandler  implements IContainerListener{
 		while(ami.hasNext()) {
 			minimalSkill+=ami.next().getAmount();
 		}
+		minimalSkill*=2;
 		return minimalSkill;
 	}
 	

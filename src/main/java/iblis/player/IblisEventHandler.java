@@ -75,6 +75,8 @@ public class IblisEventHandler {
 		EntityPlayer player = event.player;
 		if (player.isSpectator())
 			return;
+		World world = player.world;
+		this.notifyRandomEntityAboutPlayer(world, player);
 		int knock = PlayerUtils.getKnockState(player);
 		if (knock == 0)
 			return;
@@ -85,7 +87,6 @@ public class IblisEventHandler {
 		if (power < 0.1f)
 			return;
 		player.resetCooldown();
-		World world = player.world;
 		float f = player.rotationYaw * 0.017453292F;
 		double fx = (double) (-MathHelper.sin(f) * 1.2F);
 		double fz = (double) (MathHelper.cos(f) * 1.2F);
@@ -136,6 +137,31 @@ public class IblisEventHandler {
 		}
 		if (playSound)
 			player.playSound(SoundEvents.ITEM_SHIELD_BLOCK, 0.8F, 0.8F + world.rand.nextFloat() * 0.4F);
+	}
+
+	private void notifyRandomEntityAboutPlayer(World world, EntityPlayer player) {
+		Entity randomEntity = world.loadedEntityList.get(world.rand.nextInt(world.loadedEntityList.size()));
+		if (!(randomEntity instanceof EntityLiving))
+			return;
+		if (!(randomEntity instanceof IMob))
+			return;
+		EntityLiving living = (EntityLiving) randomEntity;
+		Vec3d look = living.getLookVec();
+		double dx = player.posX - living.posX;
+		double dy = player.posY - living.posY;
+		double dz = player.posZ - living.posZ;
+		double aligmentFactor = look.x * dx + look.y * dy + look.z * dz;
+		if (aligmentFactor < 0)
+			return;
+		if (!living.canEntityBeSeen(player))
+			return;
+		List<EntityLiving> comrads = world.getEntitiesWithinAABB(EntityLiving.class,
+				(new AxisAlignedBB(living.getPosition()).grow(16, 4, 16)));
+		int d = MathHelper.ceil(living.getDistanceToEntity(player));
+		PotionEffect pea = new PotionEffect(IblisPotions.AWARENESS, 1200, d);
+		for (EntityLivingBase comrad : comrads) {
+			((EntityLiving) comrad).addPotionEffect(pea);
+		}
 	}
 
 	@SubscribeEvent
@@ -219,18 +245,27 @@ public class IblisEventHandler {
 		}
 		if (!(living instanceof EntityPlayerMP))
 			return;
-		if (event.getSource().isExplosion())
+		if (event.getSource().isExplosion()) {
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.EXPLOSION_DAMAGE_REDUCTION)
 					.getAttributeValue();
-		else if (event.getSource().isProjectile())
+		}
+		else if (event.getSource().isProjectile()) {
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE_REDUCTION)
 					.getAttributeValue();
-		else if (event.getSource().isFireDamage())
+		}
+		else if (event.getSource().isFireDamage()) {
+			int amplifier = 1;
+			PotionEffect overheating = living.getActivePotionEffect(IblisPotions.OVERHEATING);
+			if(overheating!=null)
+				amplifier += overheating.getAmplifier();
+			living.addPotionEffect(new PotionEffect(IblisPotions.OVERHEATING, 200, amplifier));
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.FIRE_DAMAGE_REDUCTION)
 					.getAttributeValue();
-		else if (event.getSource().getDamageType().equals("mob"))
+		}
+		else if (event.getSource().getDamageType().equals("mob")) {
 			damage -= living.getAttributeMap().getAttributeInstance(SharedIblisAttributes.MELEE_DAMAGE_REDUCTION)
 					.getAttributeValue();
+		}
 		living.removePotionEffect(MobEffects.REGENERATION);
 		event.setAmount(damage);
 	}
@@ -406,9 +441,10 @@ public class IblisEventHandler {
 			IAttributeInstance aiAttackDamage = player.getAttributeMap()
 					.getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
 			aiAttackDamage.removeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER);
-			aiAttackDamage.applyModifier(new AttributeModifier(
-					SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER, "Characteristic modifier",
-					PlayerCharacteristics.MELEE_DAMAGE_BONUS.getCurrentValue(player), 1));
+			if (PlayerCharacteristics.MELEE_DAMAGE_BONUS.enabled)
+				aiAttackDamage.applyModifier(new AttributeModifier(
+						SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER, "Characteristic modifier",
+						PlayerCharacteristics.MELEE_DAMAGE_BONUS.getCurrentValue(player), 1));
 
 			World worldIn = player.world;
 			WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) worldIn.getPerWorldStorage()
@@ -437,7 +473,7 @@ public class IblisEventHandler {
 			IAttributeInstance aiAttackDamage = event.getEntityLiving().getAttributeMap()
 					.getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
 			aiAttackDamage.removeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER);
-			if (amto.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
+			if (amto.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName()) && PlayerSkills.SWORDSMANSHIP.enabled) {
 				aiAttackDamage
 						.applyModifier(new AttributeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER,
 								"Weapon skill modifier", PlayerSkills.SWORDSMANSHIP.getFullSkillValue(player), 0));

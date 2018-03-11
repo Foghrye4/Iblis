@@ -67,7 +67,7 @@ public class EntityThrowingKnife extends EntityArrow {
 		double damageBase = playerIn.getAttributeMap().getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE)
 				.getAttributeValue();
 		double skill = PlayerSkills.THROWING.getFullSkillValue(playerIn);
-		this.setDamage((float) (damageBase * (skill + 0.2)));
+		this.setDamage((float) (damageBase * (skill * 0.1 + 0.2)));
 		this.shootingEntity = playerIn;
 		if (playerIn instanceof EntityPlayer) {
 			this.pickupStatus = EntityArrow.PickupStatus.ALLOWED;

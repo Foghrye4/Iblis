@@ -24,32 +24,32 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
 import net.minecraft.entity.passive.EntityVillager.ListItemForEmeralds;
 import net.minecraft.entity.passive.EntityVillager.PriceInfo;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
-import net.minecraftforge.oredict.OreDictionary;
 
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.28";
+    public static final String VERSION = "0.3.31";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
-    public static final String DEPENDENCIES = "after:landcore;after:tconstruct;after:silentgems";
+    public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
 	public static ServerProxy proxy;
@@ -59,21 +59,31 @@ public class IblisMod
 	public static IblisCreativeTab creativeTab;
     public static IblisModConfig config;
     public static IblisEventHandler eventHandler;
+	public static ArmorMaterial armorMaterialSteel;
+	public static ArmorMaterial armorMaterialParaAramid;
+    
 	
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+    	// Oh, so original and fresh! ^_^
+    	armorMaterialSteel = EnumHelper.addArmorMaterial("STEEL", "iblis:steel", 33, new int[]{6, 12, 16, 6}, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 4);
+    	armorMaterialSteel.setRepairItem(new ItemStack(IblisItems.INGOT_STEEL));
+    	armorMaterialParaAramid = EnumHelper.addArmorMaterial("PARA_ARAMID", "iblis:para_aramid", 33, new int[]{6, 12, 16, 6}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 8);
+    	armorMaterialParaAramid.setRepairItem(new ItemStack(IblisItems.PARA_ARAMID_FABRIC));
     	eventHandler = new IblisEventHandler();
-		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
-		MinecraftForge.EVENT_BUS.register(config);
     	log = event.getModLog();
     	creativeTab = new IblisCreativeTab("iblis.tab");
     	IblisItems.init();
     	IblisPotions.init();
     	IblisSounds.register();
+		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
+		MinecraftForge.EVENT_BUS.register(config);
     	RangedAttribute toughness = (RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS;
-		// Max armor toughness upper limit is removed
+    	RangedAttribute armor = (RangedAttribute) SharedMonsterAttributes.ARMOR;
+		// Max armor and armor toughness upper limit is removed
     	toughness.maximumValue = Double.MAX_VALUE;
+    	armor.maximumValue = Double.MAX_VALUE;
     	Items.SHIELD.setMaxDamage(200);
     	EntityRegistry.registerModEntity(new ResourceLocation(MODID, "zombie"), EntityPlayerZombie.class, "zombie", 0, this, 80, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "boulder"), EntityBoulder.class, "Boulder", 1, this, 64, 1, true);
