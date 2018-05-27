@@ -11,6 +11,8 @@ import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.init.IblisItems;
 import iblis.item.ItemFirearmsBase;
 import iblis.item.ItemShotgunReloading;
+import iblis.player.FoodStatsExtended;
+import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
 import iblis.util.ModIntegrationUtil;
 import iblis.util.PlayerUtils;
@@ -35,6 +37,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
@@ -63,7 +66,7 @@ public class GuiEventHandler {
 	GuiButtonImage characteristicsButton;
 	GuiButtonImage skillsButton;
 	GuiButtonImage trainCraftButton;
-	
+
 	private String currentSkillHint = "";
 	private String requiredOrExpSkillHint = "";
 
@@ -83,7 +86,7 @@ public class GuiEventHandler {
 
 	@SubscribeEvent
 	public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Post event) {
-		if(!(event.getGui() instanceof GuiCrafting))
+		if (!(event.getGui() instanceof GuiCrafting))
 			return;
 		GuiCrafting gui = (GuiCrafting) event.getGui();
 		Minecraft mc = Minecraft.getMinecraft();
@@ -169,20 +172,24 @@ public class GuiEventHandler {
 				// Right line bottom
 				Gui.drawRect(centerX + frameSize / 2, centerY + frameSize / 3 - 1, centerX + frameSize / 2 - 1,
 						centerY + frameSize / 2 - 1, colour);
-				if(heldItem instanceof ItemFirearmsBase)
+				if (heldItem instanceof ItemFirearmsBase)
 					action.setCanceled(true);
 			}
 		}
+		if (IblisMod.isRPGHUDLoaded)
+			return;
 		if (action.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
 			action.setCanceled(true);
 			ScaledResolution res = action.getResolution();
 			renderHealth(res.getScaledWidth(), res.getScaledHeight());
+		} else if (action.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
+			action.setCanceled(true);
+			ScaledResolution res = action.getResolution();
+			renderFood(res.getScaledWidth(), res.getScaledHeight());
 		}
+
 	}
 
-	/**
-	 * It's mostly copy-paste from forge. I just set healthbar row height to 1
-	 **/
 	private void renderHealth(int width, int height) {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
@@ -264,19 +271,19 @@ public class GuiEventHandler {
 			MARGIN += 72;
 		int absorbRemaining = Math.round(absorb);
 
-		int lastIcon = MathHelper.ceil((healthMax + absorb) / 2.0F);
-		int firstIcon = (MathHelper.ceil(health / 2.0F) / 10) * 10;
-		if (lastIcon - firstIcon > 10) {
-			lastIcon = firstIcon + 10;
-		}
-		if (health > 20) {
+		int firstIcon = (MathHelper.floor((health - 1.0f) / 2.0F) / 10) * 10;
+		int lastIcon = Math.min(firstIcon + 10, MathHelper.ceil((healthMax + absorb) / 2.0F));
+		if (firstIcon > 0) {
 			String hphint = "+" + firstIcon;
-			int hintLeft = left+88-hphint.length()*7;
-			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft+1, top+1, 0x000000);
-			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft-1, top+1, 0x000000);
+			int hintLeft = left + 88 - hphint.length() * 7;
+			boolean unicode = mc.ingameGUI.getFontRenderer().getUnicodeFlag();
+			mc.ingameGUI.getFontRenderer().setUnicodeFlag(false);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft + 1, top + 1, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft - 1, top + 1, 0x000000);
 			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top, 0x000000);
-			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top+2, 0x000000);
-			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top+1, 0xBB0000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top + 2, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hphint, hintLeft, top + 1, 0xBB0000);
+			mc.ingameGUI.getFontRenderer().setUnicodeFlag(unicode);
 			top -= 3;
 		}
 		GlStateManager.color(1.0f, 1.0f, 1.0f);
@@ -325,6 +332,64 @@ public class GuiEventHandler {
 		mc.mcProfiler.endSection();
 	}
 
+	public void renderFood(int width, int height) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
+		mc.mcProfiler.startSection("food");
+		int left = width / 2 + 91;
+		int right_height = 39;
+		int top = height - right_height;
+		right_height += 10;
+		FoodStats stats = mc.player.getFoodStats();
+		int level = stats.getFoodLevel();
+		int maxLevel = MathHelper.floor(PlayerCharacteristics.GLUTTONY.getCurrentValue(player));
+		int updateCounter = mc.ingameGUI.getUpdateCounter();
+
+		int firstIcon = (MathHelper.floor((level - 1.0f) / 2.0f) / 10) * 10;
+		int lastIcon = Math.min(firstIcon + 10, MathHelper.ceil(maxLevel/2.0f));
+		if (firstIcon > 0) {
+			String hint = "+" + firstIcon;
+			int hintLeft = left + 8 - hint.length() * 7;
+			boolean unicode = mc.ingameGUI.getFontRenderer().getUnicodeFlag();
+			mc.ingameGUI.getFontRenderer().setUnicodeFlag(false);
+			mc.ingameGUI.getFontRenderer().drawString(hint, hintLeft + 1, top + 1, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hint, hintLeft - 1, top + 1, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hint, hintLeft, top, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hint, hintLeft, top + 2, 0x000000);
+			mc.ingameGUI.getFontRenderer().drawString(hint, hintLeft, top + 1, 0xBB9900);
+			mc.ingameGUI.getFontRenderer().setUnicodeFlag(unicode);
+			top -= 3;
+		}
+
+		GlStateManager.color(1.0f, 1.0f, 1.0f);
+		mc.getTextureManager().bindTexture(Gui.ICONS);
+		for (int i = firstIcon; i < lastIcon; i++) {
+			int idx = i * 2 + 1;
+			int x = left - i % 10 * 8 - 9;
+			int y = top;
+			int icon = 16;
+			byte background = 0;
+
+			if (mc.player.isPotionActive(MobEffects.HUNGER)) {
+				icon += 36;
+				background = 13;
+			}
+			
+			if (player.getFoodStats().getSaturationLevel() <= 0.0F && updateCounter % (level * 3 + 1) == 0) {
+				y = top + (rand.nextInt(3) - 1);
+			}
+
+			mc.ingameGUI.drawTexturedModalRect(x, y, 16 + background * 9, 27, 9, 9);
+
+			if (idx < level)
+				mc.ingameGUI.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
+			else if (idx == level)
+				mc.ingameGUI.drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
+		}
+		GlStateManager.disableBlend();
+		mc.mcProfiler.endSection();
+	}
+
 	public void refreshTrainCraftingButton() {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (!(mc.currentScreen instanceof GuiCrafting))
@@ -341,34 +406,33 @@ public class GuiEventHandler {
 				gui.buttonList.add(trainCraftButton);
 			trainCraftButton.setPosition(gui.getGuiLeft() + 122, gui.getGuiTop() + 61);
 
-			IRecipeRaiseSkill rsr = (IRecipeRaiseSkill)recipe;
+			IRecipeRaiseSkill rsr = (IRecipeRaiseSkill) recipe;
 			EntityPlayerSP player = mc.player;
 			IAttribute attribute = rsr.getSensitiveSkill().getAttribute();
 			this.currentSkillHint = I18n.format(attribute.getName(),
-					Math.round(rsr.getSensitiveSkill().getFullSkillValue(player) * 10)
-					/ 10d);
-			this.requiredOrExpSkillHint = I18n.format("iblis.skillExp",this.formatSkillExp(player, rsr.getSensitiveSkill(), rsr.getSkillExp()));
+					Math.round(rsr.getSensitiveSkill().getFullSkillValue(player) * 10) / 10d);
+			this.requiredOrExpSkillHint = I18n.format("iblis.skillExp",
+					this.formatSkillExp(player, rsr.getSensitiveSkill(), rsr.getSkillExp()));
 			if (recipe instanceof PlayerSensitiveShapedRecipeWrapper) {
-			PlayerSensitiveShapedRecipeWrapper r = (PlayerSensitiveShapedRecipeWrapper)recipe;
-			this.requiredOrExpSkillHint = I18n.format("iblis.requiredSkill",
-					Math.round(r.getRequiredSkill() * 10)
-					/ 10d);
+				PlayerSensitiveShapedRecipeWrapper r = (PlayerSensitiveShapedRecipeWrapper) recipe;
+				this.requiredOrExpSkillHint = I18n.format("iblis.requiredSkill",
+						Math.round(r.getRequiredSkill() * 10) / 10d);
 			}
-			
-		} else{
+
+		} else {
 			this.currentSkillHint = "";
 			this.requiredOrExpSkillHint = "";
 			if (trainCraftButton != null)
-			gui.buttonList.remove(trainCraftButton);
+				gui.buttonList.remove(trainCraftButton);
 		}
 	}
-	
-	private String formatSkillExp(EntityPlayer player, PlayerSkills sensitiveSkill, double xpValue){
+
+	private String formatSkillExp(EntityPlayer player, PlayerSkills sensitiveSkill, double xpValue) {
 		double currentValue = sensitiveSkill.getCurrentValue(player);
 		double xpReal = sensitiveSkill.pointsPerLevel * xpValue / (currentValue + 1.0d);
-		if(xpReal>0.1d)
-			return Double.toString(Math.round(xpReal * 10)/ 10d);
+		if (xpReal > 0.1d)
+			return Double.toString(Math.round(xpReal * 10) / 10d);
 		else
-			return "1/"+Math.round(1/xpReal);
+			return "1/" + Math.round(1 / xpReal);
 	}
 }

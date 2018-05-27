@@ -25,6 +25,7 @@ public class SharedIblisAttributes {
     public static final IAttribute FIRE_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.fire_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming fire damage reduction").setShouldWatch(true);
     public static final IAttribute PROJECTILE_DAMAGE_REDUCTION = (new RangedAttribute((IAttribute)null, "iblis.projectile_damage_reduction", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Incoming projectile damage reduction").setShouldWatch(true);
     public static final IAttribute INTELLIGENCE = (new RangedAttribute((IAttribute)null, "iblis.intelligence", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Intelligence").setShouldWatch(true);
+    public static final IAttribute GLUTTONY = (new RangedAttribute((IAttribute)null, "iblis.gluttony", 20.0D, 0.0D, Double.MAX_VALUE)).setDescription("Gluttony").setShouldWatch(true);
     
     // Skills
     public static final IAttribute WISDOM = (new RangedAttribute(INTELLIGENCE, "iblis.wisdom", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Wisdom").setShouldWatch(true);
@@ -57,6 +58,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(FIRE_DAMAGE_REDUCTION);
 		attributeMap.registerAttribute(PROJECTILE_DAMAGE_REDUCTION);
 		attributeMap.registerAttribute(INTELLIGENCE);
+		attributeMap.registerAttribute(GLUTTONY);
 		attributeMap.registerAttribute(WISDOM);
 		attributeMap.registerAttribute(MARTIAL_ARTS);
 		attributeMap.registerAttribute(SWORDSMANSHIP);

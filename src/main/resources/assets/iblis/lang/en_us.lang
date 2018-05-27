@@ -17,6 +17,7 @@ iblis.explosion_damage_reduction=Incoming explosion damage reduction %d: %0.1f
 iblis.projectile_damage_reduction=Incoming projectile damage reduction %d: %0.1f
 iblis.intelligence=Intelligence %d: %0.1f
 iblis.sprinting_speed=Sprinting speed %d: %0.1f
+iblis.gluttony=Gluttony %d: %0.1f
 
 iblis.wisdom=Wisdom: %0.1f
 iblis.martial_arts=Martial arts: %0.1f

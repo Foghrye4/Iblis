@@ -16,6 +16,7 @@ import iblis.util.HeadShotHandler;
 import iblis.util.ModIntegrationUtil;
 import iblis.util.PlayerUtils;
 import iblis.world.WorldSavedDataPlayers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,6 +40,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -65,14 +67,21 @@ public class IblisEventHandler {
 
 	public boolean spawnPlayerZombie = true;
 	public boolean noDeathPenalty = false;
+	public boolean noIncreasedMobSeekRange = false;
 
 	@SubscribeEvent
 	public void onPlayerTickEvent(PlayerTickEvent event) {
 		if(event.phase != TickEvent.Phase.START)
 			return;
+		EntityPlayer player = event.player;
+		if(!(player.foodStats instanceof FoodStatsExtended)) {
+			FoodStats oldFoodStats = player.foodStats;
+			player.foodStats = new FoodStatsExtended();
+			player.foodStats.setFoodLevel(oldFoodStats.getFoodLevel());
+			player.foodStats.setFoodSaturationLevel(oldFoodStats.getSaturationLevel());
+		}
 		if (event.side == Side.CLIENT)
 			return;
-		EntityPlayer player = event.player;
 		if (player.isSpectator())
 			return;
 		World world = player.world;
@@ -140,6 +149,8 @@ public class IblisEventHandler {
 	}
 
 	private void notifyRandomEntityAboutPlayer(World world, EntityPlayer player) {
+		if (noIncreasedMobSeekRange)
+			return;
 		Entity randomEntity = world.loadedEntityList.get(world.rand.nextInt(world.loadedEntityList.size()));
 		if (!(randomEntity instanceof EntityLiving))
 			return;
@@ -374,7 +385,7 @@ public class IblisEventHandler {
 			SharedIblisAttributes.registerAttributes(player.getAttributeMap());
 		}
 	}
-
+	
 	@SubscribeEvent
 	public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
 		if (event.getWorld().isRemote)

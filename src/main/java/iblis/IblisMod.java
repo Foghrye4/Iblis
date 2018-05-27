@@ -47,7 +47,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.31";
+    public static final String VERSION = "0.3.36";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     
@@ -61,6 +61,7 @@ public class IblisMod
     public static IblisEventHandler eventHandler;
 	public static ArmorMaterial armorMaterialSteel;
 	public static ArmorMaterial armorMaterialParaAramid;
+	public static boolean isRPGHUDLoaded = false;
     
 	
     @EventHandler
@@ -114,6 +115,7 @@ public class IblisMod
 	@EventHandler
 	public void init(FMLPostInitializationEvent event) {
 		proxy.init();
+		isRPGHUDLoaded  = Loader.isModLoaded("rpghud");
 	}
     
 	@EventHandler
