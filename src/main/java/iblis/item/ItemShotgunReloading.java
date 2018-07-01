@@ -1,5 +1,6 @@
 package iblis.item;
 
+import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
@@ -9,20 +10,19 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemShotgunReloading extends Item implements ICustomLeftClickItem{
+public class ItemShotgunReloading extends ItemBaseFirearmsReloading {
 
 	public static final int MAX_AMMO = 6;
-	private final Item gunBase;
 
 	public ItemShotgunReloading(Item gunBaseIn) {
-		super();
-		this.gunBase = gunBaseIn;
+		super(gunBaseIn);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ItemShotgunReloading extends Item implements ICustomLeftClickItem{
 			NBTTagCompound nbt = stack.getTagCompound();
 			if (nbt == null)
 				return;
-			int ammoIn = nbt.getInteger("ammo");
+			int ammoIn = nbt.getTagList(NBTTagsKeys.AMMO,10).tagCount();
 			if (ammoIn < MAX_AMMO) {
 				player.resetCooldown();
 				if (!worldIn.isRemote) {
@@ -78,52 +78,41 @@ public class ItemShotgunReloading extends Item implements ICustomLeftClickItem{
 		}
 	}
 
-	private void reloadAmmo(World worldIn, ItemStack ammo, EntityPlayer player, NBTTagCompound nbt, int ammoIn) {
+	@Override
+	protected void reloadAmmo(World worldIn, ItemStack ammo, EntityPlayer player, NBTTagCompound nbt, int ammoIn) {
+		super.reloadAmmo(worldIn, ammo, player, nbt, ammoIn);
 		worldIn.playSound(null, player.posX, player.posY, player.posZ, IblisSounds.shotgun_ammo_loading,
 				SoundCategory.PLAYERS, 1.0f, 1.0f);
-		nbt.setInteger("ammo", ++ammoIn);
-		if(!player.isCreative())
-			ammo.shrink(1);
-		if (ammo.isEmpty()) {
-			player.inventory.deleteStack(ammo);
-		}
 	}
 
-	private ItemStack findAmmo(EntityPlayer player) {
-		if (this.isShot(player.getHeldItem(EnumHand.OFF_HAND))) {
-			return player.getHeldItem(EnumHand.OFF_HAND);
-		} else if (this.isShot(player.getHeldItem(EnumHand.MAIN_HAND))) {
-			return player.getHeldItem(EnumHand.MAIN_HAND);
-		} else {
-			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-				ItemStack itemstack = player.inventory.getStackInSlot(i);
-
-				if (this.isShot(itemstack)) {
-					return itemstack;
-				}
-			}
-
-			return ItemStack.EMPTY;
-		}
-	}
-
+	@Override
 	protected boolean isShot(ItemStack stack) {
 		return stack.getItem() == IblisItems.SHOTGUN_BULLET;
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return gunBase.getIsRepairable(toRepair, repair);
-	}
-	
-	@Override
 	public void onLeftClick(World worldIn, EntityPlayerMP playerIn, EnumHand handIn) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
-		ItemStack loadedGunStack = new ItemStack(gunBase, 1, stack.getItemDamage());
-		loadedGunStack.setTagCompound(stack.getTagCompound());
-		playerIn.resetCooldown();
+		super.onLeftClick(worldIn, playerIn, handIn);
 		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shotgun_hammer_cock,
 				SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
-		playerIn.setHeldItem(handIn, loadedGunStack);
+	}
+
+	@Override
+	protected NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo) {
+		NBTTagCompound ammoCartridge = new NBTTagCompound();
+		switch(ammo.getMetadata()) {
+		case 0:
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 2.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
+			break;
+		case 1:
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 1);
+			break;
+		default:
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
+		}
+		return ammoCartridge;
 	}
 }

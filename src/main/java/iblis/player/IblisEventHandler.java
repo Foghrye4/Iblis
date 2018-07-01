@@ -1,6 +1,8 @@
 package iblis.player;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import com.google.common.collect.Multimap;
 
@@ -20,18 +22,29 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityParrot;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
@@ -48,6 +61,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -57,6 +72,8 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteractSpecific;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -231,7 +248,133 @@ public class IblisEventHandler {
 				player.addExhaustion(0.2f * sprintButtonState);
 		}
 	}
+	
+	@SubscribeEvent
+	public void onHorseDismountPlayer(EntityMountEvent event) {
+		if(event.isMounting())
+			return;
+		if(!(event.getEntityBeingMounted() instanceof AbstractHorse))
+			return;
+		AbstractHorse horse = (AbstractHorse) event.getEntityBeingMounted();
+		if(horse.isTame())
+			return;
+		event.getEntityMounting().attackEntityFrom(DamageSource.causeMobDamage(horse), 1.0f);
+	}
+	
+	private final static float ANY_FOOD_TAMING_SKILL_LIMIT = 8.0f;
+	
+	@SubscribeEvent
+	public void onTameAttempt(EntityInteract event) {
+		if(!(event.getTarget() instanceof EntityAnimal) || event.getWorld().isRemote)
+			return;
+		EntityPlayer tamer = event.getEntityPlayer();
+		Random rand = tamer.world.rand;
+		ItemStack itemstack = event.getItemStack();
+		float tamingSkill = (float)PlayerSkills.TAMING.getCurrentValue(tamer);
+		EntityAnimal animal = (EntityAnimal) event.getTarget();
+		if (rand.nextFloat() > 3.0f / (tamingSkill + 1.0f)
+				&& (animal.isBreedingItem(itemstack) || itemstack.getItem() == Items.GOLDEN_CARROT
+						|| itemstack.getItem() == Items.GOLDEN_APPLE)
+				&& animal.getGrowingAge() == 0 && !animal.isInLove()) {
+			animal.setInLove(tamer);
+		}
+		if (event.getTarget() instanceof AbstractHorse) {
+			AbstractHorse horse = (AbstractHorse) event.getTarget();
+			if (horse.isTame() || horse.isChild())
+				return;
+			int oldTemper = horse.getTemper();
+			if(itemstack.isEmpty() || horse.processInitialInteract(tamer, event.getHand()))
+				event.setCanceled(true);
+			else
+				return;
+			int newTemper = horse.getTemper();
+			if (newTemper > oldTemper || newTemper >= horse.getMaxTemper()) {
+				if (newTemper < horse.getMaxTemper())
+					horse.increaseTemper((int) (tamingSkill * 2.0f));
+				horse.mountTo(tamer);
+				return;
+			} else {
+				IblisMod.network.showHintToPlayer(tamer, "iblis.horseTamingHint");
+				return;
+			}
+		}
+		if(tamingSkill<=1)
+			return;
+		if (event.getTarget() instanceof EntityTameable) {
+			EntityTameable target = (EntityTameable) event.getTarget();
+			if (target.isTamed())
+				return;
+			if (target instanceof EntityOcelot) {
+				EntityOcelot cat = (EntityOcelot) target;
+				if ((cat.aiTempt == null || cat.aiTempt.isRunning() || tamingSkill > 3.0f) && (itemstack.getItem() == Items.FISH || tamingSkill > ANY_FOOD_TAMING_SKILL_LIMIT && itemstack.getItem() instanceof ItemFood)
+						&& tamer.getDistanceSqToEntity(cat) < 9.0D) {
+					event.setCanceled(true);
+					if (!tamer.capabilities.isCreativeMode)
+						itemstack.shrink(1);
+					if (rand.nextFloat() > 0.9f / tamingSkill
+							&& !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(cat, tamer)) {
+						cat.setTamedBy(tamer);
+						cat.setTameSkin(1 + cat.world.rand.nextInt(3));
+						cat.playTameEffect(true);
+						cat.getAISit().setSitting(true);
+						cat.world.setEntityState(cat, (byte) 7);
+					} else {
+						cat.playTameEffect(false);
+						cat.world.setEntityState(cat, (byte) 6);
+					}
+				}
+			}
+			else if (target instanceof EntityWolf) {
+				EntityWolf wolf = (EntityWolf) target;
+				boolean correctItem = itemstack.getItem() == Items.BONE || tamingSkill > ANY_FOOD_TAMING_SKILL_LIMIT && itemstack.getItem() instanceof ItemFood;
+				if(correctItem && wolf.getAttackTarget() == tamer && tamingSkill > 10.0f) {
+					event.setCanceled(true);
+					if(!tamer.capabilities.isCreativeMode)
+						itemstack.shrink(1);
+					wolf.setRevengeTarget((EntityLivingBase) null);
+					wolf.setAttackTarget((EntityLivingBase) null);
+					Iterator<EntityAITasks.EntityAITaskEntry> iterator = wolf.targetTasks.executingTaskEntries
+							.iterator();
+					while (iterator.hasNext()) {
+						EntityAITasks.EntityAITaskEntry entityaitasks$entityaitaskentry1 = iterator.next();
+						entityaitasks$entityaitaskentry1.using = false;
+						entityaitasks$entityaitaskentry1.action.resetTask();
+						iterator.remove();
+					}
+					return;
+				}
+				else if (correctItem && !wolf.isAngry()) {
+					event.setCanceled(true);
+					if (!tamer.capabilities.isCreativeMode)
+						itemstack.shrink(1);
+					if (rand.nextFloat() > 0.9f / tamingSkill
+							&& !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(wolf, tamer)) {
+						wolf.setTamedBy(tamer);
+						wolf.getNavigator().clearPathEntity();
+						wolf.setAttackTarget((EntityLivingBase) null);
+						wolf.getAISit().setSitting(true);
+						wolf.setHealth(20.0F);
+						wolf.playTameEffect(true);
+						wolf.world.setEntityState(wolf, (byte) 7);
+					} else {
+						wolf.playTameEffect(false);
+						wolf.world.setEntityState(wolf, (byte) 6);
+					}
+				}
+			}
+		}
+	}
 
+
+	@SubscribeEvent
+	public void onTame(AnimalTameEvent event) {
+		float tamingSkill = (float)PlayerSkills.TAMING.getCurrentValue(event.getTamer());
+		PlayerSkills.TAMING.raiseSkill(event.getTamer(), 1.0);
+		if(event.getEntity().world.rand.nextFloat() > tamingSkill + 0.1f) {
+			event.setCanceled(true);
+		}
+	}
+	
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
 		float damage = event.getAmount();

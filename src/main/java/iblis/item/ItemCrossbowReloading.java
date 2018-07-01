@@ -16,14 +16,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem {
+public class ItemCrossbowReloading extends ItemBaseFirearmsReloading {
 
-	private final Item gunBase;
 	public final static int ARMING_ONE_BOLT_TIME = 60;
 
 	public ItemCrossbowReloading(Item gunBaseIn) {
-		super();
-		this.gunBase = gunBaseIn;
+		super(gunBaseIn);
 	}
 
 	@Override
@@ -34,7 +32,7 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 			nbt = new NBTTagCompound();
 			stack.setTagCompound(nbt);
 		}
-		int ammoAmount = nbt.getInteger(NBTTagsKeys.AMMO);
+		int ammoAmount = nbt.getTagList(NBTTagsKeys.AMMO, 10).tagCount();
 		if (ammoAmount >= 2) {
 			ItemStack loadedGunStack = new ItemStack(gunBase, 1, stack.getItemDamage());
 			loadedGunStack.setTagCompound(nbt);
@@ -65,7 +63,7 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 		int ammo = 0;
 		if (stack.hasTagCompound()) {
 			cockedBowstring = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
-			ammo = stack.getTagCompound().getInteger(NBTTagsKeys.AMMO);
+			ammo = stack.getTagCompound().getTagList(NBTTagsKeys.AMMO, 10).tagCount();
 		}
 		if (ammo >= 2) {
 			ItemStack loadedGunStack = new ItemStack(gunBase, 1, stack.getItemDamage());
@@ -83,15 +81,6 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 		return stack;
 	}
 
-	private void reloadAmmo(World worldIn, ItemStack ammo, EntityPlayer player, NBTTagCompound nbt, int ammoIn) {
-		nbt.setInteger(NBTTagsKeys.AMMO, ++ammoIn);
-		if (!player.isCreative())
-			ammo.shrink(1);
-		if (ammo.isEmpty()) {
-			player.inventory.deleteStack(ammo);
-		}
-	}
-
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
 		int cockedBowstring = 0;
@@ -106,27 +95,9 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 			return ARMING_ONE_BOLT_TIME - 15;
 	}
 
-	private ItemStack findAmmo(EntityPlayer player) {
-		if (this.isShot(player.getHeldItem(EnumHand.OFF_HAND))) {
-			return player.getHeldItem(EnumHand.OFF_HAND);
-		} else if (this.isShot(player.getHeldItem(EnumHand.MAIN_HAND))) {
-			return player.getHeldItem(EnumHand.MAIN_HAND);
-		}
-		for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
-			ItemStack itemstack = player.inventory.getStackInSlot(i);
-			if (this.isShot(itemstack))
-				return itemstack;
-		}
-		return ItemStack.EMPTY;
-	}
-
+	@Override
 	protected boolean isShot(ItemStack stack) {
 		return stack.getItem() == IblisItems.CROSSBOW_BOLT;
-	}
-
-	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return gunBase.getIsRepairable(toRepair, repair);
 	}
 
 	@Override
@@ -159,5 +130,24 @@ public class ItemCrossbowReloading extends Item implements ICustomLeftClickItem 
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.crossbow_putting_bolt,
 					SoundCategory.PLAYERS, 0.4f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 		}
+	}
+	
+	@Override
+	protected NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo) {
+		NBTTagCompound ammoCartridge = new NBTTagCompound();
+		switch(ammo.getMetadata()) {
+		case 0:
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 2.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
+			break;
+		case 1:
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 1);
+			break;
+		default:
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
+		}
+		return ammoCartridge;
 	}
 }

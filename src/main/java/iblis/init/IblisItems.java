@@ -8,6 +8,7 @@ import iblis.item.ItemGuideBook;
 import iblis.item.ItemHeavyShield;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
+import iblis.item.ItemShotgunAmmo;
 import iblis.item.ItemShotgunReloading;
 import iblis.item.ItemThrowingWeapon;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,7 @@ public class IblisItems {
 		GUIDE = new ItemGuideBook();
 		SHOTGUN = new ItemShotgun();
 		SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
-		SHOTGUN_BULLET = new Item();
+		SHOTGUN_BULLET = new ItemShotgunAmmo();
 		CROSSBOW = new ItemCrossbow();
 		CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
 		CROSSBOW_BOLT = new Item();
@@ -95,7 +96,7 @@ public class IblisItems {
 		SHOTGUN_BULLET.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("shotgun_bullet")
 			.setRegistryName(IblisMod.MODID, "shotgun_bullet")
-			.setHasSubtypes(false)
+			.setHasSubtypes(true)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
 		CROSSBOW.setCreativeTab(IblisMod.creativeTab)
@@ -238,6 +239,8 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide_opened"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_BULLET, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_bullet"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_BULLET, 1,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_shot"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT_STEEL, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_steel"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NUGGET_STEEL, 0,

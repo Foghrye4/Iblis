@@ -43,7 +43,7 @@ import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 public class ServerNetworkHandler {
 
 	public enum ClientCommands {
-		REFRESH_GUI, SEND_PLAYER_BOOK_LIST_INFO, SPAWN_BLOCK_PARTICLES, SPAWN_PARTICLES, REFRESH_CRAFTING_BUTTONS, SPAWN_CUSTOM_PARTICLE, SPAWN_CUSTOM_PARTICLES, LAUNCH_KICK_ANIMATION, LAUNCH_SWING_ANIMATION, ADD_DECAL, PLAY_EVENT, SPAWN_PARTICLE, RESET_COOLDOWN_AND_ACTIVE_HAND;
+		REFRESH_GUI, SEND_PLAYER_BOOK_LIST_INFO, SPAWN_BLOCK_PARTICLES, SPAWN_PARTICLES, REFRESH_CRAFTING_BUTTONS, SPAWN_CUSTOM_PARTICLE, SPAWN_CUSTOM_PARTICLES, LAUNCH_KICK_ANIMATION, LAUNCH_SWING_ANIMATION, ADD_DECAL, PLAY_EVENT, SPAWN_PARTICLE, RESET_COOLDOWN_AND_ACTIVE_HAND, SHOW_HINT;
 	}
 
 	public enum ServerCommands {
@@ -265,7 +265,7 @@ public class ServerNetworkHandler {
 				new TargetPoint(world.provider.getDimension(), pos.x, pos.y, pos.z, 64d));
 	}
 
-	public void addDecal(World world, Vec3d pos, IblisParticles decal, EnumFacing facing) {
+	public void addDecal(World world, Vec3d pos, IblisParticles decal, EnumFacing facing, int bloodColour, float size) {
 		ByteBuf bb = Unpooled.buffer(36);
 		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
 		byteBufOutputStream.writeByte(ClientCommands.ADD_DECAL.ordinal());
@@ -274,6 +274,8 @@ public class ServerNetworkHandler {
 		byteBufOutputStream.writeDouble(pos.z);
 		byteBufOutputStream.writeInt(decal.ordinal());
 		byteBufOutputStream.writeInt(facing.ordinal());
+		byteBufOutputStream.writeInt(bloodColour);
+		byteBufOutputStream.writeFloat(size);
 		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID),
 				new TargetPoint(world.provider.getDimension(), pos.x, pos.y, pos.z, 64d));
 	}
@@ -313,7 +315,14 @@ public class ServerNetworkHandler {
 		byteBufOutputStream.writeInt(data);
 		channel.sendToAllAround(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), new TargetPoint(
 				playerIn.world.provider.getDimension(), playerIn.posX, playerIn.posY, playerIn.posZ, 64d));
-
+	}
+	
+	public void showHintToPlayer(EntityPlayer playerIn, String unlocalisedHint){
+		ByteBuf bb = Unpooled.buffer(36);
+		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
+		byteBufOutputStream.writeByte(ClientCommands.SHOW_HINT.ordinal());
+		byteBufOutputStream.writeString(unlocalisedHint);
+		channel.sendTo(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), (EntityPlayerMP) playerIn);
 	}
 
 	private static class TaskLaunchLeftClick implements Runnable {

@@ -40,7 +40,7 @@ public class CrossbowItemMeshDefinition implements ItemMeshDefinition {
 			if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTTagsKeys.AMMO))
 				return mCrossbowAimNoAmmo;
 			int cockedBowString = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
-			switch (stack.getTagCompound().getInteger(NBTTagsKeys.AMMO)) {
+			switch (stack.getTagCompound().getTagList(NBTTagsKeys.AMMO, 10).tagCount()) {
 			case 0:
 				if(cockedBowString == 1)
 					return mCrossbowAimStretched1;
@@ -56,7 +56,7 @@ public class CrossbowItemMeshDefinition implements ItemMeshDefinition {
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(NBTTagsKeys.AMMO))
 			return mCrossbowNoAmmo;
 		int cockedBowString = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
-		switch (stack.getTagCompound().getInteger(NBTTagsKeys.AMMO)) {
+		switch (stack.getTagCompound().getTagList(NBTTagsKeys.AMMO, 10).tagCount()) {
 		case 0:
 			if(cockedBowString == 1)
 				return mCrossbowStretched1;

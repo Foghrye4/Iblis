@@ -11,18 +11,23 @@ import com.google.common.base.Predicate;
 
 import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
+import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.util.HeadShotHandler;
+import iblis.util.IblisMathUtil;
 import iblis.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -81,14 +86,14 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 		if (itemstack.getTagCompound() == null)
 			return;
 		NBTTagCompound nbt = itemstack.getTagCompound();
-		int ammoIn = nbt.getInteger(NBTTagsKeys.AMMO);
+		NBTTagList ammoIn = nbt.getTagList(NBTTagsKeys.AMMO, 10);
 		int cockedBowString = nbt.getInteger(NBTTagsKeys.COCKED_STATE);
 		playerIn.getEntityData().setInteger("reload_tick", 0);
-		if (cockedBowString > ammoIn) {
+		if (cockedBowString > ammoIn.tagCount()) {
 			this.playDropBowstringSoundEffect(playerIn);
 			nbt.setInteger(NBTTagsKeys.COCKED_STATE, --cockedBowString);
 			return;
-		} else if (ammoIn <= 0) {
+		} else if (ammoIn.tagCount() <= 0) {
 			worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shotgun_hammer_click,
 					SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 			return;
@@ -100,9 +105,12 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 		boolean isCritical = rand.nextDouble() < (divider + luckValue - 4d) / 100d;
 		pLook = pLook.addVector((rand.nextFloat() - .5f) / divider, (rand.nextFloat() - .5f) / divider,
 				(rand.nextFloat() - .5f) / divider);
-		this.shoot(worldIn, pLook, playerIn, isCritical, divider);
+		NBTTagCompound cartridge = ammoIn.getCompoundTagAt(ammoIn.tagCount() - 1);
+		this.shoot(worldIn, pLook, playerIn, isCritical, divider, cartridge.getFloat(NBTTagsKeys.DAMAGE),
+				cartridge.getInteger(NBTTagsKeys.AMMO_TYPE));
 		if (!playerIn.capabilities.isCreativeMode) {
-			nbt.setInteger(NBTTagsKeys.AMMO, --ammoIn);
+			ammoIn.removeTag(ammoIn.tagCount() - 1);
+			nbt.setTag(NBTTagsKeys.AMMO, ammoIn);
 			if (cockedBowString > 0)
 				nbt.setInteger(NBTTagsKeys.COCKED_STATE, --cockedBowString);
 			itemstack.damageItem(1, playerIn);
@@ -115,33 +123,63 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 		IblisMod.network.resetCooldownAndActiveHand(playerIn);
 	}
 
-	protected abstract void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy);
+	protected abstract void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy,
+			float projectileDamageIn, int ammoTypeIn);
 
-	@SuppressWarnings("unchecked")
 	@Nullable
-	protected List<EntityLivingBase>[] findEntitiesOnPath(World world, Entity shooter, Vec3d start, Vec3d end) {
+	protected EntityLivingBase damageEntitiesOnPath(World world, DamageSource source, Entity shooter,
+			Vec3d start, Vec3d end, float projectileDamage, float splashDamageCone) {
+		EntityLivingBase lastVictim = null;
+		boolean splashDamage = false;
+		if (splashDamageCone != 0.0f) {
+			splashDamage = true;
+		}
 		List<Entity> list = world.getEntitiesInAABBexcluding(shooter, (new AxisAlignedBB(start, end)).grow(0.5d),
 				BULLET_TARGETS);
-		List<EntityLivingBase> headShots = new ArrayList<EntityLivingBase>();
 		Iterator<Entity> ei = list.iterator();
 		while (ei.hasNext()) {
 			Entity entity = ei.next();
 			if (!(entity instanceof EntityLivingBase)) {
-				ei.remove();
 				continue;
 			}
-			if (HeadShotHandler.traceHeadShot((EntityLivingBase) entity, start, end) != null) {
-				headShots.add((EntityLivingBase) entity);
-				ei.remove();
+			EntityLivingBase target = (EntityLivingBase) entity;
+			if (HeadShotHandler.traceHeadShot(target, start, end) != null) {
+				if (target.getHealth() < projectileDamage && target instanceof EntitySlime
+						&& ((EntitySlime) target).getSlimeSize() > 1) {
+					((EntitySlime) target).setSlimeSize(0, false);
+				}
+				target.attackEntityFrom(source, projectileDamage * 4.0f);
+				lastVictim = target;
+				IblisMod.network.spawnCustomParticle(world,
+						target.getPositionVector().add(new Vec3d(0, 2, 0)), new Vec3d(0d, 0.2d, 0d),
+						IblisParticles.HEADSHOT);
 				continue;
 			}
 			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox();
-			RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
-			if (raytraceresult == null) {
-				ei.remove();
+			if (splashDamage) {
+				// -0.5 is right in point. 0.5 is one width shift for axis.
+				float[] traceResult = IblisMathUtil.calculateOverlappingAmount(axisalignedbb, start, end);
+				float threshold  = traceResult[1] * splashDamageCone;
+				float precision = traceResult[0]*2.0f+1.0f;
+				float overlap = 1.0f - precision  + threshold;
+				if(overlap<=0.0f)
+					continue;
+				if(overlap>1.0f)
+					overlap = 1.0f;
+				overlap/=threshold;
+				if(overlap>1.0f)
+					overlap = 1.0f;
+				target.attackEntityFrom(source, projectileDamage * overlap);
+				lastVictim = target;
+			} else {
+				RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
+				if (raytraceresult != null) {
+					target.attackEntityFrom(source, projectileDamage);
+					lastVictim = target;
+				}
 			}
 		}
-		return new List[] { list, headShots };
+		return lastVictim;
 	}
 
 	@Override

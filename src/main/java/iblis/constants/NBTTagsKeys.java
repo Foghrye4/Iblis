@@ -8,4 +8,6 @@ public class NBTTagsKeys {
 	public static final String DURABILITY = "durability";
 	public static final String AMMO = "ammo";
 	public static final String COCKED_STATE = "cockedState";
+	public static final String DAMAGE = "damage";
+	public static final String AMMO_TYPE = "ammo_type";
 }

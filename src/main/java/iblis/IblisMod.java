@@ -10,6 +10,7 @@ import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
+import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
 import iblis.init.IblisPotions;
 import iblis.init.IblisSounds;
@@ -18,6 +19,7 @@ import iblis.item.IblisCreativeTab;
 import iblis.loot.LootTableParsingEventHandler;
 import iblis.player.IblisEventHandler;
 import iblis.tconstruct_integration.TConstructCraftingEventHandler;
+import iblis.tileentity.TileEntityLabTable;
 import iblis.villager.EmeraldForOreDictionaryItems;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -40,6 +42,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 
@@ -47,7 +50,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.36";
+    public static final String VERSION = "0.3.39";
     public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     
@@ -75,6 +78,7 @@ public class IblisMod
     	eventHandler = new IblisEventHandler();
     	log = event.getModLog();
     	creativeTab = new IblisCreativeTab("iblis.tab");
+    	IblisBlocks.init();
     	IblisItems.init();
     	IblisPotions.init();
     	IblisSounds.register();
@@ -90,6 +94,7 @@ public class IblisMod
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "boulder"), EntityBoulder.class, "Boulder", 1, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "throwing_knife"), EntityThrowingKnife.class, "ThrowingKnife", 2, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "crossbow_bolt"), EntityCrossbowBolt.class, "CrossbowBolt", 3, this, 64, 1, true);
+		GameRegistry.registerTileEntity(TileEntityLabTable.class, MODID + ":lab_table");
 		VillagerProfession mechanic = new VillagerProfession(MODID+":mechanic", MODID + ":textures/entity/villager/mechanic.png",
 				MODID + ":textures/entity/villager/zombie_mechanic.png");
 		VillagerCareer mechanicCareer = new VillagerCareer(mechanic, "mechanic");

@@ -1,5 +1,6 @@
 # Iblis Minecraft mod for Minecraft Forge versions 1.12-1.12.2.
 Builds and info: http://minecraft.curseforge.com/projects/iblis
+
 To setup development workspace:
 1. Open console.
 2. Run "git --clone https://github.com/Foghrye4/Iblis.git"

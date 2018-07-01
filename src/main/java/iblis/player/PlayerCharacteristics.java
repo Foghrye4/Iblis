@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 
 public enum PlayerCharacteristics {
-	MAX_HP(SharedMonsterAttributes.MAX_HEALTH,20d,2d),
+	MAX_HP(SharedMonsterAttributes.MAX_HEALTH,10d,2d),
 	MELEE_DAMAGE_REDUCTION(SharedIblisAttributes.MELEE_DAMAGE_REDUCTION,0d,0.1d),
 	FIRE_DAMAGE_REDUCTION(SharedIblisAttributes.FIRE_DAMAGE_REDUCTION,0d,0.1d),
 	EXPLOSION_DAMAGE_REDUCTION(SharedIblisAttributes.EXPLOSION_DAMAGE_REDUCTION,0d,0.1d),
@@ -18,7 +18,7 @@ public enum PlayerCharacteristics {
 	ATTACK_SPEED(SharedMonsterAttributes.ATTACK_SPEED,4d,0.1d),
 	LUCK(SharedMonsterAttributes.LUCK,0d,0.1d),
 	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d),
-	GLUTTONY(SharedIblisAttributes.GLUTTONY,20d,1d);
+	GLUTTONY(SharedIblisAttributes.GLUTTONY,10d,1d);
 	
 	public final double defaultPointsPerLevel;
 	public final double defaultStartLevel;

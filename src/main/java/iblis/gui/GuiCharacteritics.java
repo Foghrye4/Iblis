@@ -10,7 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiButtonImage;
+import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -56,11 +58,11 @@ public class GuiCharacteritics extends GuiScreen {
 						topMargin + (buttonSize + 1) * row, 20, 18, 40, 220, 18, GuiEventHandler.IBLIS_ICONS);
 				this.buttonList.add(raiseCB);
 			}
-			GuiLabelFormatted label = new GuiLabelFormatted(fontRenderer, characteristic.ordinal(),
-					leftMargin + buttonSize + 1, topMargin + 2 + (buttonSize + 1) * row, buttonSize, buttonSize,
+			GuiLabel label = new GuiLabel(fontRenderer, characteristic.ordinal(),
+					leftMargin + buttonSize + 1, topMargin + 1 + (buttonSize + 1) * row, buttonSize, buttonSize,
 					0xFFAA33);
-			label.addLine(characteristic.getNiceName(), Integer.valueOf(characteristic.getCurrentLevel(player)),
-					Float.valueOf((float) characteristic.getCurrentValue(player)));
+			label.addLine(I18n.format(characteristic.getNiceName(), Integer.valueOf(characteristic.getCurrentLevel(player)),
+					Float.valueOf((float) characteristic.getCurrentValue(player))));
 			this.labelList.add(label);
 			row++;
 		}

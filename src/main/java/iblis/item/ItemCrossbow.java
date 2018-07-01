@@ -60,7 +60,7 @@ public class ItemCrossbow extends ItemFirearmsBase {
 	}
 
 	@Override
-	protected void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy) {
+	protected void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy, float projectileDamageIn, int ammoTypeIn) {
 			EntityCrossbowBolt entity = null;
 			float rotationPitchIn = playerIn.rotationPitch - 1f;
 			float rotationYawIn = playerIn.rotationYaw;
@@ -81,8 +81,9 @@ public class ItemCrossbow extends ItemFirearmsBase {
 			double mz = playerIn.motionZ;
 			speed += MathHelper.sqrt(mx * mx + my * my + mz * mz);
 			entity.setAim(playerIn, rotationPitchIn, rotationYawIn, 0, speed, (float) (10d/accuracy));
-			double damage = playerIn.getAttributeMap()
+			float damage = (float) playerIn.getAttributeMap()
 					.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue();
+			damage *= projectileDamageIn;
 			if (isCritical)
 				damage *= 100d;
 			entity.setDamage(damage);

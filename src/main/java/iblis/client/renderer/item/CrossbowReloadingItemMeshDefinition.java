@@ -50,7 +50,7 @@ public class CrossbowReloadingItemMeshDefinition implements ItemMeshDefinition {
 		int ammo = 0;
 		if (stack.hasTagCompound()) {
 			cockedBowstring = stack.getTagCompound().getInteger(NBTTagsKeys.COCKED_STATE);
-			ammo = stack.getTagCompound().getInteger(NBTTagsKeys.AMMO);
+			ammo = stack.getTagCompound().getTagList(NBTTagsKeys.AMMO, 10).tagCount();
 		}
 		EntityPlayerSP player = Minecraft.getMinecraft().player;
 		if (player != null && player.isHandActive() && player.getActiveItemStack() == stack) {

@@ -10,6 +10,7 @@ import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.player.SharedIblisAttributes;
+import iblis.util.BloodHandler;
 import iblis.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,6 +28,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -53,12 +55,13 @@ public class ItemShotgun extends ItemFirearmsBase {
 	}
 	
 	@Override
-	protected void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy){
+	protected void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy, float projectileDamageIn, int ammoTypeIn){
 		int blockReachDistance = 256;
 		Vec3d vec3d = new Vec3d(playerIn.posX, playerIn.posY + playerIn.eyeHeight, playerIn.posZ);
 		Vec3d vec3d2 = vec3d.addVector(aim.x * blockReachDistance, aim.y * blockReachDistance,
 				aim.z * blockReachDistance);
 		RayTraceResult rtr = worldIn.rayTraceBlocks(vec3d, vec3d2, false, true, true);
+		boolean addDecal = false;
 		if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
 			vec3d2 = rtr.hitVec;
 			BlockPos pos = rtr.getBlockPos();
@@ -89,33 +92,41 @@ public class ItemShotgun extends ItemFirearmsBase {
 				}
 			}
 			else {
-				IblisMod.network.addDecal(worldIn, vec3d2, IblisParticles.BULLET_HOLE, rtr.sideHit);
+				addDecal = true;
 			}
 		}
-		double bulletDamage = playerIn.getAttributeMap()
+		float bulletDamage = (float) playerIn.getAttributeMap()
 				.getAttributeInstance(SharedIblisAttributes.PROJECTILE_DAMAGE).getAttributeValue();
+		bulletDamage *=projectileDamageIn;
 		if (isCritical)
-			bulletDamage *= 100d;
-		List<EntityLivingBase>[] targets = this.findEntitiesOnPath(worldIn, playerIn, vec3d, vec3d2);
+			bulletDamage *= 100f;
+		float splashDamageCone = ammoTypeIn==0?0.0f:0.02f;
 		DamageSource damageSource = DamageSource.causePlayerDamage(playerIn);
 		damageSource.setProjectile();
 		damageSource.damageType = "shotgun";
-		for (EntityLivingBase target : targets[0]) {
-			target.attackEntityFrom(damageSource, (float) bulletDamage);
-			if (isCritical)
-				IblisMod.network.spawnParticles((EntityPlayerMP) playerIn,
-						target.getPositionVector().add(new Vec3d(0, 1, 0)), aim, EnumParticleTypes.CRIT);
-		}
-		bulletDamage *= 4f;
-		for (EntityLivingBase target : targets[1]) {
-			if (target.getHealth() < bulletDamage && target instanceof EntitySlime
-					&& ((EntitySlime) target).getSlimeSize() > 1) {
-				((EntitySlime) target).setSlimeSize(0, false);
+		EntityLivingBase lastHit = this.damageEntitiesOnPath(worldIn, damageSource, playerIn, vec3d, vec3d2, bulletDamage, splashDamageCone);
+		if (addDecal) {
+			if(ammoTypeIn == 0) {
+				IblisMod.network.addDecal(worldIn, vec3d2, IblisParticles.BULLET_HOLE, rtr.sideHit, -1, 0.6f);
 			}
-			target.attackEntityFrom(damageSource, (float) bulletDamage);
-			IblisMod.network.spawnCustomParticle(playerIn.world,
-					target.getPositionVector().add(new Vec3d(0, 2, 0)), new Vec3d(0d, 0.2d, 0d),
-					IblisParticles.HEADSHOT);
+			else {
+				IblisMod.network.addDecal(worldIn, vec3d2, IblisParticles.TRACE_OF_SHOT, rtr.sideHit, -1, (float)vec3d.distanceTo(vec3d2)*splashDamageCone*2.0f + 0.3f);
+			}
+			if (lastHit != null) {
+				AxisAlignedBB axisalignedbb = lastHit.getEntityBoundingBox();
+				RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
+				if (raytraceresult != null) {
+					Vec3d from = raytraceresult.hitVec;
+					Vec3d to = new Vec3d(from.x + aim.x*4.0,from.y + aim.y*4.0 - 2.0,from.z + aim.z*4.0);
+					rtr = worldIn.rayTraceBlocks(from, to, false, true, true);
+					if (rtr != null && rtr.typeOfHit == RayTraceResult.Type.BLOCK) {
+						int bc = BloodHandler.getBloodColour(lastHit);
+						if(bc!=-1)
+							IblisMod.network.addDecal(worldIn, rtr.hitVec, IblisParticles.BLOOD_SPLATTER, rtr.sideHit,
+								bc, 1.6f);
+					}
+				}
+			}
 		}
 		Vec3d rightHandPos = Vec3d.ZERO;
 		if(!playerIn.isHandActive())

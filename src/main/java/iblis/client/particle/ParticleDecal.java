@@ -40,16 +40,18 @@ public class ParticleDecal extends Particle {
 	private final float cropU2;
 	private final float cropV1;
 	private final float cropV2;
-	private final int spriteIndex;
+	private final int spriteIndexX;
+	private final int spriteIndexY;
 	private int lightU;
 	private int lightV;
 
 	public ParticleDecal(TextureManager textureManagerIn, World worldIn, double xCoordIn, double yCoordIn,
-			double zCoordIn, EnumFacing faceDirectionIn, AxisAlignedBB renderBordersIn, float sizeIn, int colorIndex, int packedLight, int layerIn) {
+			double zCoordIn, EnumFacing faceDirectionIn, AxisAlignedBB renderBordersIn, float sizeIn, int colorIndex, int packedLight, int layerIn, int spriteIndexXIn) {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, 0, 0, 0);
 		this.textureManager = textureManagerIn;
 		this.particleMaxAge = 1500;
-		this.spriteIndex = worldIn.rand.nextInt(4);
+		this.spriteIndexX = spriteIndexXIn;
+		this.spriteIndexY = worldIn.rand.nextInt(4);
 		this.faceDirection = faceDirectionIn;
 		this.setLight(worldIn, packedLight);
 		double faceOffset = FACE_OFFSET_START + FACE_OFFSET * layerIn;
@@ -112,12 +114,12 @@ public class ParticleDecal extends Particle {
 	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX,
 			float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		this.textureManager.bindTexture(TEXTURE);
-		float u0 = 0f;
-		float v0 = 33f / 256f + 16f * this.spriteIndex / 256f;
-		float u1 = u0 + cropU1 * 16f / 256f;
-		float u2 = u0 + (1f - cropU2) * 16f / 256f;
-		float v1 = v0 + cropV1 * 16f / 256f;
-		float v2 = v0 + (1f - cropV2) * 16f / 256f;
+		float u0 = 32f * spriteIndexX / 256f;
+		float v0 = 33f / 256f + 32f * this.spriteIndexY / 256f;
+		float u1 = u0 + cropU1 * 32f / 256f;
+		float u2 = u0 + (1f - cropU2) * 32f / 256f;
+		float v1 = v0 + cropV1 * 32f / 256f;
+		float v2 = v0 + (1f - cropV2) * 32f / 256f;
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.disableLighting();
 		RenderHelper.disableStandardItemLighting();

@@ -121,7 +121,7 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			posZ = byteBufInputStream.readDouble();
 			IblisParticles decal = IblisParticles.values()[byteBufInputStream.readInt()];
 			EnumFacing facing  = EnumFacing.VALUES[byteBufInputStream.readInt()];
-			((ClientProxy)IblisMod.proxy).addDecal(decal, posX, posY, posZ, facing);
+			((ClientProxy)IblisMod.proxy).addDecal(decal, posX, posY, posZ, facing, byteBufInputStream.readInt(), byteBufInputStream.readFloat());
 			break;
 		case REFRESH_CRAFTING_BUTTONS:
 			mc.addScheduledTask(new Runnable(){
@@ -164,6 +164,10 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			BlockPos pos = byteBufInputStream .readBlockPos();
 			int eventData = byteBufInputStream.readInt();
 			world.playEvent(player, eventNumber, pos, eventData);
+			break;
+		case SHOW_HINT:
+			String hint = byteBufInputStream.readString(4096);
+			GuiEventHandler.instance.showHint(hint);
 			break;
 		default:
 			break;

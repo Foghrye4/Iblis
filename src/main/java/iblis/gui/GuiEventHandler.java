@@ -6,6 +6,7 @@ import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.ServerNetworkHandler.ServerCommands;
 import iblis.client.ClientGameEventHandler;
+import iblis.constants.NBTTagsKeys;
 import iblis.crafting.IRecipeRaiseSkill;
 import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.init.IblisItems;
@@ -36,6 +37,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.ResourceLocation;
@@ -69,6 +73,9 @@ public class GuiEventHandler {
 
 	private String currentSkillHint = "";
 	private String requiredOrExpSkillHint = "";
+	
+	private String genericHint = "";
+	private int genericHintDisplayCountdown = 0;
 
 	@SubscribeEvent
 	public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
@@ -135,6 +142,12 @@ public class GuiEventHandler {
 
 	@SubscribeEvent
 	public void onOverlayRender(RenderGameOverlayEvent.Pre action) {
+		if (action.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+			ScaledResolution res = action.getResolution();
+			int screenWidth = res.getScaledWidth();
+			int screenHeight = res.getScaledHeight();
+			this.renderHint(screenWidth, screenHeight);
+		}
 		if (action.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayer player = mc.player;
@@ -202,14 +215,17 @@ public class GuiEventHandler {
 		ItemStack heldItem = player.getHeldItem(EnumHand.MAIN_HAND);
 		if (!heldItem.isEmpty() && heldItem.hasTagCompound()
 				&& (heldItem.getItem() == IblisItems.SHOTGUN || heldItem.getItem() == IblisItems.SHOTGUN_RELOADING)) {
-			int ammo = heldItem.getTagCompound().getInteger("ammo");
+			NBTTagList ammoList = heldItem.getTagCompound().getTagList(NBTTagsKeys.AMMO, 10);
+			int ammo = ammoList.tagCount();
 			for (int i = 0; i < ItemShotgunReloading.MAX_AMMO; i++) {
-				int x = right - 6 - i * 6;
+				int x = right - 7 - i * 7;
 				int y = top - 27;
-				if (i < ammo)
+				if (i < ammo) {
+					 NBTTagCompound cartridge = ammoList.getCompoundTagAt(i);
+					mc.ingameGUI.drawTexturedModalRect(x, y, 7*(1+cartridge.getInteger(NBTTagsKeys.AMMO_TYPE)), 0, 7, 16);
+				} else {
 					mc.ingameGUI.drawTexturedModalRect(x, y, 0, 0, 7, 16);
-				else
-					mc.ingameGUI.drawTexturedModalRect(x, y, 8, 0, 7, 16);
+				}
 			}
 		}
 		int sprintCounter = ClientGameEventHandler.instance.sprintCounter;
@@ -327,12 +343,12 @@ public class GuiEventHandler {
 				}
 			}
 		}
-
 		GlStateManager.disableBlend();
 		mc.mcProfiler.endSection();
 	}
 
 	public void renderFood(int width, int height) {
+		GlStateManager.enableBlend();
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
 		mc.mcProfiler.startSection("food");
@@ -434,5 +450,21 @@ public class GuiEventHandler {
 			return Double.toString(Math.round(xpReal * 10) / 10d);
 		else
 			return "1/" + Math.round(1 / xpReal);
+	}
+	
+	public void showHint(String unlocalisedHint){
+		genericHintDisplayCountdown = 255;
+		genericHint = I18n.format(unlocalisedHint);
+	}
+	
+	private void renderHint(int width, int height) {
+		if (genericHintDisplayCountdown > 0) {
+			genericHintDisplayCountdown--;
+			Minecraft mc = Minecraft.getMinecraft();
+			int left = width / 2 - 91;
+			int top = height / 2;
+			GlStateManager.color(1f, 1f, 1f, genericHintDisplayCountdown/255.0f);
+			mc.ingameGUI.getFontRenderer().drawString(genericHint, left, top, 0xFFFFFF);
+		}
 	}
 }

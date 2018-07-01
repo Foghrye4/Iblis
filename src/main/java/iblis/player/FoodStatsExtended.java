@@ -12,7 +12,7 @@ public class FoodStatsExtended extends FoodStats {
 	public void addStats(int foodLevelIn, float foodSaturationModifier) {
 		this.foodLevel = Math.min(foodLevelIn + this.foodLevel, maxFood);
 		this.foodSaturationLevel = Math.min(
-				this.foodSaturationLevel + (float) foodLevelIn * foodSaturationModifier * 2.0F, (float) this.foodLevel);
+				this.foodSaturationLevel + (float) foodLevelIn * foodSaturationModifier, (float) this.foodLevel);
 	}
 	
 	@Override

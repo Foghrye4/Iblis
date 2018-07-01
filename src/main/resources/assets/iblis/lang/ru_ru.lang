@@ -4,6 +4,8 @@ language.code=ru_ru
 
 key.iblis.reload=Перезарядить
 
+iblis.horseTamingHint=Чтобы приручить лошадь, покорми её
+
 generic.maxHealth=Максимум здоровья %d: %0.1f
 generic.attackDamage=Базовый урон %d: %0.1f
 generic.attackSpeed=Скорость атаки %d: %0.1f
@@ -32,6 +34,7 @@ iblis.armorsmith=Бронник: %0.1f
 iblis.mechanics=Механика: %0.1f
 iblis.medical_aid=Первая помощь: %0.1f
 iblis.digging=Землекоп: %0.1f
+iblis.taming=Укрощение: %0.1f
 iblis.acrobatics=Акробатика: %0.1f
 iblis.running=Бег: %0.1f
 iblis.jumping=Прыжки: %0.1f
@@ -85,6 +88,7 @@ iblis.guideLevel.experienced=3
 iblis.guideLevel.professional=4
 iblis.guideLevel.experts=5
 iblis.guideLevel.ultimate=6
+iblis.ammo_damage=Урон: %0.1f
 
 iblis.SWORDSMANSHIP=фехтованию
 iblis.PARRY=блоку щитом
@@ -96,6 +100,7 @@ iblis.ARMORSMITH=изготовлению брони
 iblis.MECHANICS=механике
 iblis.MEDICAL_AID=оказанию медицинской помощи
 iblis.DIGGING=горному делу
+iblis.TAMING=укрощению диких животных 
 iblis.RUNNING=легкой атлетике
 iblis.JUMPING=акробатике
 iblis.FALLING=каскадерскомоу искуству
@@ -106,7 +111,8 @@ itemGroup.iblis.tab=Иблис
 item.adventurer_diary.name=Дневник путешественника
 item.guide.name=Методическое пособие
 item.six_barrels_shotgun.name=Шестиствольное ружье
-item.shotgun_bullet.name=Патрон
+item.shotgun_bullet.name=Патрон с пулей
+item.shotgun_shot.name=Патрон с дробью
 item.ingot_steel.name=Слиток стали
 item.non-sterile_medkit.name=Стерилизуй в печи перед использованием
 item.medkit.name=Аптечка

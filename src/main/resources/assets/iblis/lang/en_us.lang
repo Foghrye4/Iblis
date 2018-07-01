@@ -4,6 +4,8 @@ language.code=en_US
 
 key.iblis.reload=Reload ammo
 
+iblis.horseTamingHint=Feed something to horse to tame her
+
 generic.maxHealth=Max health points %d: %0.1f
 generic.attackDamage=Damage base %d: %0.1f
 generic.attackSpeed=Attack speed %d: %0.1f
@@ -32,6 +34,7 @@ iblis.armorsmith=Armorsmith: %0.1f
 iblis.mechanics=Mechanics: %0.1f
 iblis.medical_aid=Medical aid: %0.1f
 iblis.digging=Digging: %0.1f
+iblis.taming=Taming: %0.1f
 iblis.acrobatics=Acrobatics: %0.1f
 iblis.running=Running: %0.1f
 iblis.jumping=Jumping: %0.1f
@@ -48,6 +51,7 @@ iblis.ARMORSMITH=armor smithing
 iblis.MECHANICS=mechanics
 iblis.MEDICAL_AID=medical aid
 iblis.DIGGING=mining
+iblis.TAMING=taming
 iblis.RUNNING=light athletic
 iblis.JUMPING=acrobatics
 iblis.FALLING=stunt mastery
@@ -100,13 +104,15 @@ iblis.guideLevel.experienced=experienced
 iblis.guideLevel.professional=professionals
 iblis.guideLevel.experts=experts
 iblis.guideLevel.ultimate=ultimate
+iblis.ammo_damage=Damage: %0.1f
 
 itemGroup.iblis.tab=Iblis items
 
 item.adventurer_diary.name=Adventurer diary
 item.guide.name=Guide
 item.six_barrels_shotgun.name=Six barrels shotgun
-item.shotgun_bullet.name=Shotgun shot
+item.shotgun_bullet.name=Shotgun bullet
+item.shotgun_shot.name=Shotgun shot
 item.ingot_steel.name=Steel ingot
 item.non-sterile_medkit.name=Sterilize in furnace before use
 item.medkit.name=Medkit
