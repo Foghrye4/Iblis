@@ -53,4 +53,8 @@ public class Substance {
 	public float getEvaporationEntalpy() {
 		return this.evaporationEntalpy;
 	}
+
+	public float getMeltingEntalpy() {
+		return this.meltingEntalpy;
+	}
 }

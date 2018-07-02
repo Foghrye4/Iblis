@@ -49,12 +49,13 @@ public class Reactor {
 	}
 
 	public void tick() {
+		float totalAmount = this.getTotalAmount();
 		for(SubstanceStack substanceStack: content.values()) {
 			int substanceId = substanceStack.substance.id;
-			for(ChemicalReaction reaction:ChemicalReactionRegistry.getReactionByIngridientID(substanceId)){
+			for(ChemicalReaction reaction:ChemistryRegistry.getReactionByIngridientID(substanceId)){
 				reaction.doReaction(this);
 			}
-			this.addEntalpy(substanceStack.balanceEntalpy(temperature));
+			this.addEntalpy(substanceStack.balanceEntalpy(temperature, totalAmount));
 		}
 	}
 

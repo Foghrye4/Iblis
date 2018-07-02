@@ -1,6 +1,7 @@
 package iblis.chemistry;
 
 import iblis.init.IblisSubstances;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class SubstanceStack {
 	public static final SubstanceStack EMPTY = new SubstanceStack(IblisSubstances.IMPURITY);
@@ -62,23 +63,62 @@ public class SubstanceStack {
 		gaseousAmount = gaseousAmountIn;
 		return this;
 	}
+	
+	private void setSolidAmount(float amount) {
+		this.solidAmount = amount;
+	}
+
+	private void setLiquidAmount(float amount) {
+		this.liquidAmount = amount;
+	}
 
 	public float balanceEntalpy(int temperature, float totalAmount) {
 		float entalpy = 0.0f;
-		float dGaseousAmount = 0.0f;
-		float dLiquidAmount = 0.0f;
+		float evaporationEntalpy = substance.getEvaporationEntalpy();
+		float meltingEntalpy = substance.getMeltingEntalpy();
 		int dbpt = temperature - substance.getBoilingPoint();
 		int dmpt = temperature - substance.getMeltingPoint();
-		if(dbpt < 0 && this.containGaseousPhase()) {
-			entalpy += substance.getEvaporationEntalpy() * gaseousAmount;
-			dGaseousAmount -= gaseousAmount;
-			dLiquidAmount += dGaseousAmount;
+		if (dbpt < 0 && gaseousAmount > 0.0f) {
+			float dEntalpy = Math.min(evaporationEntalpy * gaseousAmount, dbpt * totalAmount);
+			float dGaseousAmount = gaseousAmount * dEntalpy / evaporationEntalpy;
+			gaseousAmount-=dGaseousAmount;
+			liquidAmount += dGaseousAmount;
+			entalpy += dEntalpy;
+		} else if (dbpt > 0 && liquidAmount > 0.0f) {
+			float dEntalpy = Math.min(evaporationEntalpy * liquidAmount, dbpt * totalAmount);
+			float dLiquidAmount = liquidAmount*dEntalpy/evaporationEntalpy;
+			gaseousAmount += dLiquidAmount;
+			liquidAmount -= dLiquidAmount;
+			entalpy -= dEntalpy;
 		}
-		else if(dbpt > 0 && liquidAmount > 0.0f) {
-			entalpy -= substance.getEvaporationEntalpy() * liquidAmount;
-			dLiquidAmount -= liquidAmount;
-			dGaseousAmount += liquidAmount;
+		if (dmpt < 0 && liquidAmount > 0.0f) {
+			float dEntalpy = Math.min(meltingEntalpy * liquidAmount, dmpt * totalAmount);
+			float dLiquidAmount = liquidAmount*dEntalpy/meltingEntalpy;
+			solidAmount += dLiquidAmount;
+			liquidAmount -= dLiquidAmount;
+			entalpy += dEntalpy;
+		} else if (dmpt > 0 && solidAmount > 0.0f) {
+			float dEntalpy = Math.min(meltingEntalpy * solidAmount, dmpt * totalAmount);
+			float dSolidAmount = solidAmount*dEntalpy/meltingEntalpy;
+			solidAmount -= dSolidAmount;
+			liquidAmount += dSolidAmount;
+			entalpy -= dEntalpy;
 		}
-		return 0;
+		return entalpy;
+	}
+
+	public void writeToNBT(NBTTagCompound nbt) {
+		nbt.setInteger("id", substance.id);
+		nbt.setFloat("solid", this.solidAmount);
+		nbt.setFloat("liquid", this.liquidAmount);
+		nbt.setFloat("gaseous", this.gaseousAmount);
+	}
+
+	public static SubstanceStack createFromNBT(NBTTagCompound nbt) {
+		SubstanceStack stack = new SubstanceStack(ChemistryRegistry.getSubstanceByID(nbt.getInteger("id")));
+		stack.setSolidAmount(nbt.getFloat("solid"));
+		stack.setLiquidAmount(nbt.getFloat("liquid"));
+		stack.setGaseousAmount(nbt.getFloat("gaseous"));
+		return stack;
 	}
 }
