@@ -1,6 +1,8 @@
-package iblis.gui;
+package iblis.client.gui;
 
 import java.util.Random;
+
+import org.lwjgl.opengl.GL11;
 
 import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
@@ -147,6 +149,7 @@ public class GuiEventHandler {
 			int screenWidth = res.getScaledWidth();
 			int screenHeight = res.getScaledHeight();
 			this.renderHint(screenWidth, screenHeight);
+			GuiLabTable.instance.render();
 		}
 		if (action.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			Minecraft mc = Minecraft.getMinecraft();

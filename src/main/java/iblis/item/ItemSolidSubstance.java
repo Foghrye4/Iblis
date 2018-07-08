@@ -22,6 +22,5 @@ public class ItemSolidSubstance extends Item {
 			return;
 		if (!stack.hasTagCompound())
 			return;
-		
 	}
 }

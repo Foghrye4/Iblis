@@ -1,4 +1,4 @@
-package iblis.gui;
+package iblis.client.gui;
 
 import java.util.Set;
 

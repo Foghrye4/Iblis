@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "iblis:solid_substance"
+  },
+  "variants": {
+    "inventory": [
+      {
+	    "model": "iblis:solid_substance"
+      }
+    ]
+  }
+}

@@ -18,7 +18,7 @@ public class IblisBlocks {
 	public static Block LAB_TABLE;
 	
 	public static void init(){
-		LAB_TABLE = new BlockLabTable(Material.GLASS).setRegistryName(MODID, "chemical_lab_installation").setCreativeTab(creativeTab);
+		LAB_TABLE = new BlockLabTable(Material.GLASS).setRegistryName(MODID, "chemical_lab_installation").setCreativeTab(creativeTab).setUnlocalizedName("iblis.chemical_lab_installation");
 		registerBlock(LAB_TABLE,new ItemBlock(LAB_TABLE));
 	}
 	

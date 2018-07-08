@@ -1,5 +1,6 @@
 package iblis.chemistry;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -74,6 +75,18 @@ public class Reactor {
 		}
 	}
 
+	public void putSubstance(SubstanceStack substanceStack, int temperature2) {
+		SubstanceStack stack = content.get(substanceStack.substance.id);
+		if (stack == null) {
+			content.put(substanceStack.substance.id, substanceStack);
+		} else {
+			stack.gaseousAmount += substanceStack.gaseousAmount;
+			stack.liquidAmount += substanceStack.liquidAmount;
+			stack.solidAmount += substanceStack.solidAmount;
+		}
+		this.addEntalpy((temperature2 - temperature) * substanceStack.amount());
+	}
+
 	public void writeToNBT(NBTTagCompound nbt) {
 		NBTTagList list = new NBTTagList();
 		for(SubstanceStack substanceStack: content.values()) {
@@ -86,6 +99,7 @@ public class Reactor {
 	}
 
 	public void readFromNBT(NBTTagCompound nbt) {
+		content.clear();
 		NBTTagList list = nbt.getTagList("content", 10);
 		for(int i=0;i<list.tagCount();i++){
 			NBTTagCompound stackNBT = list.getCompoundTagAt(i);
@@ -93,5 +107,20 @@ public class Reactor {
 			content.put(stack.substance.id, stack);
 		}
 		temperature = nbt.getInteger("temperature");
+	}
+	
+	public Collection<SubstanceStack> content(){
+		return content.values();
+	}
+
+	public void addContentOf(Reactor otherReactor) {
+		for(SubstanceStack ss:otherReactor.content.values()){
+			this.putSubstance(ss, otherReactor.getTemperature());
+		}
+		otherReactor.content.clear();
+	}
+
+	public void clear() {
+		content.clear();
 	}
 }

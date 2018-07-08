@@ -127,8 +127,26 @@ item.steel_chestplate.name=Steel chestplate
 item.steel_leggins.name=Steel leggins
 item.steel_boots.name=Steel boots
 
+iblis.empty=Empty
+iblis.impurity.amount=Impurities: %0.2f
+iblis.water.amount=Water: %0.2f
+iblis.mercury.amount=Mercury: %0.2f
+
 entity.Villager.mechanic=Mechanic
 awareness=A smell of enemy
 overheating=Overheating
 
 iblis.trainCraftTooltip=Do not craft item. Use resources to train only.
+iblis.gui.fillReactor=Fill reactor
+iblis.gui.takeReactor=Take reactor
+iblis.gui.fillFlask=Fill flask
+iblis.gui.takeFlask=Take flask
+iblis.gui.placeFlask=Place flask
+iblis.gui.placeReactor=Place reactor
+iblis.gui.fillSeparator=Fill separator
+iblis.gui.useSeparator=Use separator
+iblis.gui.fillFilter=Fill filter
+iblis.gui.takeSolidFilterContent=Grab solid residuum
+iblis.gui.clearFlask=Clear flask
+iblis.gui.toggleBurner=Toggle burner
+iblis.gui.addFuel=Add fuel

@@ -11,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.ServerNetworkHandler.ServerCommands;
+import iblis.client.gui.GuiLabTable;
 import iblis.client.particle.ParticleDecal;
 import iblis.init.IblisItems;
 import iblis.item.ICustomLeftClickItem;
@@ -130,6 +131,9 @@ public class ClientGameEventHandler implements IWorldEventListener{
 		if (mc.player.getHeldItemMainhand().getItem() instanceof ICustomLeftClickItem
 				&& mc.gameSettings.keyBindAttack.isPressed()) {
 			((ClientNetworkHandler) IblisMod.network).sendCommand(ServerCommands.LEFT_CLICK);
+		}
+		if(GuiLabTable.instance.isActive()&& mc.gameSettings.keyBindUseItem.isPressed()) {
+			GuiLabTable.instance.onRightClick();
 		}
 		if (!shieldPunch 
 				&& player.isActiveItemStackBlocking() 

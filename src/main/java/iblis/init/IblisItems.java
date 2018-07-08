@@ -10,6 +10,7 @@ import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunAmmo;
 import iblis.item.ItemShotgunReloading;
+import iblis.item.ItemSubstanceContainer;
 import iblis.item.ItemThrowingWeapon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -33,6 +34,7 @@ public class IblisItems {
 	public static Item TRIGGER_SPRING;
 	public static Item NONSTERILE_MEDKIT;
 	public static ItemMedkit MEDKIT;
+	public static ItemSubstanceContainer SUBSTANCE_CONTAINER;
 	public static Item BOULDER;
 	public static Item IRON_THROWING_KNIFE;
 	public static Item HEAVY_SHIELD;
@@ -63,6 +65,8 @@ public class IblisItems {
 		TRIGGER_SPRING = new Item();
 		NONSTERILE_MEDKIT = new Item();
 		MEDKIT = new ItemMedkit();
+		SUBSTANCE_CONTAINER = new ItemSubstanceContainer();
+		
 		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
 		IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
 		HEAVY_SHIELD = new ItemHeavyShield();
@@ -161,6 +165,12 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(10)
 			.setMaxStackSize(1);
+		SUBSTANCE_CONTAINER.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("flask")
+			.setRegistryName(IblisMod.MODID, "flask")
+			.setHasSubtypes(true)
+			.setMaxDamage(0)
+			.setMaxStackSize(1);
 		BOULDER.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("boulder")
 			.setRegistryName(IblisMod.MODID, "boulder")
@@ -216,6 +226,7 @@ public class IblisItems {
 		registerItem(TRIGGER_SPRING);
 		registerItem(NONSTERILE_MEDKIT);
 		registerItem(MEDKIT);
+		registerItem(SUBSTANCE_CONTAINER);
 		registerItem(BOULDER);
 		registerItem(IRON_THROWING_KNIFE);
 		registerItem(HEAVY_SHIELD);
@@ -251,6 +262,12 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SUBSTANCE_CONTAINER, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"pile"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SUBSTANCE_CONTAINER, 1,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"flask"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SUBSTANCE_CONTAINER, 2,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"reactor"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BOULDER, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(IRON_THROWING_KNIFE, 0,

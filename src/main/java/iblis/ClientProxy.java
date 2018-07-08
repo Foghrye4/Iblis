@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import iblis.client.ClientGameEventHandler;
 import iblis.client.ClientRenderEventHandler;
 import iblis.client.ItemTooltipEventHandler;
+import iblis.client.gui.GuiEventHandler;
 import iblis.client.particle.ParticleBoulderShard;
 import iblis.client.particle.ParticleDecal;
 import iblis.client.particle.ParticleHeadshot;
@@ -24,7 +25,7 @@ import iblis.constants.NBTTagsKeys;
 import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityThrowingKnife;
-import iblis.gui.GuiEventHandler;
+import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
 import iblis.player.PlayerSkills;
@@ -166,7 +167,10 @@ public class ClientProxy extends ServerProxy {
 				new RenderCrossbowBolt(Minecraft.getMinecraft().getRenderManager(),
 						Minecraft.getMinecraft().getRenderItem()));
 		IblisItems.registerRenders();
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLabTable.class, new TileEntityLabTableSpecialRenderer());
+		IblisBlocks.registerRenders();
+		TileEntityLabTableSpecialRenderer renderer = new TileEntityLabTableSpecialRenderer();
+		MinecraftForge.EVENT_BUS.register(renderer);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLabTable.class, renderer);
 	}
 
 	@Override

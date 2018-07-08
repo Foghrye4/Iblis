@@ -1,4 +1,4 @@
-package iblis.gui;
+package iblis.client.gui;
 
 import iblis.IblisMod;
 import net.minecraft.client.gui.GuiScreen;

@@ -8,6 +8,8 @@ import iblis.item.ICustomLeftClickItem;
 import iblis.item.ItemFirearmsBase;
 import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
+import iblis.tileentity.TileEntityLabTable;
+import iblis.tileentity.TileEntityLabTable.Actions;
 import iblis.util.PlayerUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -23,6 +25,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
@@ -47,7 +50,7 @@ public class ServerNetworkHandler {
 	}
 
 	public enum ServerCommands {
-		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER, RUNNED_DISTANCE_INFO, SPRINTING_BUTTON_INFO, TRAIN_TO_CRAFT, LEFT_CLICK, SHIELD_PUNCH, KICK;
+		UPDATE_CHARACTERISTIC, RELOAD_WEAPON, APPLY_SPRINTING_SPEED_MODIFIER, RUNNED_DISTANCE_INFO, SPRINTING_BUTTON_INFO, TRAIN_TO_CRAFT, LEFT_CLICK, SHIELD_PUNCH, KICK, LAB_TABLE_GUI_ACTION;
 	}
 
 	protected static FMLEventChannel channel;
@@ -154,6 +157,13 @@ public class ServerNetworkHandler {
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_KICK);
 			break;
+		case LAB_TABLE_GUI_ACTION:
+			playerEntityId = byteBufInputStream.readInt();
+			worldDimensionId = byteBufInputStream.readInt();
+			world = server.getWorld(worldDimensionId);
+			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			
+			
 		default:
 			break;
 		}
@@ -399,6 +409,27 @@ public class ServerNetworkHandler {
 		@Override
 		public void run() {
 			IblisMod.network.sendRefreshTrainCraftButton(player);
+		}
+	}
+	
+	private static class TaskLabTableGuiAction implements Runnable {
+		final EntityPlayerMP player;
+		final BlockPos pos;
+		final Actions action;
+
+		public TaskLabTableGuiAction(EntityPlayerMP playerIn, BlockPos posIn, TileEntityLabTable.Actions actionIn) {
+			player = playerIn;
+			pos = posIn;
+			action = actionIn;
+		}
+
+		@Override
+		public void run() {
+			TileEntity te = player.world.getTileEntity(pos);
+			if(!(te instanceof TileEntityLabTable))
+				return;
+			TileEntityLabTable telt = (TileEntityLabTable) te;
+			telt.doAction(player, action);
 		}
 	}
 
