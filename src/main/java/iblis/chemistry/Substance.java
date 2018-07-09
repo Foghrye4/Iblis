@@ -1,5 +1,10 @@
 package iblis.chemistry;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class Substance {
 
 	public final int id;
@@ -8,9 +13,12 @@ public class Substance {
 	private int boilingPoint = 100;
 	private int meltingPoint = 0;
 	private int molecularMass = 18;
-	private float solidStateDencity = 1000.0f; // kg/m3
+	private float densityAtMeltingPoint = 1000.0f; // kg/m3
+	private float densityAtBoilingPoint = 800.0f; // kg/m3
 	private float evaporationEntalpy = 20.0f; // K/mol
 	private float meltingEntalpy = 20.0f; // K/mol
+	
+	Set<Substance> solvents = new HashSet<Substance>();
 
 	public Substance(int idIn, String unlocalizedNameIn) {
 		id = idIn;
@@ -34,10 +42,21 @@ public class Substance {
 	public int getBoilingPoint() {
 		return boilingPoint;
 	}
-
-	public Substance setSolidStateDencity(float solidStateDencityIn) {
-		solidStateDencity = solidStateDencityIn;
+	
+	public Substance addSolvent(Substance solvent) {
+		for (Substance other : solvents) {
+			other.addSolventRaw(solvent);
+		}
+		solvent.addSolvent(this);
 		return this;
+	}
+	
+	private void addSolventRaw(Substance solvent){
+		solvents.add(solvent);
+	}
+	
+	public boolean dissolve(Substance substance) {
+		return solvents.contains(substance);
 	}
 
 	public Substance setMolecularMass(int molecularMassIn) {
@@ -56,5 +75,12 @@ public class Substance {
 
 	public float getMeltingEntalpy() {
 		return this.meltingEntalpy;
+	}
+
+	public float getDensity(int temperature) {
+		if (temperature > this.boilingPoint)
+			return molecularMass / 22.4f * temperature / 293;
+		return densityAtBoilingPoint + (densityAtMeltingPoint - densityAtBoilingPoint)
+				* (this.boilingPoint - temperature) / (this.boilingPoint - this.meltingPoint);
 	}
 }

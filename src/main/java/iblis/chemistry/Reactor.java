@@ -40,6 +40,10 @@ public class Reactor {
 	public int getTemperature() {
 		return temperature;
 	}
+	
+	public void setTemperature(int temperatureIn) {
+		temperature = temperatureIn;
+	}
 
 	public void addEntalpy(float entalpy) {
 		float totalAmount = getTotalAmount();
@@ -73,6 +77,58 @@ public class Reactor {
 				coldReactor.putSubstance(substanceStack.splitGaseousPhase(), temperature);
 			}
 		}
+	}
+	
+	public void dumpLiquidsTo(Reactor other) {
+		Iterator<SubstanceStack> it = content.values().iterator();
+		while(it.hasNext()){
+			SubstanceStack substanceStack = it.next();
+			if(substanceStack.isLiquid()){
+				other.putSubstance(substanceStack, temperature);
+				it.remove();
+				continue;
+			}
+			else if(substanceStack.containLiquidPhase()){
+				other.putSubstance(substanceStack.splitLiquidPhase(), temperature);
+			}
+		}
+	}
+
+	public void dumpHeaviestTo(Reactor other) {
+		if(content.isEmpty())
+			return;
+		Iterator<SubstanceStack> it = content.values().iterator();
+		Substance heaviest = null;
+		while(it.hasNext()){
+			SubstanceStack substanceStack = it.next();
+			if(substanceStack.isSolid()){
+				other.putSubstance(substanceStack, temperature);
+				it.remove();
+				continue;
+			}
+			else if(substanceStack.containSolidPhase()) {
+				other.putSubstance(substanceStack.splitSolidPhase(), temperature);
+			}
+			if (heaviest == null
+					|| substanceStack.substance.getDensity(temperature) > heaviest.getDensity(temperature)) {
+				heaviest = substanceStack.substance;
+			}
+		}
+		it = content.values().iterator();
+		while(it.hasNext()){
+			SubstanceStack substanceStack = it.next();
+			if(heaviest.dissolve(substanceStack.substance)){
+				other.putSubstance(substanceStack, temperature);
+				it.remove();
+			}
+		}
+	}
+	
+	public void addContentOf(Reactor otherReactor) {
+		for(SubstanceStack ss:otherReactor.content.values()){
+			this.putSubstance(ss, otherReactor.getTemperature());
+		}
+		otherReactor.content.clear();
 	}
 
 	public void putSubstance(SubstanceStack substanceStack, int temperature2) {
@@ -111,13 +167,6 @@ public class Reactor {
 	
 	public Collection<SubstanceStack> content(){
 		return content.values();
-	}
-
-	public void addContentOf(Reactor otherReactor) {
-		for(SubstanceStack ss:otherReactor.content.values()){
-			this.putSubstance(ss, otherReactor.getTemperature());
-		}
-		otherReactor.content.clear();
 	}
 
 	public void clear() {

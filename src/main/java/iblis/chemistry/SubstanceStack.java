@@ -48,9 +48,25 @@ public class SubstanceStack {
 	public boolean isGaseous() {
 		return liquidAmount == 0.0f && solidAmount == 0.0f;
 	}
+	
+	public boolean isSolid() {
+		return liquidAmount == 0.0f && gaseousAmount == 0.0f;
+	}
+	
+	public boolean isLiquid() {
+		return solidAmount == 0.0f && gaseousAmount == 0.0f;
+	}
 
 	public boolean containGaseousPhase() {
 		return gaseousAmount > 0.0f;
+	}
+	
+	public boolean containSolidPhase() {
+		return solidAmount > 0.0f;
+	}
+
+	public boolean containLiquidPhase() {
+		return liquidAmount > 0.0f;
 	}
 
 	public SubstanceStack splitGaseousPhase() {
@@ -58,18 +74,32 @@ public class SubstanceStack {
 		gaseousAmount = 0.0f;
 		return gas;
 	}
+	
+	public SubstanceStack splitSolidPhase() {
+		SubstanceStack solid = new SubstanceStack(substance).setSolidAmount(solidAmount);
+		solidAmount = 0.0f;
+		return solid;
+	}
+	
+	public SubstanceStack splitLiquidPhase() {
+		SubstanceStack liquid = new SubstanceStack(substance).setLiquidAmount(liquidAmount);
+		liquidAmount = 0.0f;
+		return liquid;
+	}
 
 	private SubstanceStack setGaseousAmount(float gaseousAmountIn) {
 		gaseousAmount = gaseousAmountIn;
 		return this;
 	}
 	
-	private void setSolidAmount(float amount) {
+	private SubstanceStack setSolidAmount(float amount) {
 		this.solidAmount = amount;
+		return this;
 	}
 
-	private void setLiquidAmount(float amount) {
+	private SubstanceStack setLiquidAmount(float amount) {
 		this.liquidAmount = amount;
+		return this;
 	}
 
 	public float balanceEntalpy(int temperature, float totalAmount) {

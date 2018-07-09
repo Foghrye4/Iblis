@@ -1,14 +1,10 @@
 package iblis.tileentity;
 
-import java.util.Collection;
-
-import iblis.block.BlockLabTable.SubBox;
 import iblis.chemistry.ChemistryRegistry;
 import iblis.chemistry.Reactor;
 import iblis.chemistry.SubstanceStack;
 import iblis.init.IblisItems;
 import iblis.item.ItemSubstanceContainer;
-import iblis.tileentity.TileEntityLabTable.Actions;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -16,8 +12,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -29,16 +23,29 @@ public class TileEntityLabTable extends TileEntity {
 	public final Reactor separatorOut = new Reactor();
 	public final Reactor filterIn = new Reactor();
 	public final Reactor filterOut = new Reactor();
+	public final Reactor atmosphere = new Reactor();
 	private boolean hasFilterOut = true;
 	private boolean hasReactorOut = true;
 	private boolean hasSeparatorOut = true;
 	private boolean hasReactor = true;
 	private int fuel = 0;
+	private boolean isBurning = true;
 	
 	public void tick() {
-		hotReactor.tick();
-		hotReactor.exhaustGasesTo(coldReactor);
-		coldReactor.tick();
+		if(this.hasReactor) {
+			hotReactor.tick();
+			hotReactor.exhaustGasesTo(coldReactor);
+		}
+		coldReactor.setTemperature(293);
+		if(this.hasReactorOut)
+			coldReactor.tick();
+		else
+			coldReactor.clear();
+		separatorIn.tick();
+		separatorOut.tick();
+		filterOut.tick();
+		if(this.isBurning && --fuel>0 && !hotReactor.content().isEmpty())
+			hotReactor.addEntalpy(20);
 	}
 
 	@Override
@@ -62,6 +69,7 @@ public class TileEntityLabTable extends TileEntity {
 		tag.setTag("separatorOut", separatorOutNBT);
 		tag.setTag("filterIn", filterInNBT);
 		tag.setTag("filterOut", filterOutNBT);
+		tag.setInteger("fuel", this.fuel);
 		return tag;
 	}
 	
@@ -74,6 +82,7 @@ public class TileEntityLabTable extends TileEntity {
 		separatorOut.readFromNBT(tag.getCompoundTag("separatorOut"));
 		filterIn.readFromNBT(tag.getCompoundTag("filterIn"));
 		filterOut.readFromNBT(tag.getCompoundTag("filterOut"));
+		this.fuel = tag.getInteger("fuel");
 	}
 
 	public boolean hasFilterOut() {
@@ -123,6 +132,8 @@ public class TileEntityLabTable extends TileEntity {
 			break;
 		case FILL_FILTER:
 			this.fillReactor(filterIn, player);
+			filterIn.dumpLiquidsTo(filterOut);
+			filterIn.exhaustGasesTo(atmosphere);
 			break;
 		case FILL_FILTER_FLASK:
 			if(this.hasFilterOut)
@@ -179,16 +190,59 @@ public class TileEntityLabTable extends TileEntity {
 			}
 			break;
 		case TAKE_FILTER_FLASK:
+			if (this.hasFilterOut) {
+				ItemStack itemStackIn = new ItemStack(IblisItems.SUBSTANCE_CONTAINER, 1, ItemSubstanceContainer.FLASK);
+				NBTTagCompound tag = new NBTTagCompound();
+				filterOut.writeToNBT(tag);
+				itemStackIn.setTagCompound(tag);
+				if (player.inventory.addItemStackToInventory(itemStackIn)) {
+					this.filterOut.clear();
+					this.hasFilterOut = false;
+				}
+			}
 			break;
 		case TAKE_REACTOR:
+			if (this.hasReactor) {
+				ItemStack itemStackIn = new ItemStack(IblisItems.SUBSTANCE_CONTAINER, 1,
+						ItemSubstanceContainer.REACTOR);
+				NBTTagCompound tag = new NBTTagCompound();
+				hotReactor.writeToNBT(tag);
+				itemStackIn.setTagCompound(tag);
+				if (player.inventory.addItemStackToInventory(itemStackIn)) {
+					this.hotReactor.clear();
+					this.hasReactor = false;
+				}
+			}
 			break;
 		case TAKE_REACTOR_OUT:
+			if (this.hasReactorOut) {
+				ItemStack itemStackIn = new ItemStack(IblisItems.SUBSTANCE_CONTAINER, 1, ItemSubstanceContainer.FLASK);
+				NBTTagCompound tag = new NBTTagCompound();
+				coldReactor.writeToNBT(tag);
+				itemStackIn.setTagCompound(tag);
+				if (player.inventory.addItemStackToInventory(itemStackIn)) {
+					this.coldReactor.clear();
+					this.hasReactorOut = false;
+				}
+			}
 			break;
 		case TAKE_SEPARATOR_OUT:
+			if (this.hasSeparatorOut) {
+				ItemStack itemStackIn = new ItemStack(IblisItems.SUBSTANCE_CONTAINER, 1, ItemSubstanceContainer.FLASK);
+				NBTTagCompound tag = new NBTTagCompound();
+				separatorOut.writeToNBT(tag);
+				itemStackIn.setTagCompound(tag);
+				if (player.inventory.addItemStackToInventory(itemStackIn)) {
+					this.separatorOut.clear();
+					this.hasSeparatorOut = false;
+				}
+			}
 			break;
 		case TOGGLE_BURNER:
+			this.isBurning =!this.isBurning;
 			break;
 		case USE_SEPARATOR:
+			this.useSeparator();
 			break;
 		default:
 			break;}
@@ -215,7 +269,14 @@ public class TileEntityLabTable extends TileEntity {
 				reactor.putSubstance(ss,Math.min(ss.substance.getMeltingPoint(), 293));
 			}
 		}
-		
+	}
+	
+	private void useSeparator(){
+		if(!this.hasSeparatorOut)
+			return;
+		if(this.separatorIn.content().isEmpty())
+			return;
+		this.separatorIn.dumpHeaviestTo(this.separatorOut);
 	}
 	
 	public enum Actions {
