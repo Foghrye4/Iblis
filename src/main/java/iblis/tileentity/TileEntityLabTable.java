@@ -1,22 +1,28 @@
 package iblis.tileentity;
 
+import javax.annotation.Nullable;
+
 import iblis.chemistry.ChemistryRegistry;
+import iblis.chemistry.IReactorOwner;
 import iblis.chemistry.Reactor;
 import iblis.chemistry.SubstanceStack;
 import iblis.init.IblisItems;
 import iblis.item.ItemSubstanceContainer;
+import iblis.player.PlayerSkills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-public class TileEntityLabTable extends TileEntity {
+public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 	public final Reactor hotReactor = new Reactor();
 	public final Reactor coldReactor = new Reactor();
 	public final Reactor separatorIn = new Reactor();
@@ -30,22 +36,24 @@ public class TileEntityLabTable extends TileEntity {
 	private boolean hasReactor = true;
 	private int fuel = 0;
 	private boolean isBurning = true;
+	private float reactionYield = 1.0f;
 	
 	public void tick() {
 		if(this.hasReactor) {
-			hotReactor.tick();
+			hotReactor.tick(this);
 			hotReactor.exhaustGasesTo(coldReactor);
 		}
 		coldReactor.setTemperature(293);
 		if(this.hasReactorOut)
-			coldReactor.tick();
+			coldReactor.tick(this);
 		else
 			coldReactor.clear();
-		separatorIn.tick();
-		separatorOut.tick();
-		filterOut.tick();
+		separatorIn.tick(this);
+		separatorOut.tick(this);
+		filterOut.tick(this);
 		if(this.isBurning && --fuel>0 && !hotReactor.content().isEmpty())
 			hotReactor.addEntalpy(20);
+		this.sendUpdatePacket();
 	}
 
 	@Override
@@ -69,6 +77,12 @@ public class TileEntityLabTable extends TileEntity {
 		tag.setTag("separatorOut", separatorOutNBT);
 		tag.setTag("filterIn", filterInNBT);
 		tag.setTag("filterOut", filterOutNBT);
+		byte state = 0;
+		state |= this.hasFilterOut ? 1 : 0;
+		state |= this.hasReactorOut ? 2 : 0;
+		state |= this.hasSeparatorOut ? 4 : 0;
+		state |= this.hasReactor ? 8 : 0;
+		tag.setByte("state", state);
 		tag.setInteger("fuel", this.fuel);
 		return tag;
 	}
@@ -82,6 +96,12 @@ public class TileEntityLabTable extends TileEntity {
 		separatorOut.readFromNBT(tag.getCompoundTag("separatorOut"));
 		filterIn.readFromNBT(tag.getCompoundTag("filterIn"));
 		filterOut.readFromNBT(tag.getCompoundTag("filterOut"));
+		byte state = tag.getByte("state");
+		this.hasFilterOut = (state & 1) != 0;
+		this.hasReactorOut = (state & 2) != 0;
+		this.hasSeparatorOut = (state & 4) != 0;
+		this.hasReactor = (state & 8) != 0;
+		tag.setByte("state", state);
 		this.fuel = tag.getInteger("fuel");
 	}
 
@@ -114,9 +134,14 @@ public class TileEntityLabTable extends TileEntity {
 		return stack.isEmpty()?false:fluidHandler==null?false:fluidHandler.drain(Integer.MAX_VALUE, false)!=null;
 	}
 
-
+	@Override
+	public float getReactionYield() {
+		return reactionYield;
+	}
 
 	public void doAction(EntityPlayerMP player, Actions action) {
+		reactionYield =1.0f-0.8f/(1.0f+(float)PlayerSkills.CHEMISTRY.getFullSkillValue(player));
+		PlayerSkills.CHEMISTRY.raiseSkill(player, 1.0);
 		ItemStack stack = player.getHeldItemMainhand();
 		switch(action){
 		case ADD_FUEL:
@@ -277,6 +302,36 @@ public class TileEntityLabTable extends TileEntity {
 		if(this.separatorIn.content().isEmpty())
 			return;
 		this.separatorIn.dumpHeaviestTo(this.separatorOut);
+	}
+	
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+		super.onDataPacket(net, pkt);
+		this.readFromNBT(pkt.getNbtCompound());
+	}
+	
+	
+	@Nullable
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.pos, 255, this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		NBTTagCompound nbt = super.getUpdateTag();
+		this.writeToNBT(nbt);
+		return nbt;
+	}
+	
+	public void sendUpdatePacket() {
+		for (Object player : world.playerEntities) {
+			if (player instanceof EntityPlayerMP) {
+				EntityPlayerMP playerMP = (EntityPlayerMP) player;
+				if (playerMP.getDistanceSq(getPos()) < 16)
+					playerMP.connection.sendPacket(this.getUpdatePacket());
+			}
+		}
 	}
 	
 	public enum Actions {

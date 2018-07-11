@@ -22,63 +22,35 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class IblisItems {
-	public static Item GUIDE;
-	public static Item SHOTGUN;
-	public static Item SHOTGUN_RELOADING;
-	public static Item SHOTGUN_BULLET;
-	public static Item CROSSBOW;
-	public static Item CROSSBOW_RELOADING;
-	public static Item CROSSBOW_BOLT;
-	public static Item INGOT_STEEL;
-	public static Item NUGGET_STEEL;
-	public static Item TRIGGER_SPRING;
-	public static Item NONSTERILE_MEDKIT;
-	public static ItemMedkit MEDKIT;
-	public static ItemSubstanceContainer SUBSTANCE_CONTAINER;
-	public static Item BOULDER;
-	public static Item IRON_THROWING_KNIFE;
-	public static Item HEAVY_SHIELD;
-	public static Item STEEL_HELMET;
-	public static Item STEEL_CHESTPLATE;
-	public static Item STEEL_LEGGINS;
-	public static Item STEEL_BOOTS;
-	public static Item PARA_ARAMID_FABRIC;
-	public static Item EPOXY_GLUE;
-	public static Item PARA_ARAMID_HELMET;
-	public static Item PARA_ARAMID_CHESTPLATE;
-	public static Item PARA_ARAMID_LEGGINS;
-	public static Item PARA_ARAMID_BOOTS;
+	public static Item GUIDE = new ItemGuideBook();
+	public static Item SHOTGUN = new ItemShotgun();
+	public static Item SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
+	public static Item SHOTGUN_BULLET = new ItemShotgunAmmo();
+	public static Item CROSSBOW = new ItemCrossbow();
+	public static Item CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
+	public static Item CROSSBOW_BOLT = new Item();
+	public static Item INGOT_STEEL = new Item();
+	public static Item NUGGET_STEEL = new Item();
+	public static Item TRIGGER_SPRING = new Item();
+	public static Item NONSTERILE_MEDKIT = new Item();
+	public static ItemMedkit MEDKIT = new ItemMedkit();
+	public static ItemSubstanceContainer SUBSTANCE_CONTAINER = new ItemSubstanceContainer();
+	public static Item BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
+	public static Item IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
+	public static Item HEAVY_SHIELD = new ItemHeavyShield();
+	public static Item STEEL_HELMET = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.HEAD);
+	public static Item STEEL_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.CHEST);
+	public static Item STEEL_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.LEGS);
+	public static Item STEEL_BOOTS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.FEET);
+	public static Item PARA_ARAMID_FABRIC = new Item();
+	public static Item EPOXY_GLUE = new Item();
+	public static Item PARA_ARAMID_HELMET = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.HEAD);
+	public static Item PARA_ARAMID_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.CHEST);
+	public static Item PARA_ARAMID_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.LEGS);
+	public static Item PARA_ARAMID_BOOTS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.FEET);
 	
 	
 	public static void init(){
-		GUIDE = new ItemGuideBook();
-		SHOTGUN = new ItemShotgun();
-		SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
-		SHOTGUN_BULLET = new ItemShotgunAmmo();
-		CROSSBOW = new ItemCrossbow();
-		CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
-		CROSSBOW_BOLT = new Item();
-		INGOT_STEEL = new Item();
-		PARA_ARAMID_FABRIC = new Item();
-		EPOXY_GLUE = new Item();
-		NUGGET_STEEL = new Item();
-		TRIGGER_SPRING = new Item();
-		NONSTERILE_MEDKIT = new Item();
-		MEDKIT = new ItemMedkit();
-		SUBSTANCE_CONTAINER = new ItemSubstanceContainer();
-		
-		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
-		IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
-		HEAVY_SHIELD = new ItemHeavyShield();
-		STEEL_HELMET = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.HEAD);
-		STEEL_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.CHEST);
-		STEEL_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.LEGS);
-		STEEL_BOOTS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.FEET);
-		PARA_ARAMID_HELMET = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.HEAD);
-		PARA_ARAMID_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.CHEST);
-		PARA_ARAMID_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.LEGS);
-		PARA_ARAMID_BOOTS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.FEET);
-		
 		GUIDE.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("guide")
 			.setRegistryName(IblisMod.MODID, "guide")

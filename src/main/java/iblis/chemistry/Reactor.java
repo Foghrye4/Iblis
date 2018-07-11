@@ -53,12 +53,12 @@ public class Reactor {
 			temperature += entalpy / getTotalAmount();
 	}
 
-	public void tick() {
+	public void tick(IReactorOwner owner) {
 		float totalAmount = this.getTotalAmount();
 		for(SubstanceStack substanceStack: content.values()) {
 			int substanceId = substanceStack.substance.id;
 			for(ChemicalReaction reaction:ChemistryRegistry.getReactionByIngridientID(substanceId)){
-				reaction.doReaction(this);
+				reaction.doReaction(this, owner);
 			}
 			this.addEntalpy(substanceStack.balanceEntalpy(temperature, totalAmount));
 		}
@@ -141,6 +141,21 @@ public class Reactor {
 			stack.solidAmount += substanceStack.solidAmount;
 		}
 		this.addEntalpy((temperature2 - temperature) * substanceStack.amount());
+	}
+	
+	public void putSubstance(Substance substance, float gaseousAmount, float liquidAmount, float solidAmount) {
+		SubstanceStack stack = content.get(substance.id);
+		if (stack == null) {
+			stack = new SubstanceStack(substance);
+			stack.gaseousAmount = gaseousAmount;
+			stack.liquidAmount = liquidAmount;
+			stack.solidAmount = solidAmount;
+			content.put(substance.id, stack);
+		} else {
+			stack.gaseousAmount += gaseousAmount;
+			stack.liquidAmount += liquidAmount;
+			stack.solidAmount += solidAmount;
+		}
 	}
 
 	public void writeToNBT(NBTTagCompound nbt) {

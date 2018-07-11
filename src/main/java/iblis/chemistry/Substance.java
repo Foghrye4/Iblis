@@ -10,8 +10,8 @@ public class Substance {
 	public final int id;
 	public final String unlocalizedName;
 	
-	private int boilingPoint = 100;
-	private int meltingPoint = 0;
+	private int boilingPoint = 373;
+	private int meltingPoint = 273;
 	private int molecularMass = 18;
 	private float densityAtMeltingPoint = 1000.0f; // kg/m3
 	private float densityAtBoilingPoint = 800.0f; // kg/m3
@@ -27,6 +27,8 @@ public class Substance {
 
 	public Substance setMeltingPoint(int meltingPointIn) {
 		meltingPoint = meltingPointIn;
+		if (meltingPoint > boilingPoint)
+			boilingPoint = meltingPoint + 1;
 		return this;
 	}
 
@@ -82,5 +84,11 @@ public class Substance {
 			return molecularMass / 22.4f * temperature / 293;
 		return densityAtBoilingPoint + (densityAtMeltingPoint - densityAtBoilingPoint)
 				* (this.boilingPoint - temperature) / (this.boilingPoint - this.meltingPoint);
+	}
+
+	public Substance setDensity(float densityIn) {
+		this.densityAtMeltingPoint = densityIn;
+		this.densityAtBoilingPoint = densityIn*0.92f;
+		return this;
 	}
 }

@@ -44,6 +44,7 @@ public class SharedIblisAttributes {
 	public static final IAttribute MEDICAL_AID = (new RangedAttribute(CRAFTMANSHIP, "iblis.medical_aid", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Medical aid").setShouldWatch(true);
 	public static final IAttribute DIGGING = (new RangedAttribute(CRAFTMANSHIP, "iblis.digging", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Digging").setShouldWatch(true);
 	public static final IAttribute TAMING = (new RangedAttribute(CRAFTMANSHIP, "iblis.taming", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Taming").setShouldWatch(true);
+	public static final IAttribute CHEMISTRY = (new RangedAttribute(CRAFTMANSHIP, "iblis.chemistry", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Chemistry").setShouldWatch(true);
     
     public static final IAttribute ACROBATICS = (new RangedAttribute(WISDOM, "iblis.acrobatics", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Acrobatics").setShouldWatch(true);
     public static final IAttribute RUNNING = (new RangedAttribute(ACROBATICS, "iblis.running", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Running").setShouldWatch(true);
@@ -74,6 +75,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(MEDICAL_AID);
 		attributeMap.registerAttribute(DIGGING);
 		attributeMap.registerAttribute(TAMING);
+		attributeMap.registerAttribute(CHEMISTRY);
 		attributeMap.registerAttribute(ACROBATICS);
 		attributeMap.registerAttribute(RUNNING);
 		attributeMap.registerAttribute(JUMPING);

@@ -87,10 +87,14 @@ public class TileEntityLabTableSpecialRenderer extends TileEntitySpecialRenderer
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 		this.render(staticGlass);
-		this.render(reactor);
-		this.render(reactorOut);
-		this.render(filterOut);
-		this.render(separatorOut);
+		if(te.hasReactor())
+			this.render(reactor);
+		if(te.hasReactorOut())
+			this.render(reactorOut);
+		if(te.hasFilterOut())
+			this.render(filterOut);
+		if(te.hasSeparatorOut())
+			this.render(separatorOut);
 		tessellator.draw();
 		GlStateManager.popMatrix();
 		GL11.glDisable(GL11.GL_BLEND);

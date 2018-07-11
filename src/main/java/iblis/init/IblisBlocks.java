@@ -15,10 +15,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class IblisBlocks {
-	public static Block LAB_TABLE;
+	public static Block LAB_TABLE = new BlockLabTable(Material.GLASS).setRegistryName(MODID, "chemical_lab_installation").setCreativeTab(creativeTab).setUnlocalizedName("iblis.chemical_lab_installation");
 	
 	public static void init(){
-		LAB_TABLE = new BlockLabTable(Material.GLASS).setRegistryName(MODID, "chemical_lab_installation").setCreativeTab(creativeTab).setUnlocalizedName("iblis.chemical_lab_installation");
 		registerBlock(LAB_TABLE,new ItemBlock(LAB_TABLE));
 	}
 	
