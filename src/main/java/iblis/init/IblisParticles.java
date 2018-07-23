@@ -7,5 +7,6 @@ public enum IblisParticles {
 	SLIVER, 
 	BULLET_HOLE,
 	TRACE_OF_SHOT,
-	BLOOD_SPLATTER
+	BLOOD_SPLATTER,
+	FLAME
 }

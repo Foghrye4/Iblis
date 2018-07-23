@@ -31,6 +31,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -55,6 +56,7 @@ public class ServerNetworkHandler {
 
 	protected static FMLEventChannel channel;
 	private MinecraftServer server;
+	private MutableBlockPos blockPos = new MutableBlockPos();
 
 	public void load() {
 		if (channel == null) {
@@ -120,17 +122,7 @@ public class ServerNetworkHandler {
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			if (player.openContainer instanceof ContainerWorkbench) {
-				ContainerWorkbench workBenchContainer = (ContainerWorkbench) player.openContainer;
-				IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, world);
-				if (recipe instanceof IRecipeRaiseSkill) {
-					Slot slotCrafting = workBenchContainer.getSlotFromInventory(workBenchContainer.craftResult, 0);
-					slotCrafting.onTake(player, slotCrafting.getStack());
-					world.addScheduledTask(
-							new TaskRaiseSkill(((IRecipeRaiseSkill) recipe).getSensitiveSkill(), player, 2));
-					world.addScheduledTask(new TaskRefreshClientTrainCraftButton(player));
-				}
-			}
+			world.addScheduledTask(new TaskTrainCraftButton(player));
 			break;
 		case LEFT_CLICK:
 			playerEntityId = byteBufInputStream.readInt();
@@ -162,8 +154,8 @@ public class ServerNetworkHandler {
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			
-			
+			blockPos.setPos(byteBufInputStream.readInt(), byteBufInputStream.readInt(), byteBufInputStream.readInt());
+			world.addScheduledTask(new TaskLabTableGuiAction(player, blockPos.toImmutable(), Actions.values()[byteBufInputStream.readByte()]));
 		default:
 			break;
 		}
@@ -399,16 +391,25 @@ public class ServerNetworkHandler {
 		}
 	}
 
-	private static class TaskRefreshClientTrainCraftButton implements Runnable {
+	private static class TaskTrainCraftButton implements Runnable {
 		final EntityPlayerMP player;
 
-		public TaskRefreshClientTrainCraftButton(EntityPlayerMP playerIn) {
+		public TaskTrainCraftButton(EntityPlayerMP playerIn) {
 			player = playerIn;
 		}
 
 		@Override
 		public void run() {
-			IblisMod.network.sendRefreshTrainCraftButton(player);
+			if (player.openContainer instanceof ContainerWorkbench) {
+				ContainerWorkbench workBenchContainer = (ContainerWorkbench) player.openContainer;
+				IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, player.world);
+				if (recipe instanceof IRecipeRaiseSkill) {
+					Slot slotCrafting = workBenchContainer.getSlotFromInventory(workBenchContainer.craftResult, 0);
+					slotCrafting.onTake(player, slotCrafting.getStack());
+					((IRecipeRaiseSkill) recipe).getSensitiveSkill().raiseSkill(player, 2.0);
+					IblisMod.network.sendRefreshTrainCraftButton(player);
+				}
+			}
 		}
 	}
 	

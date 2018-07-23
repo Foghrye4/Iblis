@@ -1,28 +1,36 @@
 package iblis.tileentity;
 
+import java.util.Random;
+
 import javax.annotation.Nullable;
 
+import iblis.IblisMod;
 import iblis.chemistry.ChemistryRegistry;
 import iblis.chemistry.IReactorOwner;
 import iblis.chemistry.Reactor;
 import iblis.chemistry.SubstanceStack;
 import iblis.init.IblisItems;
+import iblis.init.IblisParticles;
 import iblis.item.ItemSubstanceContainer;
 import iblis.player.PlayerSkills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-public class TileEntityLabTable extends TileEntity implements IReactorOwner {
+public class TileEntityLabTable extends TileEntity implements IReactorOwner, ITickable {
 	public final Reactor hotReactor = new Reactor();
 	public final Reactor coldReactor = new Reactor();
 	public final Reactor separatorIn = new Reactor();
@@ -37,13 +45,17 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 	private int fuel = 0;
 	private boolean isBurning = true;
 	private float reactionYield = 1.0f;
+	private final float ambientTemperature = 293.0f;
 	
-	public void tick() {
+	@Override
+	public void update() {
+		if(this.getWorld()==null || this.getWorld().isRemote)
+			return;
 		if(this.hasReactor) {
 			hotReactor.tick(this);
 			hotReactor.exhaustGasesTo(coldReactor);
 		}
-		coldReactor.setTemperature(293);
+		coldReactor.setTemperature(ambientTemperature);
 		if(this.hasReactorOut)
 			coldReactor.tick(this);
 		else
@@ -51,9 +63,21 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 		separatorIn.tick(this);
 		separatorOut.tick(this);
 		filterOut.tick(this);
-		if(this.isBurning && --fuel>0 && !hotReactor.content().isEmpty())
-			hotReactor.addEntalpy(20);
+		if (this.isBurning && fuel > 0 && !hotReactor.content().isEmpty()) {
+			fuel--;
+			hotReactor.addEntalpy(400);
+			Random rand = this.getWorld().rand;
+//			IblisMod.network.spawnCustomParticle(getWorld(), new Vec3d(pos).addVector(0.75+rand.nextFloat()*0.1, 0.15, 0.75+rand.nextFloat()*0.1), new Vec3d(0.0,0.01,0.0), IblisParticles.FLAME);
+			IblisMod.network.spawnCustomParticle(getWorld(), new Vec3d(pos).addVector(0.75+0.05, 0.15, 0.75+0.05), new Vec3d(0.0,0.001,0.0), IblisParticles.FLAME);
+		}
+		hotReactor.addEntalpy(ambientTemperature - hotReactor.getTemperature());
+		coldReactor.addEntalpy(ambientTemperature - coldReactor.getTemperature());
 		this.sendUpdatePacket();
+	}
+	
+
+	public int getFuel() {
+		return fuel;
 	}
 
 	@Override
@@ -133,6 +157,10 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 		IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack);
 		return stack.isEmpty()?false:fluidHandler==null?false:fluidHandler.drain(Integer.MAX_VALUE, false)!=null;
 	}
+	
+	private boolean isPotion(ItemStack stack) {
+		return stack.isEmpty()?false:stack.getItem() == Items.POTIONITEM;
+	}
 
 	@Override
 	public float getReactionYield() {
@@ -147,7 +175,7 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 		case ADD_FUEL:
 			if(isFuel(stack)){
 				stack.shrink(1);
-				fuel +=200;
+				fuel +=2000;
 			}
 			break;
 		case CLEAR_FLASK:
@@ -193,24 +221,28 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 		case PLACE_FILTER_FLASK:
 			if(!this.hasFilterOut && isSubstanceContainer(stack) && stack.getMetadata() == ItemSubstanceContainer.FLASK){
 				this.hasFilterOut = true;
+				this.filterOut.readFromNBT(stack.getTagCompound());;
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
 			break;
 		case PLACE_REACTOR:
 			if(!this.hasReactor && isSubstanceContainer(stack) && stack.getMetadata() == ItemSubstanceContainer.REACTOR){
 				this.hasReactor = true;
+				this.hotReactor.readFromNBT(stack.getTagCompound());;
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
 			break;
 		case PLACE_REACTOR_OUT:
 			if(!this.hasReactorOut && isSubstanceContainer(stack) && stack.getMetadata() == ItemSubstanceContainer.FLASK){
 				this.hasReactorOut = true;
+				this.coldReactor.readFromNBT(stack.getTagCompound());;
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
 			break;
 		case PLACE_SEPARATOR_OUT:
 			if(!this.hasSeparatorOut && isSubstanceContainer(stack) && stack.getMetadata() == ItemSubstanceContainer.FLASK){
 				this.hasSeparatorOut = true;
+				this.separatorOut.readFromNBT(stack.getTagCompound());;
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, ItemStack.EMPTY);
 			}
 			break;
@@ -282,16 +314,17 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner {
 		} else if(isFluidContainer(stack)){
 			IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack);
 			FluidStack fs = fluidHandler.drain(Integer.MAX_VALUE, true);
-			SubstanceStack ss = ChemistryRegistry.fluidStackToSubstanceStack(fs);
-			if(ss!=null) {
-				reactor.putSubstance(ss,fs.getFluid().getTemperature(fs));
+			if(ChemistryRegistry.fluidStackToSubstanceStack(reactor, fs)) {
+				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.getItem().getContainerItem(stack));
+			}
+		} else if(isPotion(stack)){
+			if(ChemistryRegistry.potionToSubstanceStack(reactor, PotionUtils.getPotionFromItem(stack))) {
 				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.getItem().getContainerItem(stack));
 			}
 		}
 		else {
-			SubstanceStack ss = ChemistryRegistry.itemStackToSubstanceStack(stack);
-			if (ss != null) {
-				reactor.putSubstance(ss,Math.min(ss.substance.getMeltingPoint(), 293));
+			if (ChemistryRegistry.itemStackToSubstanceStack(reactor, stack)) {
+				player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.getItem().getContainerItem(stack));
 			}
 		}
 	}

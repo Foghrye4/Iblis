@@ -5,15 +5,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.server.MinecraftServer;
 
 public class ServerProxy {
+	private MinecraftServer server;
+
 	void load() {
 	}
-
-	public boolean isClient() {
-		return false;
-	}
-
+	
 	public void init() {
 	}
 
@@ -39,5 +38,13 @@ public class ServerProxy {
 	}
 
 	public void registerRenders() {
+	}
+	
+	public void setServer(MinecraftServer serverIn) {
+		this.server = serverIn;
+	}
+
+	public MinecraftServer getServer() {
+		return server;
 	}
 }

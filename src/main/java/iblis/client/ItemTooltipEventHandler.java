@@ -1,5 +1,7 @@
 package iblis.client;
 
+import java.util.List;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
@@ -11,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(value=Side.CLIENT)
 public class ItemTooltipEventHandler {
 	
-	private final static String[] qualityLevels = new String[] {
+	public final static String[] qualityLevels = new String[] {
 			"iblis.qualityLevel.worthless",
 			"iblis.qualityLevel.trash",
 			"iblis.qualityLevel.miserable",
@@ -29,14 +31,18 @@ public class ItemTooltipEventHandler {
 	public void onItemTooltipEvent(ItemTooltipEvent event){
 		ItemStack is = event.getItemStack();
 		if(is.hasTagCompound() && is.getTagCompound().hasKey("quality")) {
-			int quality, qualityRaw = is.getTagCompound().getInteger("quality");
-			quality = qualityRaw;
-			if(quality<-5)
-				quality = -5;
-			if(quality>5)
-				quality = 5;
-			String qualityLevel = qualityLevels[quality+5];
-			event.getToolTip().add(TextFormatting.LIGHT_PURPLE + I18n.format("iblis.quality", I18n.format(qualityLevel), qualityRaw));
+			int quality = is.getTagCompound().getInteger("quality");
+			addQualityTooltip(event.getToolTip(),quality);
 		}
+	}
+	
+	public static void addQualityTooltip(List<String> tooltip, int qualityRaw){
+		int quality = qualityRaw;
+		if(quality<-5)
+			quality = -5;
+		if(quality>5)
+			quality = 5;
+		String qualityLevel = qualityLevels[quality+5];
+		tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("iblis.quality", I18n.format(qualityLevel), qualityRaw));
 	}
 }

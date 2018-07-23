@@ -2,8 +2,6 @@ package iblis.client.gui;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.ServerNetworkHandler.ServerCommands;
@@ -14,7 +12,6 @@ import iblis.crafting.PlayerSensitiveShapedRecipeWrapper;
 import iblis.init.IblisItems;
 import iblis.item.ItemFirearmsBase;
 import iblis.item.ItemShotgunReloading;
-import iblis.player.FoodStatsExtended;
 import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
 import iblis.util.ModIntegrationUtil;

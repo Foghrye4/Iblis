@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
@@ -58,10 +59,29 @@ public class CommandShowNBT extends CommandBase {
 								.sendMessage(new TextComponentString("    " + entry2 + "=" + value));
 					}
 				}
+			}else if (tag.getTag(entry) instanceof NBTTagList) {
+				command_sender.sendMessage(new TextComponentString("NBTtagList '" + entry + "':"));
+				NBTTagList list = tag.getTagList(entry, 10);
+				for(int i=0;i<list.tagCount();i++){
+					NBTTagCompound ct = list.getCompoundTagAt(i);
+					if (ct != null && ct.getKeySet() != null && !ct.getKeySet().isEmpty()) {
+						command_sender.sendMessage(new TextComponentString(" -NBT compound tag subkeys:"));
+						Iterator<?> stIterator = ct.getKeySet().iterator();
+						while (stIterator.hasNext()) {
+							String entry2 = (String) stIterator.next();
+							String value = ct.getString(entry2);
+							if(value.isEmpty())
+								value = String.valueOf(ct.getInteger(entry2));
+							command_sender
+									.sendMessage(new TextComponentString("    " + entry2 + "=" + value));
+						}
+					}
+				}
+
 			} else {
 				String value = tag.getString(entry);
 				if(value.isEmpty())
-					value = String.valueOf(tag.getInteger(entry));
+					value = String.valueOf(tag.getFloat(entry));
 				command_sender.sendMessage(new TextComponentString(" " + entry + "=" + value));
 			}
 		}

@@ -6,6 +6,7 @@ import iblis.item.ItemCrossbow;
 import iblis.item.ItemCrossbowReloading;
 import iblis.item.ItemGuideBook;
 import iblis.item.ItemHeavyShield;
+import iblis.item.ItemIngot;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunAmmo;
@@ -17,40 +18,71 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemFood;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class IblisItems {
-	public static Item GUIDE = new ItemGuideBook();
-	public static Item SHOTGUN = new ItemShotgun();
-	public static Item SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
-	public static Item SHOTGUN_BULLET = new ItemShotgunAmmo();
-	public static Item CROSSBOW = new ItemCrossbow();
-	public static Item CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
-	public static Item CROSSBOW_BOLT = new Item();
-	public static Item INGOT_STEEL = new Item();
-	public static Item NUGGET_STEEL = new Item();
-	public static Item TRIGGER_SPRING = new Item();
-	public static Item NONSTERILE_MEDKIT = new Item();
-	public static ItemMedkit MEDKIT = new ItemMedkit();
-	public static ItemSubstanceContainer SUBSTANCE_CONTAINER = new ItemSubstanceContainer();
-	public static Item BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
-	public static Item IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
-	public static Item HEAVY_SHIELD = new ItemHeavyShield();
-	public static Item STEEL_HELMET = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.HEAD);
-	public static Item STEEL_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.CHEST);
-	public static Item STEEL_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.LEGS);
-	public static Item STEEL_BOOTS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.FEET);
-	public static Item PARA_ARAMID_FABRIC = new Item();
-	public static Item EPOXY_GLUE = new Item();
-	public static Item PARA_ARAMID_HELMET = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.HEAD);
-	public static Item PARA_ARAMID_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.CHEST);
-	public static Item PARA_ARAMID_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.LEGS);
-	public static Item PARA_ARAMID_BOOTS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.FEET);
-	
+	public static Item GUIDE;
+	public static Item SHOTGUN;
+	public static Item SHOTGUN_RELOADING;
+	public static Item SHOTGUN_BULLET;
+	public static Item SHOTGUN_SHOT;
+	public static Item CROSSBOW;
+	public static Item CROSSBOW_RELOADING;
+	public static Item CROSSBOW_BOLT;
+	public static Item INGOT;
+	public static Item NUGGET_STEEL;
+	public static Item TRIGGER_SPRING;
+	public static Item RAISIN;
+	public static Item NONSTERILE_MEDKIT;
+	public static ItemMedkit MEDKIT;
+	public static ItemSubstanceContainer SUBSTANCE_CONTAINER;
+	public static Item BOULDER;
+	public static Item IRON_THROWING_KNIFE;
+	public static Item HEAVY_SHIELD;
+	public static Item STEEL_HELMET;
+	public static Item STEEL_CHESTPLATE;
+	public static Item STEEL_LEGGINS;
+	public static Item STEEL_BOOTS;
+	public static Item PARA_ARAMID_FABRIC;
+	public static Item EPOXY_GLUE;
+	public static Item PARA_ARAMID_HELMET;
+	public static Item PARA_ARAMID_CHESTPLATE;
+	public static Item PARA_ARAMID_LEGGINS;
+	public static Item PARA_ARAMID_BOOTS;
 	
 	public static void init(){
+		GUIDE = new ItemGuideBook();
+		SHOTGUN = new ItemShotgun();
+		SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
+		SHOTGUN_BULLET = new ItemShotgunAmmo(2, 0);
+		SHOTGUN_SHOT = new ItemShotgunAmmo(1, 1);
+		CROSSBOW = new ItemCrossbow();
+		CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
+		CROSSBOW_BOLT = new Item();
+		INGOT = new ItemIngot();
+		NUGGET_STEEL = new Item();
+		TRIGGER_SPRING = new Item();
+		RAISIN = new ItemFood(4,0.3f,false);
+		NONSTERILE_MEDKIT = new Item();
+		MEDKIT = new ItemMedkit();
+		SUBSTANCE_CONTAINER = new ItemSubstanceContainer();
+		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
+		IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
+		HEAVY_SHIELD = new ItemHeavyShield();
+		STEEL_HELMET = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.HEAD);
+		STEEL_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.CHEST);
+		STEEL_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.LEGS);
+		STEEL_BOOTS = new IblisItemArmor(IblisMod.armorMaterialSteel, 0, EntityEquipmentSlot.FEET);
+		PARA_ARAMID_FABRIC = new Item();
+		EPOXY_GLUE = new Item();
+		PARA_ARAMID_HELMET = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.HEAD);
+		PARA_ARAMID_CHESTPLATE = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.CHEST);
+		PARA_ARAMID_LEGGINS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.LEGS);
+		PARA_ARAMID_BOOTS = new IblisItemArmor(IblisMod.armorMaterialParaAramid, 0, EntityEquipmentSlot.FEET);
+
 		GUIDE.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("guide")
 			.setRegistryName(IblisMod.MODID, "guide")
@@ -75,6 +107,12 @@ public class IblisItems {
 			.setHasSubtypes(true)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
+		SHOTGUN_SHOT.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("shotgun_shot")
+			.setRegistryName(IblisMod.MODID, "shotgun_shot")
+			.setHasSubtypes(true)
+			.setMaxDamage(0)
+			.setMaxStackSize(64);
 		CROSSBOW.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("double_crossbow")
 			.setRegistryName(IblisMod.MODID, "double_crossbow")
@@ -93,10 +131,10 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
-		INGOT_STEEL.setCreativeTab(IblisMod.creativeTab)
+		INGOT.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("ingot_steel")
 			.setRegistryName(IblisMod.MODID, "ingot_steel")
-			.setHasSubtypes(false)
+			.setHasSubtypes(true)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
 		PARA_ARAMID_FABRIC
@@ -122,6 +160,12 @@ public class IblisItems {
 		TRIGGER_SPRING.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("trigger_spring")
 			.setRegistryName(IblisMod.MODID, "trigger_spring")
+			.setHasSubtypes(false)
+			.setMaxDamage(0)
+			.setMaxStackSize(64);
+		RAISIN.setCreativeTab(IblisMod.creativeTab)
+			.setUnlocalizedName("raisin")
+			.setRegistryName(IblisMod.MODID, "raisin")
 			.setHasSubtypes(false)
 			.setMaxDamage(0)
 			.setMaxStackSize(64);
@@ -190,12 +234,14 @@ public class IblisItems {
 		registerItem(SHOTGUN);
 		registerItem(SHOTGUN_RELOADING);
 		registerItem(SHOTGUN_BULLET);
+		registerItem(SHOTGUN_SHOT);
 		registerItem(CROSSBOW);
 		registerItem(CROSSBOW_RELOADING);
 		registerItem(CROSSBOW_BOLT);
-		registerItem(INGOT_STEEL);
+		registerItem(INGOT);
 		registerItem(NUGGET_STEEL);
 		registerItem(TRIGGER_SPRING);
+		registerItem(RAISIN);
 		registerItem(NONSTERILE_MEDKIT);
 		registerItem(MEDKIT);
 		registerItem(SUBSTANCE_CONTAINER);
@@ -213,33 +259,27 @@ public class IblisItems {
 	}
 	
 	@SideOnly(value=Side.CLIENT)
-	public static void registerRenders() {
+	public static void registerRenders(){
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"adventurer_diary"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 1,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 2,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide_opened"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_BULLET, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_bullet"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SHOTGUN_BULLET, 1,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"shotgun_shot"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT_STEEL, 0,
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT, ItemIngot.STEEL,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_steel"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT, ItemIngot.BRONZE,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_bronze"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NUGGET_STEEL, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"nugget_steel"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(TRIGGER_SPRING, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"trigger_spring"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(RAISIN, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"raisin"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NONSTERILE_MEDKIT, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SUBSTANCE_CONTAINER, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"pile"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SUBSTANCE_CONTAINER, 1,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"flask"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(SUBSTANCE_CONTAINER, 2,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"reactor"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BOULDER, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(IRON_THROWING_KNIFE, 0,

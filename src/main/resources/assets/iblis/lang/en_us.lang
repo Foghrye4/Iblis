@@ -35,6 +35,7 @@ iblis.mechanics=Mechanics: %0.1f
 iblis.medical_aid=Medical aid: %0.1f
 iblis.digging=Digging: %0.1f
 iblis.taming=Taming: %0.1f
+iblis.chemistry=Chemistry: %0.1f
 iblis.acrobatics=Acrobatics: %0.1f
 iblis.running=Running: %0.1f
 iblis.jumping=Jumping: %0.1f
@@ -108,12 +109,15 @@ iblis.ammo_damage=Damage: %0.1f
 
 itemGroup.iblis.tab=Iblis items
 
+### Items ###
+
 item.adventurer_diary.name=Adventurer diary
 item.guide.name=Guide
 item.six_barrels_shotgun.name=Six barrels shotgun
 item.shotgun_bullet.name=Shotgun bullet
 item.shotgun_shot.name=Shotgun shot
-item.ingot_steel.name=Steel ingot
+ingot_steel.name=Steel ingot
+ingot_bronze.name=Bronze ingot
 item.non-sterile_medkit.name=Sterilize in furnace before use
 item.medkit.name=Medkit
 item.boulder.name=Boulder
@@ -126,11 +130,39 @@ item.steel_helmet.name=Steel helmet
 item.steel_chestplate.name=Steel chestplate
 item.steel_leggins.name=Steel leggins
 item.steel_boots.name=Steel boots
+item.pile.name=Pile of dust
+item.flask.name=Flask
+item.reactor.name=Glass reactor
+item.raisin.name=Raisins
+
+### Blocks ###
+
+tile.iblis.vine.name=Grape
+tile.iblis.chemical_lab_installation.name=Chemical lab installation
+
+### Substances ###
 
 iblis.empty=Empty
 iblis.impurity.amount=Impurities: %0.2f
 iblis.water.amount=Water: %0.2f
 iblis.mercury.amount=Mercury: %0.2f
+iblis.nitric_acid.amount=Nitric acid: %0.2f
+iblis.mercury2_nitrate.amount=Mercury(II) nitrate: %0.2f
+iblis.mercury2_fulminate.amount=Mercury(II) fulminate: %0.2f
+iblis.ethanole.amount=Ethanole: %0.2f
+iblis.yeast.amount=Yeast: %0.2f
+iblis.chitin.amount=Chitin: %0.2f
+iblis.sugar.amount=Sugar: %0.2f
+iblis.sugar_syrup.amount=Sugar syrup: %0.2f
+iblis.carbon_dioxide.amount=Carbon dioxide: %0.2f
+iblis.nitric_oxide4.amount=Nitric oxide (IV): %0.2f
+iblis.sulphuric_acid.amount=Sulphuric acid: %0.2f
+iblis.saltpeter.amount=Saltpeter: %0.2f
+iblis.sulphur.amount=Sulphur: %0.2f
+iblis.sulphuric_anhydride.amount=Sulphuric anhydride: %0.2f
+iblis.potassium_sulphate.amount=Potassium sulphate: %0.2f
+iblis.sodium_sulphate.amount=Sodium sulphate: %0.2f
+iblis.acetaldehyde.amount=Acetaldehyde: %0.2f
 
 entity.Villager.mechanic=Mechanic
 awareness=A smell of enemy
@@ -150,3 +182,5 @@ iblis.gui.takeSolidFilterContent=Grab solid residuum
 iblis.gui.clearFlask=Clear flask
 iblis.gui.toggleBurner=Toggle burner
 iblis.gui.addFuel=Add fuel
+iblis.gui.temperature=Temperature: %0.1f °C
+iblis.gui.fuel=Fuel: %0.1f s

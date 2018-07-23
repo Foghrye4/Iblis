@@ -1,13 +1,18 @@
 package iblis.item;
 
+import java.util.List;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
+import iblis.client.ItemTooltipEventHandler;
 import iblis.entity.EntityBoulder;
 import iblis.entity.EntityThrowingKnife;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
 import iblis.util.PlayerUtils;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -24,8 +29,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemThrowingWeapon extends Item {
+public class ItemThrowingWeapon extends ItemAmmoBase {
 
 	private final ThrowableType type;
 
@@ -76,11 +83,11 @@ public class ItemThrowingWeapon extends Item {
 	}
 
 	@Override
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
 		Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
-		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+		if (slot == EntityEquipmentSlot.MAINHAND) {
 			multimap.put(SharedIblisAttributes.PROJECTILE_DAMAGE.getName(),
-					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", type.damage, 0));
+					new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.getAmmoDamage(stack), 0));
 			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
 					new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -1.4000000953674316D, 0));
 		}
@@ -97,5 +104,30 @@ public class ItemThrowingWeapon extends Item {
 			weight = weightIn;
 			damage = damageIn;
 		}
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (worldIn == null)
+			return;
+		tooltip.add(I18n.format("iblis.ammo_damage", this.getAmmoDamage(stack)));
+		ItemTooltipEventHandler.addQualityTooltip(tooltip, this.getQuality(stack));
+	}
+
+	@Override
+	float getAmmoDamage(ItemStack stack) {
+		float a = stack.getMetadata() * 0.1f + 1.0f;
+		return type.damage * a * a;
+	}
+
+	@Override
+	public int getAmmoType(ItemStack stack) {
+		return type.ordinal();
+	}
+	
+	@Override
+	public int getQuality(ItemStack stack) {
+		return stack.getMetadata() - 5;
 	}
 }

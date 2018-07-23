@@ -1,7 +1,9 @@
 package iblis.chemistry;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -11,11 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 
 public class Reactor {
 	private Int2ObjectMap<SubstanceStack> content = new Int2ObjectOpenHashMap<SubstanceStack>();
-	private int temperature = 293;
-	
-	public Reactor(){
-		content.defaultReturnValue(SubstanceStack.EMPTY);
-	}
+	private float temperature = 293;
 	
 	public SubstanceStack getSubstanceStack(Substance substanceIn){
 		return content.get(substanceIn.id);
@@ -37,11 +35,11 @@ public class Reactor {
 		return amount;
 	}
 
-	public int getTemperature() {
+	public float getTemperature() {
 		return temperature;
 	}
 	
-	public void setTemperature(int temperatureIn) {
+	public void setTemperature(float temperatureIn) {
 		temperature = temperatureIn;
 	}
 
@@ -54,13 +52,14 @@ public class Reactor {
 	}
 
 	public void tick(IReactorOwner owner) {
-		float totalAmount = this.getTotalAmount();
+		Set<ChemicalReaction> reactions = new HashSet<ChemicalReaction>();
 		for(SubstanceStack substanceStack: content.values()) {
 			int substanceId = substanceStack.substance.id;
-			for(ChemicalReaction reaction:ChemistryRegistry.getReactionByIngridientID(substanceId)){
-				reaction.doReaction(this, owner);
-			}
-			this.addEntalpy(substanceStack.balanceEntalpy(temperature, totalAmount));
+			reactions.addAll(ChemistryRegistry.getReactionByIngridientID(substanceId));
+			this.addEntalpy(substanceStack.balanceEntalpy(temperature));
+		}
+		for(ChemicalReaction reaction:reactions){
+			reaction.doReaction(this, owner);
 		}
 	}
 
@@ -131,7 +130,7 @@ public class Reactor {
 		otherReactor.content.clear();
 	}
 
-	public void putSubstance(SubstanceStack substanceStack, int temperature2) {
+	public void putSubstance(SubstanceStack substanceStack, float temperature2) {
 		SubstanceStack stack = content.get(substanceStack.substance.id);
 		if (stack == null) {
 			content.put(substanceStack.substance.id, substanceStack);
@@ -143,20 +142,31 @@ public class Reactor {
 		this.addEntalpy((temperature2 - temperature) * substanceStack.amount());
 	}
 	
-	public void putSubstance(Substance substance, float gaseousAmount, float liquidAmount, float solidAmount) {
+	public void putSubstance(Substance substance, float amount) {
+		SubstanceStack stack = content.get(substance.id);
+		if (stack == null) {
+			stack = new SubstanceStack(substance, temperature, amount);
+			content.put(substance.id, stack);
+		} else {
+			stack.addAmount(temperature, amount);
+		}
+	}
+	
+	public void putSubstance(Substance substance, float solidAmount, float liquidAmount, float gaseousAmount) {
 		SubstanceStack stack = content.get(substance.id);
 		if (stack == null) {
 			stack = new SubstanceStack(substance);
-			stack.gaseousAmount = gaseousAmount;
-			stack.liquidAmount = liquidAmount;
-			stack.solidAmount = solidAmount;
+			stack.gaseousAmount+=gaseousAmount;
+			stack.liquidAmount+=liquidAmount;
+			stack.solidAmount+=solidAmount;
 			content.put(substance.id, stack);
 		} else {
-			stack.gaseousAmount += gaseousAmount;
-			stack.liquidAmount += liquidAmount;
-			stack.solidAmount += solidAmount;
+			stack.gaseousAmount+=gaseousAmount;
+			stack.liquidAmount+=liquidAmount;
+			stack.solidAmount+=solidAmount;
 		}
 	}
+
 
 	public void writeToNBT(NBTTagCompound nbt) {
 		NBTTagList list = new NBTTagList();
@@ -166,7 +176,7 @@ public class Reactor {
 			list.appendTag(stackNBT);
 		}
 		nbt.setTag("content", list);
-		nbt.setInteger("temperature", temperature);
+		nbt.setFloat("temperature", temperature);
 	}
 
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -177,7 +187,10 @@ public class Reactor {
 			SubstanceStack stack = SubstanceStack.createFromNBT(stackNBT);
 			content.put(stack.substance.id, stack);
 		}
-		temperature = nbt.getInteger("temperature");
+		if(nbt.hasKey("temperature"))
+			temperature = nbt.getFloat("temperature");
+		else
+			temperature = 293.0f;
 	}
 	
 	public Collection<SubstanceStack> content(){

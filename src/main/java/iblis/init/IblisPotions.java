@@ -15,7 +15,7 @@ public class IblisPotions {
 			.registerPotionAttributeModifier(SharedMonsterAttributes.FOLLOW_RANGE, "A111A5E-17EE5-AA0D1F1E7-F01-1770B5", 1, 0)
 			.setRegistryName(IblisMod.MODID, "awareness");
 		OVERHEATING.setPotionName("overheating")
-			.registerPotionAttributeModifier(SharedIblisAttributes.FIRE_DAMAGE_REDUCTION, "A111A5E-17EE5-AA0D1F1E7-F01-1770B5", -0.05, 0)
+			.registerPotionAttributeModifier(SharedIblisAttributes.FIRE_DAMAGE_REDUCTION, "A111A5E-17EE5-AA0D1F1E7-F01-1770B5", -0.1, 0)
 			.setRegistryName(IblisMod.MODID, "overheating");
 		registerPotion(AWARENESS);
 		registerPotion(OVERHEATING);

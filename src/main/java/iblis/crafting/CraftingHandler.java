@@ -10,7 +10,10 @@ import javax.annotation.Nullable;
 
 import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
+import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
+import iblis.init.IblisSubstances;
+import iblis.item.ItemSubstanceContainer;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -183,10 +186,26 @@ public class CraftingHandler  implements IContainerListener{
 				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)),
 				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)));
 		
+		NonNullList<Ingredient> raisinRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				Ingredient.fromStacks(new ItemStack(IblisBlocks.VINE, 1, 0)),
+				Ingredient.fromStacks(new ItemStack(IblisBlocks.VINE, 1, 0)));
+
 		Ingredient ironIngot = Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT));
+		Ingredient goldIngot = Ingredient.fromStacks(new ItemStack(Items.GOLD_INGOT));
+		Ingredient glass = Ingredient.fromStacks(new ItemStack(Blocks.GLASS));
 		Ingredient planks = new OreIngredient("plankWood");
 		Ingredient leather = Ingredient.fromItem(Items.LEATHER);
 		ItemStack spring = new ItemStack(IblisItems.TRIGGER_SPRING);
+		Ingredient paper = Ingredient.fromStacks(new ItemStack(Items.PAPER));
+		Ingredient gunpowder = Ingredient.fromStacks(new ItemStack(Items.GUNPOWDER));
+		Ingredient bronzeIngot = new OreIngredient("ingotBronze");
+		Ingredient mercuryFulminate = new IngredientSubstance(IblisSubstances.MERCURY2_FULMINATE, 32,0.98f);
+		
+		ItemStack flask = new ItemStack(IblisItems.SUBSTANCE_CONTAINER,1,ItemSubstanceContainer.FLASK);
+		ItemStack reactor = new ItemStack(IblisItems.SUBSTANCE_CONTAINER,1,ItemSubstanceContainer.REACTOR);
+		
+		Ingredient flaskI = Ingredient.fromStacks(flask);
+		Ingredient reactorI = Ingredient.fromStacks(reactor);
 		
 		NonNullList<Ingredient> crossbowRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),
@@ -214,6 +233,40 @@ public class CraftingHandler  implements IContainerListener{
 				leather, ironIngot, leather,
 				Ingredient.EMPTY, planks, Ingredient.EMPTY);
 		
+		NonNullList<Ingredient> bulletRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				Ingredient.EMPTY, ironIngot, Ingredient.EMPTY,
+				paper, gunpowder, paper,
+				mercuryFulminate, bronzeIngot, Ingredient.EMPTY);
+		
+		NonNullList<Ingredient> shotRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				paper, 			ironIngot, 			paper,
+				paper, 			gunpowder, 			paper,
+				mercuryFulminate, bronzeIngot, Ingredient.EMPTY);
+		
+		NonNullList<Ingredient> flaskRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				Ingredient.EMPTY,glass, 			Ingredient.EMPTY,
+				glass, 			Ingredient.EMPTY, 	glass,
+				glass, 			glass,				glass);
+		
+		NonNullList<Ingredient> reactorRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				glass,	glass, 			Ingredient.EMPTY,
+				glass, 	Ingredient.EMPTY,glass,
+				glass, 	glass,			glass);
+		
+		NonNullList<Ingredient> labtableRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				glass,	glass, 	 flaskI,
+				reactorI,flaskI, flaskI,
+				goldIngot,goldIngot,goldIngot);
+		
+		ShapedRecipes bulletRecipe = new ShapedChemicalIngridientRecipe(IblisMod.MODID+":shaped", 3, 3, bulletRecipeIngridients, new ItemStack(IblisItems.SHOTGUN_BULLET,64));
+		ShapedRecipes shotRecipe = new ShapedChemicalIngridientRecipe(IblisMod.MODID+":shaped", 3, 3, shotRecipeIngridients, new ItemStack(IblisItems.SHOTGUN_SHOT,64));
+		ShapedRecipes flaskRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, flaskRecipeIngridients, flask);
+		ShapedRecipes reactorRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, reactorRecipeIngridients, reactor);
+		ShapedRecipes labtableRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, labtableRecipeIngridients, new ItemStack(IblisBlocks.LAB_TABLE));
+		
+		PlayerSensitiveMetadataShapedRecipeWrapper bulletWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(bulletRecipe).setSesitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper shotWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(shotRecipe).setSesitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
+		
 		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
 		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
 		ShapedRecipes medkitRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, medkitRecipeIngridients, new ItemStack(IblisItems.NONSTERILE_MEDKIT));
@@ -221,6 +274,7 @@ public class CraftingHandler  implements IContainerListener{
 		ShapedRecipeRaisingSkillWrapper ironThrowingKnifeWrappedRecipe = new ShapedRecipeRaisingSkillWrapper(ironThrowingKnifeRecipe);
 		ShapelessRecipes boulderRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(IblisItems.BOULDER, 9, 0), boulderRecipeIngridients);
 		ShapelessRecipes cobblestoneRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(Blocks.COBBLESTONE, 1, 0), cobblestoneRecipeIngridients);
+		ShapelessRecipes raisinRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(IblisItems.RAISIN, 1, 0), raisinRecipeIngridients);
 		ItemStack shield = new ItemStack(IblisItems.HEAVY_SHIELD);
 		shield.setTagCompound(new NBTTagCompound());
 		shield.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, 600);
@@ -296,6 +350,12 @@ public class CraftingHandler  implements IContainerListener{
 		steelChestplateRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_chestplate");
 		steelLegginsRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_leggins");
 		steelBootsRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_boots");
+		raisinRecipe.setRegistryName(IblisMod.MODID, "raisin");
+		bulletWrapped.setRegistryName(IblisMod.MODID, "bullet");
+		shotWrapped.setRegistryName(IblisMod.MODID, "shot");
+		flaskRecipe.setRegistryName(IblisMod.MODID, "flask");
+		reactorRecipe.setRegistryName(IblisMod.MODID, "reactor");
+		labtableRecipe.setRegistryName(IblisMod.MODID, "labtable");
 		
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
@@ -311,6 +371,12 @@ public class CraftingHandler  implements IContainerListener{
 		event.getRegistry().register(steelChestplateRecipeWrapper);
 		event.getRegistry().register(steelLegginsRecipeWrapper);
 		event.getRegistry().register(steelBootsRecipeWrapper);
+		event.getRegistry().register(raisinRecipe);
+		event.getRegistry().register(bulletWrapped);
+		event.getRegistry().register(shotWrapped);
+		event.getRegistry().register(flaskRecipe);
+		event.getRegistry().register(reactorRecipe);
+		event.getRegistry().register(labtableRecipe);
 		this.addShapelessNuggetsOrShradsRecipe("ingotSteel", "nuggetSteel", "steel_ingot_from_nuggets", "nugget_steel", event.getRegistry());
 
 		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);

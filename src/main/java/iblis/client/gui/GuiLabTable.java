@@ -10,7 +10,9 @@ import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.ServerNetworkHandler.ServerCommands;
 import iblis.block.BlockLabTable.SubBox;
+import iblis.chemistry.Reactor;
 import iblis.chemistry.SubstanceStack;
+import iblis.client.util.ClientStringUtil;
 import iblis.tileentity.TileEntityLabTable;
 import iblis.tileentity.TileEntityLabTable.Actions;
 import net.minecraft.client.Minecraft;
@@ -78,8 +80,12 @@ public class GuiLabTable {
 	public void render() {
 		if (selectedSubBox == null || tile == null)
 			return;
+		int textX = 180;
+		int textY = 40;
+		int textColour = 16777120;
+		FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		Collection<SubstanceStack> content = null;
+		Reactor reactor = null;
 		switch (selectedSubBox) {
 		case BRUSH:
 			clearButton.setHovered(true);
@@ -90,9 +96,10 @@ public class GuiLabTable {
 			addFuelButton.setHovered(subHit != 1);
 			toggleBurnerButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
 			addFuelButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
+			fontrenderer.drawString(I18n.format("iblis.gui.fuel", ClientStringUtil.formatFloat(tile.getFuel()/20.0f,10)), textX, textY, textColour);
 			break;
 		case FILTER:
-			content = tile.filterIn.content();
+			reactor = tile.filterIn;
 			fillFilterButton.setHovered(subHit == 1);
 			takeSolidFilterContentButton.setHovered(subHit != 1);
 			fillFilterButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
@@ -100,7 +107,7 @@ public class GuiLabTable {
 			break;
 		case FILTER_OUT:
 			if (tile.hasFilterOut()) {
-				content = tile.filterOut.content();
+				reactor = tile.filterOut;
 				fillFlaskButton.setHovered(subHit == 1);
 				takeFlaskButton.setHovered(subHit != 1);
 				fillFlaskButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
@@ -112,7 +119,7 @@ public class GuiLabTable {
 			break;
 		case REACTOR:
 			if(tile.hasReactor()) {
-				content = tile.hotReactor.content();
+				reactor = tile.hotReactor;
 				fillReactorButton.setHovered(subHit == 1);
 				takeReactorButton.setHovered(subHit != 1);
 				fillReactorButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
@@ -125,7 +132,7 @@ public class GuiLabTable {
 			break;
 		case REACTOR_OUT:
 			if (tile.hasReactorOut()) {
-				content = tile.coldReactor.content();
+				reactor = tile.coldReactor;
 				fillFlaskButton.setHovered(subHit == 1);
 				takeFlaskButton.setHovered(subHit != 1);
 				fillFlaskButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
@@ -136,7 +143,7 @@ public class GuiLabTable {
 			}
 			break;
 		case SEPARATOR:
-			content = tile.separatorIn.content();
+			reactor = tile.separatorIn;
 			fillSeparatorButton.setHovered(subHit == 1);
 			useSeparatorButton.setHovered(subHit != 1);
 			fillSeparatorButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
@@ -144,7 +151,7 @@ public class GuiLabTable {
 			break;
 		case SEPARATOR_OUT:
 			if (tile.hasSeparatorOut()) {
-				content = tile.separatorOut.content();
+				reactor = tile.separatorOut;
 				fillFlaskButton.setHovered(subHit == 1);
 				takeFlaskButton.setHovered(subHit != 1);
 				fillFlaskButton.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
@@ -157,17 +164,17 @@ public class GuiLabTable {
 		default:
 			break;
 		}
-		if(content == null)
+		if(reactor == null)
 			return;
-		int textX = 180;
-		int textY = 40;
-		int textColour = 16777120;
-		FontRenderer fontrenderer = Minecraft.getMinecraft().fontRenderer;
+		Collection<SubstanceStack> content = reactor.content();
+		fontrenderer.drawString(I18n.format("iblis.gui.temperature", ClientStringUtil.formatFloat(reactor.getTemperature()-273.15f,10)), textX, textY, textColour);
+		textY+=20;
 		if (content.isEmpty()) {
 			fontrenderer.drawString(I18n.format("iblis.empty"), textX, textY, textColour);
 		} else {
 			for (SubstanceStack ss : content) {
-				fontrenderer.drawString(I18n.format(ss.substance.unlocalizedName + ".amount", ss.amount()), textX, textY, textColour);
+				textY+=20;
+				fontrenderer.drawString(I18n.format(ss.substance.unlocalizedName + ".amount", ClientStringUtil.formatFloat(ss.amount(),100)), textX, textY, textColour);
 			}
 		}
 	}

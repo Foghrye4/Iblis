@@ -1,4 +1,4 @@
-package iblis.player;
+package iblis.event;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +14,10 @@ import iblis.entity.EntityThrowingKnife;
 import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
 import iblis.init.IblisPotions;
+import iblis.player.FoodStatsExtended;
+import iblis.player.PlayerCharacteristics;
+import iblis.player.PlayerSkills;
+import iblis.player.SharedIblisAttributes;
 import iblis.util.HeadShotHandler;
 import iblis.util.ModIntegrationUtil;
 import iblis.util.PlayerUtils;
@@ -48,6 +52,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
@@ -62,6 +67,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
+import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
 import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -91,7 +97,7 @@ public class IblisEventHandler {
 		if(event.phase != TickEvent.Phase.START)
 			return;
 		EntityPlayer player = event.player;
-		if(!(player.foodStats instanceof FoodStatsExtended)) {
+		if(!IblisMod.isAppleCoreLoaded && !(player.foodStats instanceof FoodStatsExtended)) {
 			FoodStats oldFoodStats = player.foodStats;
 			player.foodStats = new FoodStatsExtended();
 			player.foodStats.setFoodLevel(oldFoodStats.getFoodLevel());
@@ -167,6 +173,8 @@ public class IblisEventHandler {
 
 	private void notifyRandomEntityAboutPlayer(World world, EntityPlayer player) {
 		if (noIncreasedMobSeekRange)
+			return;
+		if(world.loadedEntityList.isEmpty())
 			return;
 		Entity randomEntity = world.loadedEntityList.get(world.rand.nextInt(world.loadedEntityList.size()));
 		if (!(randomEntity instanceof EntityLiving))
@@ -600,8 +608,7 @@ public class IblisEventHandler {
 						SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER, "Characteristic modifier",
 						PlayerCharacteristics.MELEE_DAMAGE_BONUS.getCurrentValue(player), 1));
 
-			World worldIn = player.world;
-			WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) worldIn.getPerWorldStorage()
+			WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) IblisMod.proxy.getServer().worlds[0].getPerWorldStorage()
 					.getOrLoadData(WorldSavedDataPlayers.class, WorldSavedDataPlayers.DATA_IDENTIFIER);
 			NBTTagList attributesNBTList = null;
 			NBTTagList books = null;
@@ -634,24 +641,34 @@ public class IblisEventHandler {
 			}
 		}
 	}
-
+	
+	@SubscribeEvent
+	public void onPlayerChangeDimension(EntityTravelToDimensionEvent event){
+		if (!(event.getEntity() instanceof EntityPlayerMP))
+			return;
+		this.savePlayerData((EntityPlayerMP) event.getEntity());
+	}
+	
 	@SubscribeEvent
 	public void onPlayerDeath(LivingDeathEvent event) {
 		if (!(event.getEntityLiving() instanceof EntityPlayerMP))
 			return;
+		EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
+		this.savePlayerData(player);
+		if (spawnPlayerZombie) {
+			EntityPlayerZombie playerZombie = new EntityPlayerZombie(player, noDeathPenalty);
+			player.world.spawnEntity(playerZombie);
+		}
+	}
+	
+	private void savePlayerData(EntityPlayerMP player){
 		if (noDeathPenalty) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-			World worldIn = event.getEntity().world;
-			WorldSavedDataPlayers playersData = PlayerUtils.getOrCreateWorldSavedData(worldIn);
+			WorldSavedDataPlayers playersData = PlayerUtils.getOrCreateWorldSavedData(IblisMod.proxy.getServer().worlds[0]);
 			playersData.playerDataKeys.add(player.getUniqueID());
 			playersData.playerDataAttributes.put(player.getUniqueID(),
 					SharedMonsterAttributes.writeBaseAttributeMapToNBT(player.getAttributeMap()));
 			playersData.markDirty();
 		}
-		if (spawnPlayerZombie) {
-			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-			EntityPlayerZombie playerZombie = new EntityPlayerZombie(player, noDeathPenalty);
-			player.world.spawnEntity(playerZombie);
-		}
+		
 	}
 }

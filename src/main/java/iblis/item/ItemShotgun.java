@@ -72,9 +72,11 @@ public class ItemShotgun extends ItemFirearmsBase {
 				Vec3d vec3d4 = vec3d2.addVector(aim.x * blockReachDistance, aim.y * blockReachDistance,
 						aim.z * blockReachDistance);
 				rtr = worldIn.rayTraceBlocks(vec3d3, vec3d4, false, true, true);
-				vec3d2 = rtr.hitVec;
-				pos = rtr.getBlockPos();
-				bstate = worldIn.getBlockState(pos);
+				if(rtr!=null) {
+					vec3d2 = rtr.hitVec;
+					pos = rtr.getBlockPos();
+					bstate = worldIn.getBlockState(pos);
+				}
 			}
 			int bsId = Block.getStateId(bstate);
 			IblisMod.network.spawnBlockParticles((EntityPlayerMP) playerIn, vec3d2, aim, bsId);

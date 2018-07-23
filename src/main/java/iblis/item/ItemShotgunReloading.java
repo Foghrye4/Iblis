@@ -87,7 +87,7 @@ public class ItemShotgunReloading extends ItemBaseFirearmsReloading {
 
 	@Override
 	protected boolean isShot(ItemStack stack) {
-		return stack.getItem() == IblisItems.SHOTGUN_BULLET;
+		return stack.getItem() instanceof ItemAmmoBase;
 	}
 
 	@Override
@@ -100,16 +100,11 @@ public class ItemShotgunReloading extends ItemBaseFirearmsReloading {
 	@Override
 	protected NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo) {
 		NBTTagCompound ammoCartridge = new NBTTagCompound();
-		switch(ammo.getMetadata()) {
-		case 0:
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 2.0f);
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
-			break;
-		case 1:
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 1);
-			break;
-		default:
+		if (ammo.getItem() instanceof ItemAmmoBase) {
+			ItemAmmoBase item = (ItemAmmoBase) ammo.getItem();
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, item.getAmmoDamage(ammo));
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, item.getAmmoType(ammo));
+		} else {
 			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
 			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
 		}

@@ -1,0 +1,38 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "iblis:pile"
+  },
+  "variants": {
+    "inventory": [
+      {
+	    "model": "iblis:pile"
+      }
+    ],
+    "pile": [
+      {
+	    "model": "iblis:pile"
+      }
+    ],
+    "flask_empty": [
+      {
+	    "model": "iblis:flask"
+      }
+    ],
+    "flask_full": [
+      {
+	    "model": "iblis:flask_full"
+      }
+    ],
+    "reactor_empty": [
+      {
+	    "model": "iblis:reactor"
+      }
+    ],
+    "reactor_full": [
+      {
+	    "model": "iblis:reactor_full"
+      }
+    ]
+  }
+}

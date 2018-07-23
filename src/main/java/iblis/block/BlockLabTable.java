@@ -43,7 +43,7 @@ public class BlockLabTable extends Block implements ITileEntityProvider {
 	public static final AxisAlignedBB REACTOR_AABB = new AxisAlignedBB(10D / 16D, 4D / 16D, 10D / 16D, 14D / 16D,
 			8D / 16D, 14D / 16D);
 	public static final AxisAlignedBB SELECTION_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
-	public static final float BLOCK_REACH_DISTANCE = 1.0f;
+	public static final float BLOCK_REACH_DISTANCE = 2.0f;
 
 	public BlockLabTable(Material materialIn) {
 		super(materialIn);

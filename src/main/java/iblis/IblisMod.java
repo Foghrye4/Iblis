@@ -2,6 +2,7 @@ package iblis;
 
 import org.apache.logging.log4j.Logger;
 
+import iblis.applecore_integration.AplleCoreHungerEventHandler;
 import iblis.command.CommandGetAttribute;
 import iblis.command.CommandSetAttribute;
 import iblis.command.CommandShowNBT;
@@ -10,14 +11,17 @@ import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
+import iblis.event.IblisBlockEventHandler;
+import iblis.event.IblisEventHandler;
 import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
 import iblis.init.IblisPotions;
 import iblis.init.IblisSounds;
+import iblis.init.IblisSubstances;
 import iblis.init.RegistryEventHandler;
 import iblis.item.IblisCreativeTab;
+import iblis.item.ItemIngot;
 import iblis.loot.LootTableParsingEventHandler;
-import iblis.player.IblisEventHandler;
 import iblis.tconstruct_integration.TConstructCraftingEventHandler;
 import iblis.tileentity.TileEntityLabTable;
 import iblis.villager.EmeraldForOreDictionaryItems;
@@ -50,8 +54,8 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.39";
-    public static final String GUI_FACTORY = "iblis.gui.IblisGuiFactory";
+    public static final String VERSION = "0.3.40";
+    public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     
 	@SidedProxy(clientSide = "iblis.ClientProxy", serverSide = "iblis.ServerProxy")
@@ -65,6 +69,7 @@ public class IblisMod
 	public static ArmorMaterial armorMaterialSteel;
 	public static ArmorMaterial armorMaterialParaAramid;
 	public static boolean isRPGHUDLoaded = false;
+	public static boolean isAppleCoreLoaded = false;
     
 	
     @EventHandler
@@ -72,7 +77,7 @@ public class IblisMod
     {
     	// Oh, so original and fresh! ^_^
     	armorMaterialSteel = EnumHelper.addArmorMaterial("STEEL", "iblis:steel", 33, new int[]{6, 12, 16, 6}, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 4);
-    	armorMaterialSteel.setRepairItem(new ItemStack(IblisItems.INGOT_STEEL));
+    	armorMaterialSteel.setRepairItem(new ItemStack(IblisItems.INGOT,1,ItemIngot.STEEL));
     	armorMaterialParaAramid = EnumHelper.addArmorMaterial("PARA_ARAMID", "iblis:para_aramid", 33, new int[]{6, 12, 16, 6}, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 8);
     	armorMaterialParaAramid.setRepairItem(new ItemStack(IblisItems.PARA_ARAMID_FABRIC));
     	eventHandler = new IblisEventHandler();
@@ -81,6 +86,7 @@ public class IblisMod
     	IblisBlocks.init();
     	IblisItems.init();
     	IblisPotions.init();
+    	IblisSubstances.init();
     	IblisSounds.register();
 		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		MinecraftForge.EVENT_BUS.register(config);
@@ -111,9 +117,14 @@ public class IblisMod
     	MinecraftForge.EVENT_BUS.register(proxy);
     	MinecraftForge.EVENT_BUS.register(new LootTableParsingEventHandler());
     	MinecraftForge.EVENT_BUS.register(new RegistryEventHandler());
+    	MinecraftForge.EVENT_BUS.register(new IblisBlockEventHandler());
     	
     	if(Loader.isModLoaded("tconstruct")){
         	MinecraftForge.EVENT_BUS.register(new TConstructCraftingEventHandler());
+    	}
+    	isAppleCoreLoaded = Loader.isModLoaded("applecore");
+    	if(isAppleCoreLoaded){
+        	MinecraftForge.EVENT_BUS.register(new AplleCoreHungerEventHandler());
     	}
     }
     
@@ -125,6 +136,7 @@ public class IblisMod
     
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
+		proxy.setServer(event.getServer());
 		network.setServer(event.getServer());
 		event.registerServerCommand(new CommandSetAttribute());
 		event.registerServerCommand(new CommandGetAttribute());
