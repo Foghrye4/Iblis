@@ -43,8 +43,9 @@ public class PlayerSensitiveMetadataShapedRecipeWrapper extends ShapedRecipeRais
 	}
 	
 	/** Modify item stack and return it instance. Does not create a copy. */
-	public ItemStack getCraftingResult(ItemStack output1, double skillValue, boolean additive){
-		output1.setItemDamage((int)skillValue);
+	public ItemStack getCraftingResult(ItemStack output1, double skillValue, boolean additive) {
+		int meta = (int) skillValue;
+		output1.setItemDamage(meta > 0 ? meta : 0);
 		return output1;
 	}
 

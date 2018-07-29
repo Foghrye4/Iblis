@@ -87,7 +87,7 @@ public class ItemShotgunReloading extends ItemBaseFirearmsReloading {
 
 	@Override
 	protected boolean isShot(ItemStack stack) {
-		return stack.getItem() instanceof ItemAmmoBase;
+		return stack.getItem() instanceof ItemAmmo;
 	}
 
 	@Override
@@ -95,19 +95,5 @@ public class ItemShotgunReloading extends ItemBaseFirearmsReloading {
 		super.onLeftClick(worldIn, playerIn, handIn);
 		worldIn.playSound(null, playerIn.posX, playerIn.posY, playerIn.posZ, IblisSounds.shotgun_hammer_cock,
 				SoundCategory.PLAYERS, 1.0f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
-	}
-
-	@Override
-	protected NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo) {
-		NBTTagCompound ammoCartridge = new NBTTagCompound();
-		if (ammo.getItem() instanceof ItemAmmoBase) {
-			ItemAmmoBase item = (ItemAmmoBase) ammo.getItem();
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, item.getAmmoDamage(ammo));
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, item.getAmmoType(ammo));
-		} else {
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
-		}
-		return ammoCartridge;
 	}
 }

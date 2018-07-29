@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import iblis.chemistry.ChemicalReaction;
 import iblis.chemistry.ChemistryRegistry;
-import iblis.chemistry.ReactionIngridient;
+import iblis.chemistry.ReactionIngredient;
 import iblis.chemistry.Substance;
 import iblis.chemistry.SubstanceStack;
 import net.minecraft.init.Items;
@@ -47,24 +47,24 @@ public class IblisSubstances {
 		ChemistryRegistry.registerOreDictionaryToSubstanceStackConversion("dustSulphur", Arrays.asList(new SubstanceStack(SULPHUR).setSolidAmount(144.0f)));
 		ChemistryRegistry.registerOreDictionaryToSubstanceStackConversion("dustSaltpeter", Arrays.asList(new SubstanceStack(SALTPETER).setSolidAmount(144.0f)));
 		
-		new ChemicalReaction(new ReactionIngridient(WATER,1.0f),new ReactionIngridient(SUGAR,1.0f))
-			.setResult(new ReactionIngridient(SUGAR_SYRUP,2.0f)).setEntalpy(0.0f).register();
-		new ChemicalReaction(new ReactionIngridient(YEAST,0.1f), new ReactionIngridient(SUGAR_SYRUP,0.1f))
-			.setResult(new ReactionIngridient(YEAST,0.15f), new ReactionIngridient(ETHANOLE,0.05f)).setTemperatureStart(293).setTKRatio(1).register();
-		new ChemicalReaction(new ReactionIngridient(MERCURY,1.0f),new ReactionIngridient(NITRIC_ACID,1.0f))
-			.setResult(new ReactionIngridient(MERCURY2_NITRATE,1.0f),new ReactionIngridient(NITRIC_OXIDE4,1.0f)).register();
-		new ChemicalReaction(new ReactionIngridient(MERCURY2_NITRATE,1.0f),new ReactionIngridient(ETHANOLE,3.0f))
-			.setResult(new ReactionIngridient(MERCURY2_FULMINATE,1.0f),new ReactionIngridient(ACETALDEHYDE,2.0f),new ReactionIngridient(WATER,5.0f)).register();
-		new ChemicalReaction(new ReactionIngridient(YEAST,10.0f))
-			.setResult(new ReactionIngridient(CHITIN,5.0f), new ReactionIngridient(IMPURITY,5.0f)).setTemperatureStart(313).setTKRatio(1).register();
-		new ChemicalReaction(new ReactionIngridient(SALTPETER,0.1f),new ReactionIngridient(SULPHUR,0.1f))
-			.setResult(new ReactionIngridient(SULPHURIC_ANHYDRIDE,0.1f)).setTemperatureStart(400).setEntalpy(400).register();
-		new ChemicalReaction(new ReactionIngridient(SULPHURIC_ANHYDRIDE,10f),new ReactionIngridient(WATER,10f))
-			.setResult(new ReactionIngridient(SULPHURIC_ACID,20f)).setTemperatureStart(250).setEntalpy(40).register();
-		new ChemicalReaction(new ReactionIngridient(SULPHURIC_ANHYDRIDE,10f),new ReactionIngridient(WATER,10f))
-			.setResult(new ReactionIngridient(SULPHURIC_ACID,20f)).setTemperatureStart(250).setEntalpy(40).register();
-		new ChemicalReaction(new ReactionIngridient(SALTPETER,1f),new ReactionIngridient(SULPHURIC_ACID,1f))
-			.setResult(new ReactionIngridient(POTASSIUM_SULPHATE,1f),new ReactionIngridient(NITRIC_ACID,1f)).setTemperatureStart(270).setEntalpy(0).setReversive().register();
+		new ChemicalReaction(new ReactionIngredient(WATER,1.0f),new ReactionIngredient(SUGAR,1.0f))
+			.setResult(new ReactionIngredient(SUGAR_SYRUP,2.0f)).setEntalpy(0.0f).register();
+		new ChemicalReaction(new ReactionIngredient(YEAST,0.1f), new ReactionIngredient(SUGAR_SYRUP,0.1f))
+			.setResult(new ReactionIngredient(YEAST,0.15f), new ReactionIngredient(ETHANOLE,0.05f)).setTemperatureStart(293).setTKRatio(1).register();
+		new ChemicalReaction(new ReactionIngredient(MERCURY,1.0f),new ReactionIngredient(NITRIC_ACID,1.0f))
+			.setResult(new ReactionIngredient(MERCURY2_NITRATE,1.0f),new ReactionIngredient(NITRIC_OXIDE4,1.0f)).register();
+		new ChemicalReaction(new ReactionIngredient(MERCURY2_NITRATE,1.0f),new ReactionIngredient(ETHANOLE,3.0f))
+			.setResult(new ReactionIngredient(MERCURY2_FULMINATE,1.0f),new ReactionIngredient(ACETALDEHYDE,2.0f),new ReactionIngredient(WATER,5.0f)).register();
+		new ChemicalReaction(new ReactionIngredient(YEAST,10.0f))
+			.setResult(new ReactionIngredient(CHITIN,5.0f), new ReactionIngredient(IMPURITY,5.0f)).setTemperatureStart(313).setTKRatio(1).register();
+		new ChemicalReaction(new ReactionIngredient(SALTPETER,0.1f),new ReactionIngredient(SULPHUR,0.1f))
+			.setResult(new ReactionIngredient(SULPHURIC_ANHYDRIDE,0.1f)).setTemperatureStart(400).setEntalpy(400).register();
+		new ChemicalReaction(new ReactionIngredient(SULPHURIC_ANHYDRIDE,10f),new ReactionIngredient(WATER,10f))
+			.setResult(new ReactionIngredient(SULPHURIC_ACID,20f)).setTemperatureStart(250).setEntalpy(40).register();
+		new ChemicalReaction(new ReactionIngredient(SULPHURIC_ANHYDRIDE,10f),new ReactionIngredient(WATER,10f))
+			.setResult(new ReactionIngredient(SULPHURIC_ACID,20f)).setTemperatureStart(250).setEntalpy(40).register();
+		new ChemicalReaction(new ReactionIngredient(SALTPETER,1f),new ReactionIngredient(SULPHURIC_ACID,1f))
+			.setResult(new ReactionIngredient(POTASSIUM_SULPHATE,1f),new ReactionIngredient(NITRIC_ACID,1f)).setTemperatureStart(270).setEntalpy(0).setReversive().register();
 	}
 
 }

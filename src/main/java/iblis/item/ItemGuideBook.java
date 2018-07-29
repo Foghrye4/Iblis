@@ -157,6 +157,9 @@ public class ItemGuideBook extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		if(worldIn.isRemote) {
+			
+		}
 		if (itemstack.hasTagCompound() && !worldIn.isRemote) {
 			boolean playerAlreadyReadBook = false;
 			boolean bookNewVersion = false;

@@ -63,18 +63,18 @@ public class TileEntityLabTable extends TileEntity implements IReactorOwner, ITi
 		separatorIn.tick(this);
 		separatorOut.tick(this);
 		filterOut.tick(this);
-		if (this.isBurning && fuel > 0 && !hotReactor.content().isEmpty()) {
+		if (isBurning()) {
 			fuel--;
 			hotReactor.addEntalpy(400);
-			Random rand = this.getWorld().rand;
-//			IblisMod.network.spawnCustomParticle(getWorld(), new Vec3d(pos).addVector(0.75+rand.nextFloat()*0.1, 0.15, 0.75+rand.nextFloat()*0.1), new Vec3d(0.0,0.01,0.0), IblisParticles.FLAME);
-			IblisMod.network.spawnCustomParticle(getWorld(), new Vec3d(pos).addVector(0.75+0.05, 0.15, 0.75+0.05), new Vec3d(0.0,0.001,0.0), IblisParticles.FLAME);
 		}
 		hotReactor.addEntalpy(ambientTemperature - hotReactor.getTemperature());
 		coldReactor.addEntalpy(ambientTemperature - coldReactor.getTemperature());
 		this.sendUpdatePacket();
 	}
 	
+	public boolean isBurning(){
+		return this.isBurning && fuel > 0 && !hotReactor.content().isEmpty();
+	}
 
 	public int getFuel() {
 		return fuel;

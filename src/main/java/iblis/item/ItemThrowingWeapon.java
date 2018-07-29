@@ -32,13 +32,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemThrowingWeapon extends ItemAmmoBase {
+public class ItemThrowingWeapon extends ItemAmmo {
 
 	private final ThrowableType type;
 
 	public ItemThrowingWeapon(ThrowableType typeIn) {
-		super();
+		super(typeIn.damage, typeIn.ordinal());
 		type = typeIn;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		if (worldIn == null)
+			return;
+//		tooltip.add(I18n.format("iblis.ammo_damage", this.getAmmoDamage(stack)));
+		if(this.type == ThrowableType.IRON_KNIFE)
+			ItemTooltipEventHandler.addQualityTooltip(tooltip, this.getQuality(stack));
 	}
 
 	@Override
@@ -96,7 +106,7 @@ public class ItemThrowingWeapon extends ItemAmmoBase {
 
 	public enum ThrowableType {
 		BOULDER(2.0f, 1.0f), 
-		IRON_KNIFE(1.0f, 4.0f);
+		IRON_KNIFE(1.0f, 2.0f);
 		public final float weight;
 		public final float damage;
 
@@ -106,28 +116,4 @@ public class ItemThrowingWeapon extends ItemAmmoBase {
 		}
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		if (worldIn == null)
-			return;
-		tooltip.add(I18n.format("iblis.ammo_damage", this.getAmmoDamage(stack)));
-		ItemTooltipEventHandler.addQualityTooltip(tooltip, this.getQuality(stack));
-	}
-
-	@Override
-	float getAmmoDamage(ItemStack stack) {
-		float a = stack.getMetadata() * 0.1f + 1.0f;
-		return type.damage * a * a;
-	}
-
-	@Override
-	public int getAmmoType(ItemStack stack) {
-		return type.ordinal();
-	}
-	
-	@Override
-	public int getQuality(ItemStack stack) {
-		return stack.getMetadata() - 5;
-	}
 }

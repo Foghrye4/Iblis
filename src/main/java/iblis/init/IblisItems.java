@@ -9,7 +9,7 @@ import iblis.item.ItemHeavyShield;
 import iblis.item.ItemIngot;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
-import iblis.item.ItemShotgunAmmo;
+import iblis.item.ItemAmmo;
 import iblis.item.ItemShotgunReloading;
 import iblis.item.ItemSubstanceContainer;
 import iblis.item.ItemThrowingWeapon;
@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemFood;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,11 +56,11 @@ public class IblisItems {
 		GUIDE = new ItemGuideBook();
 		SHOTGUN = new ItemShotgun();
 		SHOTGUN_RELOADING = new ItemShotgunReloading(SHOTGUN);
-		SHOTGUN_BULLET = new ItemShotgunAmmo(2, 0);
-		SHOTGUN_SHOT = new ItemShotgunAmmo(1, 1);
+		SHOTGUN_BULLET = new ItemAmmo(2.0f, 0);
+		SHOTGUN_SHOT = new ItemAmmo(1.0f, 1);
 		CROSSBOW = new ItemCrossbow();
 		CROSSBOW_RELOADING = new ItemCrossbowReloading(CROSSBOW);
-		CROSSBOW_BOLT = new Item();
+		CROSSBOW_BOLT = new ItemAmmo(0.5f, 0);
 		INGOT = new ItemIngot();
 		NUGGET_STEEL = new Item();
 		TRIGGER_SPRING = new Item();
@@ -282,8 +281,6 @@ public class IblisItems {
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BOULDER, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(IRON_THROWING_KNIFE, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"iron_throwing_knife"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HEAVY_SHIELD, 0,
 				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"heavy_shield"), "inventory"));
 		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_HELMET, 0,

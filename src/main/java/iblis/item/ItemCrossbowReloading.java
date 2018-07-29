@@ -131,23 +131,4 @@ public class ItemCrossbowReloading extends ItemBaseFirearmsReloading {
 					SoundCategory.PLAYERS, 0.4f, worldIn.rand.nextFloat() * 0.2f + 0.8f);
 		}
 	}
-	
-	@Override
-	protected NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo) {
-		NBTTagCompound ammoCartridge = new NBTTagCompound();
-		switch(ammo.getMetadata()) {
-		case 0:
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 2.0f);
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
-			break;
-		case 1:
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 1);
-			break;
-		default:
-			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
-			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
-		}
-		return ammoCartridge;
-	}
 }

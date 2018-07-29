@@ -3,6 +3,7 @@ package iblis.chemistry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,15 +26,16 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ChemistryRegistry {
 
-	private final static Int2ObjectMap<List<ChemicalReaction>> reactionsBySubstanceId = new Int2ObjectOpenHashMap<List<ChemicalReaction>>();
-	private final static Int2ObjectMap<Substance> substancesByID = new Int2ObjectOpenHashMap<Substance>();
-	private final static Int2ObjectMap<Set<Substance>> solutionGroupsBySubstanceId = new Int2ObjectOpenHashMap<Set<Substance>>();
-	private final static Map<Fluid, Substance> fluidToSubstanceMap = new HashMap<Fluid, Substance>();
-	private final static Map<PotionType, Substance> potionToSubstanceMap = new HashMap<PotionType, Substance>();
-	private final static Map<String, List<SubstanceStack>> oreDictionaryToSubstanceMap = new HashMap<String, List<SubstanceStack>>();
-	private final static Map<Item, List<SubstanceStack>> itemToSubstanceMap = new HashMap<Item, List<SubstanceStack>>();
-	private final static List<ChemicalReaction> EMPTY_LIST = new ImmutableList.Builder<ChemicalReaction>().build();
-	private final static Set<Substance> EMPTY_SET = new ImmutableSet.Builder<Substance>().build();
+	public final static Int2ObjectMap<List<ChemicalReaction>> reactionsBySubstanceId = new Int2ObjectOpenHashMap<List<ChemicalReaction>>();
+	public final static List<ChemicalReaction> allReactions = new ArrayList<ChemicalReaction>();
+	public final static Int2ObjectMap<Substance> substancesByID = new Int2ObjectOpenHashMap<Substance>();
+	public final static Int2ObjectMap<Set<Substance>> solutionGroupsBySubstanceId = new Int2ObjectOpenHashMap<Set<Substance>>();
+	public final static Map<Fluid, Substance> fluidToSubstanceMap = new HashMap<Fluid, Substance>();
+	public final static Map<PotionType, Substance> potionToSubstanceMap = new HashMap<PotionType, Substance>();
+	public final static Map<String, List<SubstanceStack>> oreDictionaryToSubstanceMap = new HashMap<String, List<SubstanceStack>>();
+	public final static Map<Item, List<SubstanceStack>> itemToSubstanceMap = new HashMap<Item, List<SubstanceStack>>();
+	public final static List<ChemicalReaction> EMPTY_LIST = new ImmutableList.Builder<ChemicalReaction>().build();
+	public final static Set<Substance> EMPTY_SET = new ImmutableSet.Builder<Substance>().build();
 	
 	static {
 		reactionsBySubstanceId.defaultReturnValue(EMPTY_LIST);
@@ -109,7 +111,7 @@ public class ChemistryRegistry {
 	}
 
 	public static void registerChemicalReaction(ChemicalReaction reaction) {
-		for (ReactionIngridient ss : reaction.ingridients) {
+		for (ReactionIngredient ss : reaction.ingredients) {
 			List<ChemicalReaction> reactionList = reactionsBySubstanceId.get(ss.substance.id);
 			if (reactionList == EMPTY_LIST) {
 				reactionList = new ArrayList<ChemicalReaction>();

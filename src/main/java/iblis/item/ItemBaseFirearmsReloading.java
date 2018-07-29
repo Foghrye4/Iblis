@@ -47,7 +47,18 @@ public abstract class ItemBaseFirearmsReloading extends Item implements ICustomL
 		}
 	}
 
-	protected abstract NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo);
+	protected NBTTagCompound ammoStackToCartridgeNBT(ItemStack ammo) {
+		NBTTagCompound ammoCartridge = new NBTTagCompound();
+		if (ammo.getItem() instanceof ItemAmmo) {
+			ItemAmmo item = (ItemAmmo) ammo.getItem();
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, item.getAmmoDamage(ammo));
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, item.getAmmoType(ammo));
+		} else {
+			ammoCartridge.setFloat(NBTTagsKeys.DAMAGE, 1.0f);
+			ammoCartridge.setInteger(NBTTagsKeys.AMMO_TYPE, 0);
+		}
+		return ammoCartridge;
+	}
 	
 	protected abstract boolean isShot(ItemStack heldItem);
 

@@ -54,7 +54,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.3.40";
+    public static final String VERSION = "0.4.1";
     public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     
@@ -70,8 +70,8 @@ public class IblisMod
 	public static ArmorMaterial armorMaterialParaAramid;
 	public static boolean isRPGHUDLoaded = false;
 	public static boolean isAppleCoreLoaded = false;
-    
-	
+	public static boolean isAppleskinLoaded = false;
+	 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -123,6 +123,7 @@ public class IblisMod
         	MinecraftForge.EVENT_BUS.register(new TConstructCraftingEventHandler());
     	}
     	isAppleCoreLoaded = Loader.isModLoaded("applecore");
+    	isAppleskinLoaded = Loader.isModLoaded("appleskin");
     	if(isAppleCoreLoaded){
         	MinecraftForge.EVENT_BUS.register(new AplleCoreHungerEventHandler());
     	}

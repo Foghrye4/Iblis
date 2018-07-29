@@ -5,25 +5,23 @@ import java.util.List;
 import iblis.client.ItemTooltipEventHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemShotgunAmmo extends ItemAmmoBase {
+public class ItemAmmo extends Item {
 
-	private final int damageBase;
+	private final float damageBase;
 	private final int ammoType;
 
-	public ItemShotgunAmmo(int damageBaseIn, int ammoTypeIn) {
-		super();
-		damageBase = damageBaseIn;
+	public ItemAmmo(float damage, int ammoTypeIn) {
+		damageBase = damage;
 		ammoType = ammoTypeIn;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
@@ -34,16 +32,14 @@ public class ItemShotgunAmmo extends ItemAmmoBase {
 	}
 
 	public float getAmmoDamage(ItemStack stack) {
-		float a = stack.getMetadata() * 0.1f + 1.0f;
+		float a = stack.getMetadata() * 0.2f + 1.0f;
 		return damageBase * a * a;
 	}
 
-	@Override
 	public int getAmmoType(ItemStack stack) {
 		return ammoType;
 	}
-
-	@Override
+	
 	public int getQuality(ItemStack stack) {
 		return stack.getMetadata() - 5;
 	}

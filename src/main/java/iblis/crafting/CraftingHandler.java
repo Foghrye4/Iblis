@@ -263,15 +263,19 @@ public class CraftingHandler  implements IContainerListener{
 		ShapedRecipes flaskRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, flaskRecipeIngridients, flask);
 		ShapedRecipes reactorRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, reactorRecipeIngridients, reactor);
 		ShapedRecipes labtableRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, labtableRecipeIngridients, new ItemStack(IblisBlocks.LAB_TABLE));
+		ShapedRecipes ironThrowingKnifeRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, ironThrowingKnifeRecipeIngridients, new ItemStack(IblisItems.IRON_THROWING_KNIFE,8,0));
+		ShapedRecipes crossbowBoltRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowBoltRecipeIngridients, new ItemStack(IblisItems.CROSSBOW_BOLT,8,0));
+		
 		
 		PlayerSensitiveMetadataShapedRecipeWrapper bulletWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(bulletRecipe).setSesitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
 		PlayerSensitiveMetadataShapedRecipeWrapper shotWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(shotRecipe).setSesitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper ironThrowingKnifeWrappedRecipe = new PlayerSensitiveMetadataShapedRecipeWrapper(ironThrowingKnifeRecipe).setSesitiveTo(PlayerSkills.WEAPONSMITH, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper crossbowBoltWrappedRecipe = new PlayerSensitiveMetadataShapedRecipeWrapper(crossbowBoltRecipe).setSesitiveTo(PlayerSkills.WEAPONSMITH, 0.0, 1.0);
 		
 		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
 		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
 		ShapedRecipes medkitRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, medkitRecipeIngridients, new ItemStack(IblisItems.NONSTERILE_MEDKIT));
-		ShapedRecipes ironThrowingKnifeRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, ironThrowingKnifeRecipeIngridients, new ItemStack(IblisItems.IRON_THROWING_KNIFE,8,0));
-		ShapedRecipeRaisingSkillWrapper ironThrowingKnifeWrappedRecipe = new ShapedRecipeRaisingSkillWrapper(ironThrowingKnifeRecipe);
+		
 		ShapelessRecipes boulderRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(IblisItems.BOULDER, 9, 0), boulderRecipeIngridients);
 		ShapelessRecipes cobblestoneRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(Blocks.COBBLESTONE, 1, 0), cobblestoneRecipeIngridients);
 		ShapelessRecipes raisinRecipe = new ShapelessRecipes(IblisMod.MODID+":shapeless", new ItemStack(IblisItems.RAISIN, 1, 0), raisinRecipeIngridients);
@@ -288,8 +292,6 @@ public class CraftingHandler  implements IContainerListener{
 		ShapedRecipes crossbowRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowRecipeIngridients, crossbow);
 		PlayerSensitiveShapedRecipeWrapper crossbowRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(crossbowRecipe);
 		
-		ShapedRecipes crossbowBoltRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowBoltRecipeIngridients, new ItemStack(IblisItems.CROSSBOW_BOLT,8,0));
-		ShapedRecipeRaisingSkillWrapper crossbowBoltWrappedRecipe = new ShapedRecipeRaisingSkillWrapper(crossbowBoltRecipe);
 		
 		ShapedOreRecipe triggerSpringRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),spring, 
 				"N  ",

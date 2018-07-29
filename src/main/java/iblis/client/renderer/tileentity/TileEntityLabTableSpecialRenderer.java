@@ -1,6 +1,11 @@
 package iblis.client.renderer.tileentity;
 
+import java.nio.FloatBuffer;
+import java.util.Random;
+
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
 
 import iblis.IblisMod;
 import iblis.block.BlockLabTable;
@@ -11,6 +16,7 @@ import iblis.init.IblisBlocks;
 import iblis.tileentity.TileEntityLabTable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -38,6 +44,7 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.pipeline.LightUtil;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+
 public class TileEntityLabTableSpecialRenderer extends TileEntitySpecialRenderer<TileEntityLabTable> {
 
 	private final ResourceLocation particleTexture = new ResourceLocation(IblisMod.MODID, "textures/particle/particles.png");
@@ -53,6 +60,13 @@ public class TileEntityLabTableSpecialRenderer extends TileEntitySpecialRenderer
 	private SubBox selectedSubBox = null;
 	private BlockPos prevPos;
 	private TileEntity tile;
+	
+	private static final int LAST_FRAME = 16;
+	private static final int PARTICLE_AMOUNT = 64;
+	private final int[] particleFrame = new int[ PARTICLE_AMOUNT];
+	private final float[] particleX= new float[ PARTICLE_AMOUNT];
+	private final float[] particleY= new float[ PARTICLE_AMOUNT];
+	private final float[] particleZ= new float[ PARTICLE_AMOUNT];
 	
 	public static void bakeModels() {
 		staticGlass = bake("static_glass");
@@ -103,6 +117,32 @@ public class TileEntityLabTableSpecialRenderer extends TileEntitySpecialRenderer
 		if(te.hasSeparatorOut())
 			this.render(separatorOut);
 		tessellator.draw();
+		Random rand = te.getWorld().rand;
+		if (te.isBurning()) {
+			double d = x*x+z*z;
+			if(d<0.01)
+				d=0.01;
+			GL11.glDepthMask(false);
+		    GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+			mc.renderEngine.bindTexture(particleTexture);
+			BufferBuilder buffer = tessellator.getBuffer();
+			buffer.begin(7, VERTEX_FORMAT);
+			for (int i = 0; i < PARTICLE_AMOUNT; i++) {
+				if (particleFrame[i] == 0) {
+					particleFrame[i] = rand.nextInt(LAST_FRAME - 4) + 4;
+					particleX[i] = rand.nextFloat()*0.1f+0.72f;
+					particleY[i] = 0.18f;
+					particleZ[i] = rand.nextFloat()*0.1f+0.7f;
+				}
+				particleFrame[i]--;
+				particleY[i]+=0.001f;
+				this.renderFlame(partialTicks, particleFrame[i], 10, particleX[i], particleY[i], particleZ[i], z/d, -x/d);
+			}
+	        tessellator.draw();
+	    	GL11.glDisable(GL11.GL_BLEND);
+	        GL11.glDepthMask(true);
+		}
 		GlStateManager.popMatrix();
 		BlockPos pos = te.getPos();
 		this.renderBB(partialTicks, pos);
@@ -135,50 +175,21 @@ public class TileEntityLabTableSpecialRenderer extends TileEntitySpecialRenderer
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 	
-	public void renderFlame(float partialTick, BlockPos pos, int particleTextureIndexX, int particleTextureIndexY, double x, double y, double z) {
-		GL11.glDepthMask(false);
-	    GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-		Minecraft mc = Minecraft.getMinecraft();
-		mc.renderEngine.bindTexture(particleTexture);
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder buffer = tessellator.getBuffer();
-		buffer.begin(7, VERTEX_FORMAT);
+	public void renderFlame(float partialTick, int particleTextureIndexX, int particleTextureIndexY, double x, double y, double z, double px, double pz) {
         float f = (float)particleTextureIndexX / 16.0F;
         float f1 = f + 0.0624375F;
         float f2 = (float)particleTextureIndexY / 16.0F;
         float f3 = f2 + 0.0624375F;
-        float f4 = 0.1F; // Scale
-
-        float f5 = (float)x;
-        float f6 = (float)y;
-        float f7 = (float)z;
+        float s = 0.05f; // Scale
+        
         int j = 65535;
         int k = 65535;
-        Vec3d[] avec3d = new Vec3d[] {new Vec3d((double)(-rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(-rotationYZ * f4 - rotationXZ * f4)), new Vec3d((double)(-rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(-rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 + rotationXY * f4), (double)(rotationZ * f4), (double)(rotationYZ * f4 + rotationXZ * f4)), new Vec3d((double)(rotationX * f4 - rotationXY * f4), (double)(-rotationZ * f4), (double)(rotationYZ * f4 - rotationXZ * f4))};
-
-        if (this.particleAngle != 0.0F)
-        {
-            float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
-            float f9 = MathHelper.cos(f8 * 0.5F);
-            float f10 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.x;
-            float f11 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.y;
-            float f12 = MathHelper.sin(f8 * 0.5F) * (float)cameraViewDir.z;
-            Vec3d vec3d = new Vec3d((double)f10, (double)f11, (double)f12);
-
-            for (int l = 0; l < 4; ++l)
-            {
-                avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double)(f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double)(2.0F * f9)));
-            }
-        }
-
-        buffer.pos((double)f5 + avec3d[0].x, (double)f6 + avec3d[0].y, (double)f7 + avec3d[0].z).tex((double)f1, (double)f3).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
-        buffer.pos((double)f5 + avec3d[1].x, (double)f6 + avec3d[1].y, (double)f7 + avec3d[1].z).tex((double)f1, (double)f2).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
-        buffer.pos((double)f5 + avec3d[2].x, (double)f6 + avec3d[2].y, (double)f7 + avec3d[2].z).tex((double)f, (double)f2).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
-        buffer.pos((double)f5 + avec3d[3].x, (double)f6 + avec3d[3].y, (double)f7 + avec3d[3].z).tex((double)f, (double)f3).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
-        tessellator.draw();
-    	GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDepthMask(true);
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buffer = tessellator.getBuffer();
+        buffer.pos((double)x+s*px, (double)y+s, (double)z+s*pz).tex((double)f1, (double)f3).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
+        buffer.pos((double)x+s*px, (double)y-s, (double)z+s*pz).tex((double)f1, (double)f2).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
+        buffer.pos((double)x-s*px, (double)y-s, (double)z-s*pz).tex((double)f, (double)f2).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
+        buffer.pos((double)x-s*px, (double)y+s, (double)z-s*pz).tex((double)f, (double)f3).color(1.0f,1.0f,1.0f,1.0f).lightmap(j, k).endVertex();
 
 	}
 	

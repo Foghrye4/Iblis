@@ -174,7 +174,7 @@ public class GuiLabTable {
 		} else {
 			for (SubstanceStack ss : content) {
 				textY+=20;
-				fontrenderer.drawString(I18n.format(ss.substance.unlocalizedName + ".amount", ClientStringUtil.formatFloat(ss.amount(),100)), textX, textY, textColour);
+				fontrenderer.drawString(ClientStringUtil.formatSubstanceAmount(ss), textX, textY, textColour);
 			}
 		}
 	}

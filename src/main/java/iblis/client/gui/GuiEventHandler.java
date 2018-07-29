@@ -189,18 +189,15 @@ public class GuiEventHandler {
 					action.setCanceled(true);
 			}
 		}
-		if (IblisMod.isRPGHUDLoaded)
-			return;
-		if (action.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
+		if (!IblisMod.isRPGHUDLoaded && action.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
 			action.setCanceled(true);
 			ScaledResolution res = action.getResolution();
 			renderHealth(res.getScaledWidth(), res.getScaledHeight());
-		} else if (action.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
+		} else if (!IblisMod.isAppleskinLoaded && action.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
 			action.setCanceled(true);
 			ScaledResolution res = action.getResolution();
 			renderFood(res.getScaledWidth(), res.getScaledHeight());
 		}
-
 	}
 
 	private void renderHealth(int width, int height) {

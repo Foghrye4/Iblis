@@ -1,15 +1,15 @@
 package iblis.chemistry;
 
 public class ChemicalReaction {
-	public final ReactionIngridient[] ingridients;
-	private int temperatureStart = 0; // Kelvins
+	public final ReactionIngredient[] ingredients;
+	public int temperatureStart = 0; // Kelvins
 	private int tKRatio = 10;
-	private float entalpy = 1.0f;
-	private ReactionIngridient[] result;
-	private boolean isReversive = false;
+	public float entalpy = 1.0f;
+	public ReactionIngredient[] result;
+	public boolean isReversive = false;
 
-	public ChemicalReaction(ReactionIngridient... ingridientsIn) {
-		ingridients = ingridientsIn;
+	public ChemicalReaction(ReactionIngredient... ingredientsIn) {
+		ingredients = ingredientsIn;
 	}
 	 
 	public ChemicalReaction setTKRatio(int tKRatioIn) {
@@ -17,7 +17,7 @@ public class ChemicalReaction {
 		return this;
 	}
 
-	public ChemicalReaction setResult(ReactionIngridient... resultIn) {
+	public ChemicalReaction setResult(ReactionIngredient... resultIn) {
 		result = resultIn;
 		return this;
 	}
@@ -41,27 +41,27 @@ public class ChemicalReaction {
 			return;
 		float speedMultiplier = speed;
 		float totalAmount = reactor.getTotalAmount();
-		for (ReactionIngridient ingridientStack : ingridients) {
-			SubstanceStack substanceStack = reactor.getSubstanceStack(ingridientStack.substance);
+		for (ReactionIngredient ingredientStack : ingredients) {
+			SubstanceStack substanceStack = reactor.getSubstanceStack(ingredientStack.substance);
 			if (substanceStack==null || substanceStack.isEmpty()) {
 				return;
 			}
 			speedMultiplier *= substanceStack.amount() / totalAmount;
 		}
 		float stoichiometricCoefficient = 1.0f;
-		for (ReactionIngridient ingridientStack : ingridients) {
-			SubstanceStack substanceStack = reactor.getSubstanceStack(ingridientStack.substance);
-			float reactiveAmount = ingridientStack.amount * speedMultiplier * stoichiometricCoefficient;
+		for (ReactionIngredient ingredientStack : ingredients) {
+			SubstanceStack substanceStack = reactor.getSubstanceStack(ingredientStack.substance);
+			float reactiveAmount = ingredientStack.amount * speedMultiplier * stoichiometricCoefficient;
 			if (substanceStack.amount() < reactiveAmount)
 				stoichiometricCoefficient *= substanceStack.amount() / reactiveAmount;
 		}
 		float reactiveMultiplier = speedMultiplier * stoichiometricCoefficient;
 		if (reactiveMultiplier < 1.0f)
 			return;
-		for (ReactionIngridient ingridientStack : ingridients) {
-			reactor.reduceSubstance(ingridientStack.substance, ingridientStack.amount * reactiveMultiplier);
+		for (ReactionIngredient ingredientStack : ingredients) {
+			reactor.reduceSubstance(ingredientStack.substance, ingredientStack.amount * reactiveMultiplier);
 		}
-		for(ReactionIngridient stack:result){
+		for(ReactionIngredient stack:result){
 			reactor.putSubstance(stack.substance, stack.amount*reactiveMultiplier*reactionYield);
 		}
 		reactor.addEntalpy(entalpy * reactiveMultiplier);
@@ -77,10 +77,11 @@ public class ChemicalReaction {
 	}
 
 	public ChemicalReaction register() {
+		ChemistryRegistry.allReactions.add(this);
 		ChemistryRegistry.registerChemicalReaction(this);
 		if(isReversive)
 			ChemistryRegistry.registerChemicalReaction(
-new ChemicalReaction(this.result).setResult(ingridients).setEntalpy(entalpy)
+new ChemicalReaction(this.result).setResult(ingredients).setEntalpy(entalpy)
 	.setTemperatureStart(temperatureStart).setTKRatio(tKRatio).setReversive());
 		return this;
 	}

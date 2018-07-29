@@ -1,0 +1,10 @@
+[ 
+    {"translate":"iblis.chemistry_guide_text1"},
+    {"crafting_by_output":"iblis:chemical_lab_installation"},
+    {"translate":"iblis.chemistry_guide_text2"},
+    {"custom":"stack_to_substance_conversion"},
+    {"translate":"iblis.chemistry_guide_text3"},
+    {"custom":"substance_list"},
+    {"translate":"iblis.chemistry_guide_text4"},
+    {"custom":"chemical_reaction_list"}
+]

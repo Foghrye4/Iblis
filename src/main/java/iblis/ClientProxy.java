@@ -150,12 +150,14 @@ public class ClientProxy extends ServerProxy {
 		ModelLoader.setCustomMeshDefinition(IblisItems.CROSSBOW_RELOADING, crossbowReloadMeshDef);
 		crossbowReloadMeshDef.registerVariants();
 
-		final ModelResourceLocation crossbow_bolt = new ModelResourceLocation(IblisMod.MODID + ":" + "crossbow_bolt",
-				"inventory");
 		ModelLoader.setCustomMeshDefinition(IblisItems.SHOTGUN_BULLET, new SingleIconItemMeshDefinition(IblisMod.MODID,"shotgun_bullet","inventory"));
 		ModelLoader.setCustomMeshDefinition(IblisItems.SHOTGUN_SHOT, new SingleIconItemMeshDefinition(IblisMod.MODID,"shotgun_shot","inventory"));
-		ModelLoader.setCustomModelResourceLocation(IblisItems.CROSSBOW_BOLT, 0, crossbow_bolt);
-		ModelBakery.registerItemVariants(IblisItems.CROSSBOW_BOLT, crossbow_bolt);
+		
+		SingleIconItemMeshDefinition cb = new SingleIconItemMeshDefinition(IblisMod.MODID,"crossbow_bolt","inventory");
+		ModelLoader.setCustomMeshDefinition(IblisItems.CROSSBOW_BOLT, cb);
+		ModelBakery.registerItemVariants(IblisItems.CROSSBOW_BOLT, cb.getModelLocation(null));
+		
+		ModelLoader.setCustomMeshDefinition(IblisItems.IRON_THROWING_KNIFE, new SingleIconItemMeshDefinition(IblisMod.MODID,"iron_throwing_knife","inventory"));
 		ModelBakery.registerItemVariants(IblisItems.GUIDE,
 				new ResourceLocation[] { new ResourceLocation(IblisMod.MODID, "adventurer_diary"),
 						new ResourceLocation(IblisMod.MODID, "guide"),

@@ -1,9 +1,9 @@
 package iblis.chemistry;
 
-public class ReactionIngridient {
+public class ReactionIngredient {
 	public final Substance substance;
 	public final float amount;
-	public ReactionIngridient(Substance substanceIn, float amountIn){
+	public ReactionIngredient(Substance substanceIn, float amountIn){
 		substance=substanceIn;
 		amount=amountIn;
 	}
