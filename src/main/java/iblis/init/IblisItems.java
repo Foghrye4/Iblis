@@ -2,6 +2,7 @@ package iblis.init;
 
 import iblis.IblisMod;
 import iblis.item.IblisItemArmor;
+import iblis.item.ItemAmmo;
 import iblis.item.ItemCrossbow;
 import iblis.item.ItemCrossbowReloading;
 import iblis.item.ItemGuideBook;
@@ -9,18 +10,12 @@ import iblis.item.ItemHeavyShield;
 import iblis.item.ItemIngot;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
-import iblis.item.ItemAmmo;
 import iblis.item.ItemShotgunReloading;
 import iblis.item.ItemSubstanceContainer;
 import iblis.item.ItemThrowingWeapon;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class IblisItems {
 	public static Item GUIDE;
@@ -255,41 +250,5 @@ public class IblisItems {
 	
 	private static void registerItem(Item item) {
 		RegistryEventHandler.items.add(item);
-	}
-	
-	@SideOnly(value=Side.CLIENT)
-	public static void registerRenders(){
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"adventurer_diary"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 1,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 2,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide_opened"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT, ItemIngot.STEEL,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_steel"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT, ItemIngot.BRONZE,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_bronze"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NUGGET_STEEL, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"nugget_steel"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(TRIGGER_SPRING, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"trigger_spring"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(RAISIN, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"raisin"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NONSTERILE_MEDKIT, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BOULDER, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HEAVY_SHIELD, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"heavy_shield"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_HELMET, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_helmet"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_CHESTPLATE, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_chestplate"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_LEGGINS, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_leggins"), "inventory"));
-		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_BOOTS, 0,
-				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_boots"), "inventory"));
 	}
 }

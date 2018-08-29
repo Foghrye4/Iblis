@@ -30,13 +30,14 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryModifiable;
 
+@SuppressWarnings("unused")
 public class GuiScreenBookExtended extends GuiScreen {
 	private static final ResourceLocation BOOK_GUI_TEXTURES = new ResourceLocation("textures/gui/book.png");
 	/** The player editing the book */
 	private final static int bookImageWidth = 192;
 	private final static int bookImageHeight = 192;
 	private final static int letterWidth = 7;
-	private int bookTotalPages = 1;
+	private final static int MAX_STRING_LENGTH = 23;
 	private int currPage;
 	private NextPageButton buttonNextPage;
 	private NextPageButton buttonPreviousPage;
@@ -54,7 +55,7 @@ public class GuiScreenBookExtended extends GuiScreen {
 					if(name.equals("translate")) {
 						String[] value = I18n.format(reader.nextString()).split(" ");
 						for(int i=0;i<value.length;i++) {
-							if(sb.length()*letterWidth +value[i].length()*letterWidth>bookImageWidth-10) {
+							if(sb.length()*letterWidth +value[i].length()*letterWidth>bookImageWidth-40) {
 								allElements.add(new GuiElementTextLine(sb.toString()));
 								sb.setLength(0);
 							}
@@ -105,18 +106,28 @@ public class GuiScreenBookExtended extends GuiScreen {
 							Iterator<Substance> si = ChemistryRegistry.substancesByID.values().iterator();
 							while(si.hasNext()) {
 								Substance s = si.next();
-								allElements.add(new GuiElementTextLine(ClientStringUtil.formatSubstanceInfo(s)));
+								String sinfo = ClientStringUtil.formatSubstanceInfo(s);
+								if(sinfo.length()>MAX_STRING_LENGTH) {
+									String longDash = I18n.format("iblis.gui.longDash");
+									String[] sinfoA = sinfo.split(longDash);
+									allElements.add(new GuiElementTextLine(sinfoA[0]+longDash));
+									allElements.add(new GuiElementTextLine(longDash+sinfoA[1]));
+								}
+								else {
+									allElements.add(new GuiElementTextLine(sinfo));
+								}
 							}
 						}else if(value.equals("chemical_reaction_list")) {
 							Iterator<ChemicalReaction> reactionI = ChemistryRegistry.allReactions.iterator();
 							while(reactionI.hasNext()) {
-								allElements.add(new GuiElementTextLine(ClientStringUtil.formatReactionInput(reactionI.next())));
-								allElements.add(new GuiElementTextLine(ClientStringUtil.formatReactionOutput(reactionI.next())));
-								allElements.add(new GuiElementTextLine("_______________________"));
+								ChemicalReaction reaction = reactionI.next();
+								ClientStringUtil.formatReaction(reaction, allElements, MAX_STRING_LENGTH);
+								allElements.add(new GuiElementHorizontalSeparator(100));
 							}
 						}
 					}
 				}
+				reader.endObject();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -124,7 +135,7 @@ public class GuiScreenBookExtended extends GuiScreen {
 		List<GuiElement> page = new ArrayList<GuiElement>();
 		int pageHeight = 0;
 		for(GuiElement element: allElements) {
-			if(pageHeight+element.height>bookImageHeight) {
+			if(pageHeight+element.height>bookImageHeight-50) {
 				pages.add(page);
 				page = new ArrayList<GuiElement>();
 				pageHeight = 0;
@@ -145,6 +156,7 @@ public class GuiScreenBookExtended extends GuiScreen {
 		this.updateButtons();
 	}
 	
+	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		if (button.enabled) {
 			if (button.id == 0) {
@@ -163,7 +175,7 @@ public class GuiScreenBookExtended extends GuiScreen {
 	}
 
 	private void updateButtons() {
-		this.buttonNextPage.visible = this.currPage < this.bookTotalPages - 1;
+		this.buttonNextPage.visible = this.currPage < this.pages.size() - 1;
 		this.buttonPreviousPage.visible = this.currPage > 0;
 		this.buttonDone.visible = true;
 	}
@@ -174,6 +186,12 @@ public class GuiScreenBookExtended extends GuiScreen {
 		int x = (this.width - bookImageWidth) / 2;
 		int y = 2;
 		this.drawTexturedModalRect(x, y, 0, 0, bookImageWidth, bookImageHeight);
+		x += 34;
+		y += 14;
+		for(GuiElement element:pages.get(this.currPage)) {
+			element.render(x, y);
+			y+=element.height;
+		}
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 

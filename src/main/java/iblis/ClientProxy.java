@@ -1,10 +1,14 @@
 package iblis;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.google.gson.stream.JsonReader;
 
 import iblis.client.ClientGameEventHandler;
 import iblis.client.ClientRenderEventHandler;
@@ -32,8 +36,10 @@ import iblis.entity.EntityThrowingKnife;
 import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
+import iblis.item.ItemIngot;
 import iblis.player.PlayerSkills;
 import iblis.tileentity.TileEntityLabTable;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -47,6 +53,7 @@ import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -63,6 +70,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import static iblis.init.IblisItems.*;
+import static iblis.init.IblisBlocks.*;
+
 
 public class ClientProxy extends ServerProxy {
 
@@ -185,13 +195,70 @@ public class ClientProxy extends ServerProxy {
 		Minecraft.getMinecraft().getRenderManager().entityRenderMap.put(EntityCrossbowBolt.class,
 				new RenderCrossbowBolt(Minecraft.getMinecraft().getRenderManager(),
 						Minecraft.getMinecraft().getRenderItem()));
-		IblisItems.registerRenders();
-		IblisBlocks.registerRenders();
+		registerItemRenders();
+		registerBlockRenders();
 		TileEntityLabTableSpecialRenderer renderer = new TileEntityLabTableSpecialRenderer();
 		MinecraftForge.EVENT_BUS.register(renderer);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLabTable.class, renderer);
 		final ItemColors itemColours = Minecraft.getMinecraft().getItemColors();
 		itemColours.registerItemColorHandler(substanceContainerItemMeshDefinition, IblisItems.SUBSTANCE_CONTAINER);
+	}
+	
+	private void registerItemRenders() {
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"adventurer_diary"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 1,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(GUIDE, 2,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"guide_opened"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT, ItemIngot.STEEL,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_steel"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(INGOT, ItemIngot.BRONZE,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"ingot_bronze"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NUGGET_STEEL, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"nugget_steel"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(TRIGGER_SPRING, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"trigger_spring"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(RAISIN, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"raisin"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(NONSTERILE_MEDKIT, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"non-sterile_medkit"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(MEDKIT, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"medkit"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(BOULDER, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"boulder"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(HEAVY_SHIELD, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"heavy_shield"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_HELMET, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_helmet"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_CHESTPLATE, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_chestplate"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_LEGGINS, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_leggins"), "inventory"));
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(STEEL_BOOTS, 0,
+				new ModelResourceLocation(new ResourceLocation(IblisMod.MODID,"steel_boots"), "inventory"));
+		
+		
+	}
+	
+	private void registerBlockRenders() {
+		
+		registerRender(LAB_TABLE, 0, LAB_TABLE.getRegistryName());
+		registerRender(VINE, 0, VINE.getRegistryName());
+		final BlockColors blockColours = Minecraft.getMinecraft().getBlockColors();
+		blockColours.registerBlockColorHandler(new IBlockColor() {
+			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos,
+					int tintIndex) {
+				return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos)
+						: ColorizerFoliage.getFoliageColorBasic();
+			}
+		}, VINE);
+		
+	}
+	
+	private static void registerRender(Block block, int metadata, ResourceLocation modelResourceLocation) {
+		Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), metadata,
+				new ModelResourceLocation(modelResourceLocation, "inventory"));
 	}
 	
 	@Override
@@ -323,5 +390,20 @@ public class ClientProxy extends ServerProxy {
 						collidingBoxes.clear();
 					}
 				}
+	}
+	
+	@Override
+	public InputStream getResourceInputStream(ResourceLocation location) {
+		try {
+			return Minecraft.getMinecraft().getResourceManager().getResource(location).getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return super.getResourceInputStream(location);
+	}
+	
+	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {
+		Minecraft.getMinecraft().displayGuiScreen(new iblis.client.gui.GuiScreenBookExtended(playerIn, jsonReader));
+		
 	}
 }

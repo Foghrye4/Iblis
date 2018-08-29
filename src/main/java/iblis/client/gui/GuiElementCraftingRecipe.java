@@ -20,27 +20,17 @@ public class GuiElementCraftingRecipe extends GuiElement {
 	}
 
 	public void render(int x, int y) {
-		Minecraft mc = Minecraft.getMinecraft();
-		RenderItem renderItem = mc.getRenderItem();
 		List<Ingredient> ingridients = recipe.getIngredients();
-		GL11.glTranslatef(x, y, 0);
 		for (int i = 0; i < ingridients.size(); i++) {
 			ItemStack stack = ingridients.get(i).getMatchingStacks()[0];
-			IBakedModel model = renderItem.getItemModelWithOverrides(stack, mc.world, mc.player);
-			int lx = (x % 3) * 18;
-			int ly = y / 3 * 18;
-			GL11.glTranslatef(lx, ly, 0);
-			renderItem.renderItem(stack, model);
-			GL11.glTranslatef(-lx, -ly, 0);
+			int lx = (i % 3) * 18;
+			int ly = i / 3 * 18;
+			this.renderItem(stack, x+lx, y+ly);
 		}
 		ItemStack stack = recipe.getRecipeOutput();
-		IBakedModel model = renderItem.getItemModelWithOverrides(stack, mc.world, mc.player);
 		int lx = 18 * 4;
 		int ly = 18;
-		GL11.glTranslatef(lx, ly, 0);
-		renderItem.renderItem(stack, model);
-		GL11.glTranslatef(-lx, -ly, 0);
-		Minecraft.getMinecraft().fontRenderer.drawString("=>", 18 * 3, 18, 0x000000);
-		GL11.glTranslatef(-x, -y, 0);
+		this.renderItem(stack, x+lx, y+ly);
+		Minecraft.getMinecraft().fontRenderer.drawString("=>", x+18 * 3, y+18, 0x000000);
 	}
 }

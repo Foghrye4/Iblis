@@ -1,10 +1,15 @@
 package iblis.item;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+
+import com.google.gson.stream.JsonReader;
 
 import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
@@ -12,6 +17,7 @@ import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
 import iblis.util.PlayerUtils;
 import iblis.world.WorldSavedDataPlayers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,6 +32,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -39,7 +46,7 @@ public class ItemGuideBook extends Item {
 	private final static float BOOK_KNOWLEDGE_PENALTY = 0.7f;
 	private final static String[] GUIDE_LEVEL = new String[] { "beginners", "novice", "experienced", "professional",
 			"experts", "ultimate" };
-
+	
 	private final Random rand = new Random();
 	
 	@Override
@@ -62,6 +69,19 @@ public class ItemGuideBook extends Item {
 		guideNBT.setTag("skills", skills);
 		guideStack.setTagCompound(guideNBT);
 		subItems.add(guideStack);
+		
+		guideStack = new ItemStack(this, 1, 1);
+		guideNBT = new NBTTagCompound();
+		skills = new NBTTagList();
+		skill = new NBTTagCompound();
+		skill.setString("name", PlayerSkills.CHEMISTRY.name());
+		skill.setDouble("value", 0.7d);
+		skills.appendTag(skill);
+		guideNBT.setTag("skills", skills);
+		guideNBT.setString("resourceLocation", IblisMod.MODID + ":books/chemistry_guide.json");
+		guideStack.setTagCompound(guideNBT);
+		subItems.add(guideStack);
+
 		ItemStack diaryStack = new ItemStack(this, 1, 0);
 		NBTTagCompound diaryNBT = guideNBT.copy();
 		diaryNBT.setInteger("id", 1);
@@ -157,8 +177,11 @@ public class ItemGuideBook extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		if(worldIn.isRemote) {
-			
+		if(itemstack.hasTagCompound() && worldIn.isRemote && itemstack.getTagCompound().hasKey("resourceLocation")) {
+			NBTTagCompound bookIn = itemstack.getTagCompound();
+			InputStream stream = IblisMod.proxy.getResourceInputStream(new ResourceLocation(bookIn.getString("resourceLocation")));
+			Reader reader = new InputStreamReader(stream);
+			IblisMod.proxy.displayGuiScreenBookExtended(playerIn, new JsonReader(reader));
 		}
 		if (itemstack.hasTagCompound() && !worldIn.isRemote) {
 			boolean playerAlreadyReadBook = false;

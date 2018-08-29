@@ -2,7 +2,7 @@ package iblis.chemistry;
 
 public class ChemicalReaction {
 	public final ReactionIngredient[] ingredients;
-	public int temperatureStart = 0; // Kelvins
+	public int temperatureStart = 183; // Kelvins
 	private int tKRatio = 10;
 	public float entalpy = 1.0f;
 	public ReactionIngredient[] result;

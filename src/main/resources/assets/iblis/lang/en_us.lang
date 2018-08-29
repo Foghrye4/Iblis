@@ -51,6 +51,7 @@ iblis.WEAPONSMITH=weapon smithing
 iblis.ARMORSMITH=armor smithing
 iblis.MECHANICS=mechanics
 iblis.MEDICAL_AID=medical aid
+iblis.CHEMISTRY=chemistry
 iblis.DIGGING=mining
 iblis.TAMING=taming
 iblis.RUNNING=light athletic
@@ -164,7 +165,7 @@ iblis.potassium_sulphate.name=Potassium sulphate
 iblis.sodium_sulphate.name=Sodium sulphate
 iblis.acetaldehyde.name=Acetaldehyde
 
-iblis.impurity.formula=(impurities)
+iblis.impurity.formula=(unknown)
 iblis.water.formula=H₂O
 iblis.mercury.formula=Hg
 iblis.nitric_acid.formula=HNO₃
@@ -172,7 +173,7 @@ iblis.mercury2_nitrate.formula=Hg(HNO₃)₂
 iblis.mercury2_fulminate.formula=Hg(CNO)₂
 iblis.ethanole.formula=C₂H₅OH
 iblis.yeast.formula=(yeast)
-iblis.chitin.formula=[С₈H₁₃NO₅]ₙ
+iblis.chitin.formula=[C₈H₁₃NO₅]ₙ
 iblis.sugar.formula=C₁₂H₂₂O₁₁
 iblis.sugar_syrup.formula=C₁₂H₂₂O₁₁(solution)
 iblis.carbon_dioxide.formula=CO₂
@@ -183,14 +184,15 @@ iblis.sulphur.formula=S
 iblis.sulphuric_anhydride.formula=SO₃
 iblis.potassium_sulphate.formula=K₂SO₄
 iblis.sodium_sulphate.formula=Na₂SO₄
-iblis.acetaldehyde.formula=СH₃СHO
+iblis.acetaldehyde.formula=CH₃CHO
 
 entity.Villager.mechanic=Mechanic
 awareness=A smell of enemy
 overheating=Overheating
 
 ### GUI elements ###
-iblis.gui.entalpy=%0.2fkJ
+
+iblis.gui.entalpy=%dkJ
 iblis.gui.longDash= — 
 iblis.gui.arrowRight=⟶
 iblis.gui.arrowLeftRight=⟷
@@ -213,3 +215,9 @@ iblis.gui.toggleBurner=Toggle burner
 iblis.gui.addFuel=Add fuel
 iblis.gui.temperature=Temperature: %0.1f °C
 iblis.gui.fuel=Fuel: %0.1f s
+
+### Books ###
+iblis.chemistry_guide_text1=A common field tool to process a chemical reaction is a compact installation which can be crafted like this:
+iblis.chemistry_guide_text2=To heat up reactor add some burning powder to burner under reactor. If reaction mass is heated above a boiling point of a substance or a product of reaction is gaseous in temperature of reaction mass, a gaseous product will be collected in attached flask. To clean reactor or flask detatch them and use a brush provided with installation. A solid residue can be separated by using filter. Simply fill a filter while holding flask or reactor in hand. Liquid will be collected in a flask below filter. Chemical compounds of some common items:
+iblis.chemistry_guide_text3=Chemical formula of some widely used substances:
+iblis.chemistry_guide_text4=An entalpy gain and temperature conditions of some chemical reactions:

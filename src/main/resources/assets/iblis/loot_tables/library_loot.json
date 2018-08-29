@@ -3144,6 +3144,227 @@
                     ]
                 }
            ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_0",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:0.1d}]}"
+                      	}
+                    ]
+                }
+                
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_2",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:0.2d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_4",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:0.4d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+                {
+	    	"name":"CHEMISTRY_level_6",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:0.5d}]}"
+                      	}
+                    ]
+                }    
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_8",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:0.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_10",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+
+                    "name": "iblis:guide",
+                    
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:1.0d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_12",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:1.3d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_14",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:1.7d}]}"
+                      	}
+                    ]
+                }      
+           ]
+        },
+        {
+	    	"name":"CHEMISTRY_level_16",
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "empty",
+                    "weight": 8
+				},
+				{
+                    "type": "item",
+                    "name": "iblis:guide",
+                    "functions": [
+	                    {
+			 			   "function": "set_data",
+			 			   "data": 1
+					    },
+						{
+                            "function": "minecraft:set_nbt",
+                            "tag": "{resourceLocation:\"iblis:books/chemistry_guide.json\", skills:[{name:\"CHEMISTRY\",value:2.0d}]}"
+                      	}
+                    ]
+                }
+           ]
         }
     ]
 }

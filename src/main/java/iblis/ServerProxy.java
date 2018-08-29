@@ -1,11 +1,17 @@
 package iblis;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import com.google.gson.stream.JsonReader;
+
 import iblis.player.PlayerSkills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
 
 public class ServerProxy {
 	private MinecraftServer server;
@@ -46,5 +52,15 @@ public class ServerProxy {
 
 	public MinecraftServer getServer() {
 		return server;
+	}
+	
+	public InputStream getResourceInputStream(ResourceLocation resource) {
+		String resourceURLPath = "/assets/" + resource.getResourceDomain() + "/" + resource.getResourcePath();
+		return IblisMod.class.getResourceAsStream(resourceURLPath);
+	}
+
+	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {
+		// TODO Auto-generated method stub
+		
 	}
 }
