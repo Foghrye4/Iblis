@@ -1,23 +1,17 @@
 package iblis.tileentity;
 
-import java.util.Random;
-
 import javax.annotation.Nullable;
 
-import iblis.IblisMod;
 import iblis.chemistry.ChemistryRegistry;
 import iblis.chemistry.IReactorOwner;
 import iblis.chemistry.Reactor;
-import iblis.chemistry.SubstanceStack;
 import iblis.init.IblisItems;
-import iblis.init.IblisParticles;
 import iblis.item.ItemSubstanceContainer;
 import iblis.player.PlayerSkills;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -25,7 +19,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;

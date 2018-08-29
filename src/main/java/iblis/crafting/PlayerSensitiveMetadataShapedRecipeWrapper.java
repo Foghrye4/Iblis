@@ -1,21 +1,12 @@
 package iblis.crafting;
 
-import java.util.Map.Entry;
-
 import javax.annotation.Nonnull;
 
 import iblis.IblisMod;
-import iblis.constants.NBTTagsKeys;
 import iblis.player.PlayerSkills;
-import iblis.util.PlayerUtils;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public class PlayerSensitiveMetadataShapedRecipeWrapper extends ShapedRecipeRaisingSkillWrapper {
 

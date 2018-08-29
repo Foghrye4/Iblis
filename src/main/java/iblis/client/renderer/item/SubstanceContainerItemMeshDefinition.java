@@ -2,11 +2,8 @@ package iblis.client.renderer.item;
 
 import iblis.IblisMod;
 import iblis.chemistry.Reactor;
-import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisItems;
 import iblis.item.ItemSubstanceContainer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
