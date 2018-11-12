@@ -1,45 +1,25 @@
 package iblis;
 
-import java.io.IOException;
 
-import iblis.crafting.IRecipeRaiseSkill;
 import iblis.init.IblisParticles;
-import iblis.item.ICustomLeftClickItem;
-import iblis.item.ItemFirearmsBase;
-import iblis.player.PlayerCharacteristics;
-import iblis.player.PlayerSkills;
-import iblis.tileentity.TileEntityLabTable;
-import iblis.tileentity.TileEntityLabTable.Actions;
-import iblis.util.PlayerUtils;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.ContainerWorkbench;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLEventChannel;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
@@ -55,8 +35,6 @@ public class ServerNetworkHandler {
 	}
 
 	protected static FMLEventChannel channel;
-	private MinecraftServer server;
-	private MutableBlockPos blockPos = new MutableBlockPos();
 
 	public void load() {
 		if (channel == null) {
@@ -66,104 +44,7 @@ public class ServerNetworkHandler {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	@SubscribeEvent
-	public void onPacketFromClientToServer(FMLNetworkEvent.ServerCustomPacketEvent event) throws IOException {
-		ByteBuf data = event.getPacket().payload();
-		ByteBufInputStream byteBufInputStream = new ByteBufInputStream(data);
-		int playerEntityId;
-		int worldDimensionId;
-		switch (ServerCommands.values()[byteBufInputStream.read()]) {
-		case UPDATE_CHARACTERISTIC:
-			PlayerCharacteristics characteristic = PlayerCharacteristics.values()[byteBufInputStream.read()];
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			WorldServer world = server.getWorld(worldDimensionId);
-			EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			world.addScheduledTask(new TaskRaiseCharacteristic(characteristic, player));
-			break;
-		case RELOAD_WEAPON:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			ItemStack held = player.getHeldItem(EnumHand.MAIN_HAND);
-			if (held.getItem() instanceof ItemFirearmsBase) {
-				ItemFirearmsBase gun = (ItemFirearmsBase) held.getItem();
-				player.setHeldItem(EnumHand.MAIN_HAND, gun.getReloading(held));
-				gun.playReloadingSoundEffect(player);
-			}
-			break;
-		case APPLY_SPRINTING_SPEED_MODIFIER:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			int sprintingState = byteBufInputStream.readInt();
-			world.addScheduledTask(new TaskApplySprintingSpeedModifier(player, sprintingState));
-			break;
-		case RUNNED_DISTANCE_INFO:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			// Please don't cheat. I want to keep it client side.
-			world.addScheduledTask(new TaskRaiseSkill(PlayerSkills.RUNNING, player, byteBufInputStream.readFloat()));
-			break;
-		case SPRINTING_BUTTON_INFO:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			int sprintButtonCounter = byteBufInputStream.readInt();
-			PlayerUtils.saveSprintButtonCounterState(player, sprintButtonCounter);
-			break;
-		case TRAIN_TO_CRAFT:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			world.addScheduledTask(new TaskTrainCraftButton(player));
-			break;
-		case LEFT_CLICK:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			ItemStack itemstack = player.getHeldItem(EnumHand.MAIN_HAND);
-			if (itemstack.getItem() instanceof ICustomLeftClickItem) {
-				ICustomLeftClickItem firearm = (ICustomLeftClickItem) itemstack.getItem();
-				world.addScheduledTask(new TaskLaunchLeftClick(world, player, firearm));
-			}
-			break;
-		case SHIELD_PUNCH:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_SHIELD);
-			break;
-		case KICK:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_KICK);
-			break;
-		case LAB_TABLE_GUI_ACTION:
-			playerEntityId = byteBufInputStream.readInt();
-			worldDimensionId = byteBufInputStream.readInt();
-			world = server.getWorld(worldDimensionId);
-			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			blockPos.setPos(byteBufInputStream.readInt(), byteBufInputStream.readInt(), byteBufInputStream.readInt());
-			world.addScheduledTask(new TaskLabTableGuiAction(player, blockPos.toImmutable(), Actions.values()[byteBufInputStream.readByte()]));
-		default:
-			break;
-		}
-		byteBufInputStream.close();
-	}
-
 	public void setServer(MinecraftServer serverIn) {
-		this.server = serverIn;
 	}
 
 	@SubscribeEvent
@@ -326,112 +207,4 @@ public class ServerNetworkHandler {
 		byteBufOutputStream.writeString(unlocalisedHint);
 		channel.sendTo(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID), (EntityPlayerMP) playerIn);
 	}
-
-	private static class TaskLaunchLeftClick implements Runnable {
-		final WorldServer world;
-		final EntityPlayerMP player;
-		final ICustomLeftClickItem firearm;
-
-		public TaskLaunchLeftClick(WorldServer worldIn, EntityPlayerMP playerIn, ICustomLeftClickItem firearmIn) {
-			world = worldIn;
-			player = playerIn;
-			firearm = firearmIn;
-		}
-
-		@Override
-		public void run() {
-			firearm.onLeftClick(world, player, EnumHand.MAIN_HAND);
-		}
-	}
-
-	private static class TaskRaiseCharacteristic implements Runnable {
-		final PlayerCharacteristics characteristic;
-		final EntityPlayerMP player;
-
-		public TaskRaiseCharacteristic(PlayerCharacteristics characteristicIn, EntityPlayerMP playerIn) {
-			characteristic = characteristicIn;
-			player = playerIn;
-		}
-
-		@Override
-		public void run() {
-			characteristic.raiseCharacteristic(player);
-		}
-	}
-
-	private static class TaskRaiseSkill implements Runnable {
-		final PlayerSkills skill;
-		final double amount;
-		final EntityPlayerMP player;
-
-		public TaskRaiseSkill(PlayerSkills skillIn, EntityPlayerMP playerIn, double amountIn) {
-			skill = skillIn;
-			player = playerIn;
-			amount = amountIn;
-		}
-
-		@Override
-		public void run() {
-			skill.raiseSkill(player, amount);
-		}
-	}
-
-	private static class TaskApplySprintingSpeedModifier implements Runnable {
-		final int sprintingState;
-		final EntityPlayerMP player;
-
-		public TaskApplySprintingSpeedModifier(EntityPlayerMP playerIn, int sprintingStateIn) {
-			player = playerIn;
-			sprintingState = sprintingStateIn;
-		}
-
-		@Override
-		public void run() {
-			PlayerUtils.applySprintingSpeedModifier(player, sprintingState);
-		}
-	}
-
-	private static class TaskTrainCraftButton implements Runnable {
-		final EntityPlayerMP player;
-
-		public TaskTrainCraftButton(EntityPlayerMP playerIn) {
-			player = playerIn;
-		}
-
-		@Override
-		public void run() {
-			if (player.openContainer instanceof ContainerWorkbench) {
-				ContainerWorkbench workBenchContainer = (ContainerWorkbench) player.openContainer;
-				IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, player.world);
-				if (recipe instanceof IRecipeRaiseSkill) {
-					Slot slotCrafting = workBenchContainer.getSlotFromInventory(workBenchContainer.craftResult, 0);
-					slotCrafting.onTake(player, slotCrafting.getStack());
-					((IRecipeRaiseSkill) recipe).getSensitiveSkill().raiseSkill(player, 2.0);
-					IblisMod.network.sendRefreshTrainCraftButton(player);
-				}
-			}
-		}
-	}
-	
-	private static class TaskLabTableGuiAction implements Runnable {
-		final EntityPlayerMP player;
-		final BlockPos pos;
-		final Actions action;
-
-		public TaskLabTableGuiAction(EntityPlayerMP playerIn, BlockPos posIn, TileEntityLabTable.Actions actionIn) {
-			player = playerIn;
-			pos = posIn;
-			action = actionIn;
-		}
-
-		@Override
-		public void run() {
-			TileEntity te = player.world.getTileEntity(pos);
-			if(!(te instanceof TileEntityLabTable))
-				return;
-			TileEntityLabTable telt = (TileEntityLabTable) te;
-			telt.doAction(player, action);
-		}
-	}
-
 }

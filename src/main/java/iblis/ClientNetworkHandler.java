@@ -2,25 +2,16 @@ package iblis;
 
 import java.io.IOException;
 
-import iblis.block.BlockLabTable.SubBox;
-import iblis.client.ClientRenderEventHandler;
-import iblis.client.gui.GuiEventHandler;
-import iblis.client.gui.GuiLabTable;
 import iblis.init.IblisParticles;
-import iblis.player.PlayerCharacteristics;
-import iblis.tileentity.TileEntityLabTable;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -119,41 +110,12 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			break;
 			
 		case ADD_DECAL:
-			posX = byteBufInputStream.readDouble();
-			posY = byteBufInputStream.readDouble();
-			posZ = byteBufInputStream.readDouble();
-			IblisParticles decal = IblisParticles.values()[byteBufInputStream.readInt()];
-			EnumFacing facing  = EnumFacing.VALUES[byteBufInputStream.readInt()];
-			((ClientProxy)IblisMod.proxy).addDecal(decal, posX, posY, posZ, facing, byteBufInputStream.readInt(), byteBufInputStream.readFloat());
 			break;
 		case REFRESH_CRAFTING_BUTTONS:
-			mc.addScheduledTask(new Runnable(){
-				@Override
-				public void run() {
-					GuiEventHandler.instance.refreshTrainCraftingButton();
-				}});
 			break;
 		case LAUNCH_KICK_ANIMATION:
-			playerId = byteBufInputStream.readInt();
-			float power = byteBufInputStream.readFloat();
-			ClientRenderEventHandler.playerKickAnimationState.put(playerId,
-					ClientRenderEventHandler.PLAYER_KICK_ANIMATION_LENGTH);
-			entity = world.getEntityByID(playerId);
-			if (entity instanceof EntityLivingBase) {
-				EntityLivingBase living = (EntityLivingBase) entity;
-				living.limbSwingAmount = Math.min(1.5f, living.limbSwingAmount + power);
-				if(entity == Minecraft.getMinecraft().player)
-					ClientRenderEventHandler.renderFirstPersonPlayerkickAnimation = 1.7f;
-
-			}
 			break;
 		case LAUNCH_SWING_ANIMATION:
-			playerId = byteBufInputStream.readInt();
-			entity = world.getEntityByID(playerId);
-			if (entity instanceof EntityLivingBase) {
-				EntityLivingBase living = (EntityLivingBase) entity;
-				living.swingArm(living.getActiveHand());
-			}
 			break;
 		case RESET_COOLDOWN_AND_ACTIVE_HAND:
 			if (player.isHandActive()) {
@@ -169,24 +131,10 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			world.playEvent(player, eventNumber, pos, eventData);
 			break;
 		case SHOW_HINT:
-			String hint = byteBufInputStream.readString(4096);
-			GuiEventHandler.instance.showHint(hint);
 			break;
 		default:
 			break;
 		}
-	}
-
-	public void sendCharacteristicUpdate(PlayerCharacteristics characterictic) {
-		WorldClient world = Minecraft.getMinecraft().world;
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
-		ByteBuf bb = Unpooled.buffer(36);
-		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
-		byteBufOutputStream.writeByte(ServerCommands.UPDATE_CHARACTERISTIC.ordinal());
-		byteBufOutputStream.writeByte(characterictic.ordinal());
-		byteBufOutputStream.writeInt(player.getEntityId());
-		byteBufOutputStream.writeInt(world.provider.getDimension());
-		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
 
 	@Override
@@ -240,18 +188,4 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
 
-	public void sendCommandLabTableGuiAction(BlockPos pos, TileEntityLabTable.Actions action) {
-		WorldClient world = Minecraft.getMinecraft().world;
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
-		ByteBuf bb = Unpooled.buffer(36);
-		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
-		byteBufOutputStream.writeByte(ServerCommands.LAB_TABLE_GUI_ACTION.ordinal());
-		byteBufOutputStream.writeInt(player.getEntityId());
-		byteBufOutputStream.writeInt(world.provider.getDimension());
-		byteBufOutputStream.writeInt(pos.getX());
-		byteBufOutputStream.writeInt(pos.getY());
-		byteBufOutputStream.writeInt(pos.getZ());
-		byteBufOutputStream.writeByte(action.ordinal());
-		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
-	}
 }

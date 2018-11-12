@@ -1,7 +1,0 @@
-{
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "iblis:items/flask",
-        "layer1": "iblis:items/flask_overlay"
-    }
-}
