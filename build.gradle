@@ -45,9 +45,9 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "0.4.5"
-group = "iblis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "iblis"
+version = "1.0.0"
+group = "iblis-headshots" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "iblis-headshots"
 
 sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
 compileJava {
@@ -68,9 +68,6 @@ jar {
 }
 
 dependencies {
-	deobfCompile "applecore:AppleCore:1.12.2-3.1.3:deobf"
-	deobfCompile "slimeknights.mantle:Mantle:1.12-1.3.1.21"
-    deobfCompile "slimeknights:TConstruct:1.12-2.7.4.40"
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
