@@ -54,7 +54,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "0.4.2";
+    public static final String VERSION = "0.4.5";
     public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     
@@ -96,7 +96,7 @@ public class IblisMod
     	toughness.maximumValue = Double.MAX_VALUE;
     	armor.maximumValue = Double.MAX_VALUE;
     	Items.SHIELD.setMaxDamage(200);
-    	EntityRegistry.registerModEntity(new ResourceLocation(MODID, "zombie"), EntityPlayerZombie.class, "zombie", 0, this, 80, 3, true);
+    	EntityRegistry.registerModEntity(new ResourceLocation(MODID, "player_zombie"), EntityPlayerZombie.class, "player_zombie", 0, this, 80, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "boulder"), EntityBoulder.class, "Boulder", 1, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "throwing_knife"), EntityThrowingKnife.class, "ThrowingKnife", 2, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "crossbow_bolt"), EntityCrossbowBolt.class, "CrossbowBolt", 3, this, 64, 1, true);

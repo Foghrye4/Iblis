@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
@@ -94,7 +95,10 @@ public class GuiScreenBookExtended extends GuiScreen {
 								String orename = entry.getKey();
 								if(!OreDictionary.doesOreNameExist(orename))
 									continue;
-								ItemStack ore = OreDictionary.getOres(orename).iterator().next();
+								NonNullList<ItemStack> ores = OreDictionary.getOres(orename);
+								if(ores.isEmpty())
+									continue;
+								ItemStack ore = ores.iterator().next();
 								allElements.add(new GuiElementItemStack(ore));
 								allElements.add(new GuiElementTextLine(I18n.format("iblis.gui.contains")));
 								for(SubstanceStack ss:entry.getValue()) {

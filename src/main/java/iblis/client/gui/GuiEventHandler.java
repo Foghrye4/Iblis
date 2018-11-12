@@ -350,9 +350,8 @@ public class GuiEventHandler {
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
 		mc.mcProfiler.startSection("food");
 		int left = width / 2 + 91;
-		int right_height = 39;
-		int top = height - right_height;
-		right_height += 10;
+		int top = height - 39;
+		GuiIngameForge.right_height += 10;
 		FoodStats stats = mc.player.getFoodStats();
 		int level = stats.getFoodLevel();
 		int maxLevel = MathHelper.floor(PlayerCharacteristics.GLUTTONY.getCurrentValue(player));
