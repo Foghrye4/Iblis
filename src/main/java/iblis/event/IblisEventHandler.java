@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class IblisEventHandler {
 
+	public static float damageMultiplier = 4.0f;
+	
 	@SubscribeEvent
 	public void onLivingHurt(LivingHurtEvent event) {
 		float damage = event.getAmount();
@@ -30,7 +32,7 @@ public class IblisEventHandler {
 				}
 				IblisMod.network.spawnCustomParticle(living.world, start, new Vec3d(0d, 0.2d, 0d),
 						IblisParticles.HEADSHOT);
-				damage *= 4;
+				damage *= damageMultiplier;
 				event.setAmount(damage);
 			}
 		}
