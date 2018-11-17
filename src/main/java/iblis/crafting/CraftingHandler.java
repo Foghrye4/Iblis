@@ -38,6 +38,7 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.RecipeRepairItem;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -58,8 +59,8 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 public class CraftingHandler  implements IContainerListener{
 	
-	List<PlayerSensitiveShapedRecipeWrapper> replacements = new ArrayList<PlayerSensitiveShapedRecipeWrapper>();
-	List<ShapedRecipeRaisingSkillWrapper> replacements2 = new ArrayList<ShapedRecipeRaisingSkillWrapper>();
+	static List<PlayerSensitiveShapedRecipeWrapper> replacements = new ArrayList<PlayerSensitiveShapedRecipeWrapper>();
+	static List<ShapedRecipeRaisingSkillWrapper> replacements2 = new ArrayList<ShapedRecipeRaisingSkillWrapper>();
 	
 	@SubscribeEvent
 	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
@@ -68,6 +69,9 @@ public class CraftingHandler  implements IContainerListener{
 		List<ResourceLocation> vanillaRecipesToRemove = new ArrayList<ResourceLocation>();
 		while (irecipes.hasNext()) {
 			IRecipe recipe = irecipes.next();
+			if(recipe instanceof RecipeRepairItem) {
+				vanillaRecipesToRemove.add(recipe.getRegistryName());
+			}
 			ItemStack is = recipe.getRecipeOutput();
 			if (is != null) {
 				if (isArmor(is)) {
@@ -75,15 +79,6 @@ public class CraftingHandler  implements IContainerListener{
 				} else if (isWeapon(is)) {
 					this.wrapRecipe(is, vanillaRecipesToRemove, recipe, PlayerSkills.WEAPONSMITH);
 				} else if (is.getItem() instanceof ItemBow) {
-					if (!is.hasTagCompound())
-						is.setTagCompound(new NBTTagCompound());
-					NBTTagList attributeModifiersNBTList = new NBTTagList();
-					NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(
-							new AttributeModifier(SharedIblisAttributes.ARROW_DAMAGE_MODIFIER, "Arrow damage", 2d, 0));
-					modifierNBT.setString("Slot", EntityEquipmentSlot.MAINHAND.getName());
-					modifierNBT.setString("AttributeName", SharedIblisAttributes.PROJECTILE_DAMAGE.getName());
-					attributeModifiersNBTList.appendTag(modifierNBT);
-					is.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
 					this.wrapRecipe(is, vanillaRecipesToRemove, recipe, PlayerSkills.MECHANICS);
 				} else if (is.getItem() instanceof ItemShield) {
 					ShapedRecipeRaisingSkillWrapper shieldsWrapper = new ShapedRecipeRaisingSkillWrapper(recipe);
@@ -97,7 +92,6 @@ public class CraftingHandler  implements IContainerListener{
 					mechanismWrapper.setRegistryName(recipe.getRegistryName());
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
 					replacements2.add(mechanismWrapper);
-					
 				}
 			}
 		}
@@ -333,6 +327,8 @@ public class CraftingHandler  implements IContainerListener{
 		steelChestplateRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
 		steelLegginsRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
 		steelBootsRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		
+		PlayerSensitiveRecipeRepairItem rri = new PlayerSensitiveRecipeRepairItem();
 
 		recipe1.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_1"));
 		recipe2.setRegistryName(new ResourceLocation(IblisMod.MODID,"guide_book_2"));
@@ -358,6 +354,7 @@ public class CraftingHandler  implements IContainerListener{
 		flaskRecipe.setRegistryName(IblisMod.MODID, "flask");
 		reactorRecipe.setRegistryName(IblisMod.MODID, "reactor");
 		labtableRecipe.setRegistryName(IblisMod.MODID, "labtable");
+		rri.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_repair_item"));
 		
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
@@ -379,6 +376,7 @@ public class CraftingHandler  implements IContainerListener{
 		event.getRegistry().register(flaskRecipe);
 		event.getRegistry().register(reactorRecipe);
 		event.getRegistry().register(labtableRecipe);
+		event.getRegistry().register(rri);
 		this.addShapelessNuggetsOrShradsRecipe("ingotSteel", "nuggetSteel", "steel_ingot_from_nuggets", "nugget_steel", event.getRegistry());
 
 		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);
@@ -455,8 +453,8 @@ public class CraftingHandler  implements IContainerListener{
 		ItemStack repairableStack = container.getSlot(2).getStack();
 		for (PlayerSensitiveShapedRecipeWrapper recipeReplacement : replacements) {
 			if (OreDictionary.itemMatches(repairableStack, recipeReplacement.getRecipeOutput(), false)) {
-				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(player);
-				recipeReplacement.getCraftingResult(repairableStack, skillValue, true);
+				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(player) - recipeReplacement.minimalSkill;
+				PlayerSensitiveShapedRecipeWrapper.getCraftingResult(repairableStack, skillValue, true);
 				break;
 			}
 		}
@@ -479,7 +477,7 @@ public class CraftingHandler  implements IContainerListener{
 			openedContainers.remove(event.getContainer());
 	}
 
-	private static boolean isArmor(ItemStack is) {
+	static boolean isArmor(ItemStack is) {
 		if(is.getMaxStackSize()!=1)
 			return false;
 		String armorkey = SharedMonsterAttributes.ARMOR.getName();
@@ -532,7 +530,7 @@ public class CraftingHandler  implements IContainerListener{
 		return minimalSkill;
 	}
 	
-	private static boolean isWeapon(ItemStack is) {
+	static boolean isWeapon(ItemStack is) {
 		Set<String> am = is.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).keySet();
 		return am.contains(SharedMonsterAttributes.ATTACK_DAMAGE.getName());
 	}
