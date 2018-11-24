@@ -41,6 +41,10 @@ public class IblisModConfig {
 	}
 
 	void syncConfig() {
+		IblisMod.proxy.headshotParticleSize = configuration.getFloat("headshot_particle_size",
+				Configuration.CATEGORY_GENERAL, 10.0f, 0.0f, 1e6f, "Size of headshot particle");
+		IblisMod.proxy.headshotParticleType = configuration.getInt("headshot_particle_type",
+				Configuration.CATEGORY_GENERAL,1, 0, 3, "0 - no particle, 1 - skull, 2 - aim symbol, 3 - star");
 		IblisEventHandler.damageMultiplier = configuration.getFloat("headshot_damage_mutiplier",
 				Configuration.CATEGORY_GENERAL, 4.0f, 0.0f, 1e6f, "Multiplier of damage caused by headshot.");
 		if (configuration.hasChanged()) {

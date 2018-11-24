@@ -24,13 +24,15 @@ public class ParticleHeadshot extends Particle {
 	/** The Rendering Engine. */
 	private final TextureManager textureManager;
 	private final float size;
+	private int headshotParticleType;
 
 	public ParticleHeadshot(TextureManager textureManagerIn, World worldIn, double xCoordIn, double yCoordIn,
-			double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, float sizeIn) {
+			double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, float sizeIn, int headshotParticleTypeIn) {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
 		this.textureManager = textureManagerIn;
 		this.size = sizeIn;
 		this.particleMaxAge = 15;
+		headshotParticleType = headshotParticleTypeIn;
 	}
 
 	/**
@@ -40,9 +42,9 @@ public class ParticleHeadshot extends Particle {
 			float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 		if (this.particleAge <= 15) {
 			this.textureManager.bindTexture(TEXTURE);
-			float u1 = 0f;
+			float u1 = (headshotParticleType - 1) * 16f / 256f;
 			float u2 = u1 + 16f / 256f;
-			float v1 = 0f;
+			float v1 = 177f / 256f;
 			float v2 = v1 + 16f / 256f;
 			float f4 = 2.0F * this.size;
 			float f5 = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) partialTicks - interpPosX);

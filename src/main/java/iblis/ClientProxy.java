@@ -31,6 +31,8 @@ public class ClientProxy extends ServerProxy {
 
 	public void spawnParticle(@Nonnull IblisParticles particle, double posX, double posY, double posZ, double xSpeedIn,
 			double ySpeedIn, double zSpeedIn) {
+		if (this.headshotParticleType == 0)
+			return;
 		@Nonnull
 		Particle entityParticle;
 		Minecraft mc = Minecraft.getMinecraft();
@@ -38,7 +40,7 @@ public class ClientProxy extends ServerProxy {
 		double distance = renderViewEntity.getDistanceSq(posX, posY, posZ);
 		distance = MathHelper.sqrt(distance);
 		entityParticle = new ParticleHeadshot(mc.getTextureManager(), mc.world, posX, posY, posZ, xSpeedIn,
-				ySpeedIn, zSpeedIn, (float) (distance / 100d + 0.1d));
+				ySpeedIn, zSpeedIn, (float) (distance / 1000d + 0.01d)*headshotParticleSize, headshotParticleType);
 		mc.effectRenderer.addEffect(entityParticle);
 	}
 }

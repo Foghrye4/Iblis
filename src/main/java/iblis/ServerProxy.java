@@ -1,9 +1,8 @@
 package iblis;
 
-import net.minecraft.server.MinecraftServer;
-
 public class ServerProxy {
-	private MinecraftServer server;
+	public float headshotParticleSize = 10.0f;
+	public int headshotParticleType = 1;
 
 	void load() {
 	}

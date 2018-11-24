@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "1.0.1";
+    public static final String VERSION = "1.0.2";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
     
