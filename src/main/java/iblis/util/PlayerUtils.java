@@ -70,7 +70,6 @@ public class PlayerUtils {
 			AttributeModifier am = ami.next();
 			baseValue += am.getAmount();
 		}
-		System.out.println("base value " + baseValue);
 		if (isAttributeAffectedByCraftingSkill(attributeName)) {
 			return modifyDoubleValueBySkill(additive, baseValue, skillValue);
 		}

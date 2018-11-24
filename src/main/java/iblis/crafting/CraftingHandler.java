@@ -452,7 +452,7 @@ public class CraftingHandler  implements IContainerListener{
 		// Third - find a recipe output
 		ItemStack repairableStack = container.getSlot(2).getStack();
 		for (PlayerSensitiveShapedRecipeWrapper recipeReplacement : replacements) {
-			if (OreDictionary.itemMatches(repairableStack, recipeReplacement.getRecipeOutput(), false)) {
+			if (CraftingHandler.itemMatches(repairableStack, recipeReplacement.getRecipeOutput())) {
 				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(player) - recipeReplacement.minimalSkill;
 				PlayerSensitiveShapedRecipeWrapper.getCraftingResult(repairableStack, skillValue, true);
 				break;
@@ -565,4 +565,8 @@ public class CraftingHandler  implements IContainerListener{
 	@Override
 	public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {}
 
+	public static boolean itemMatches(ItemStack stack1, ItemStack stack2) {
+		return stack1.getItem().getHasSubtypes() && OreDictionary.itemMatches(stack1, stack2, false)
+				|| stack1.getItem().equals(stack2.getItem());
+	}
 }
