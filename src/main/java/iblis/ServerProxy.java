@@ -59,8 +59,7 @@ public class ServerProxy {
 		return IblisMod.class.getResourceAsStream(resourceURLPath);
 	}
 
-	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {}
+	
+	public void setToggleSprintByKeyBindSprint(boolean value) {}
 }

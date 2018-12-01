@@ -61,6 +61,9 @@ public class ClientGameEventHandler implements IWorldEventListener{
 	public int sprintButtonCounter = 0;
 	private int lastSprintButtonCounter = 0;
 	private final int NETWORK_SENSIBILITY_BIT = 2;
+	public boolean toggleSprintByKeyBindSprint = false;
+	public boolean isSprinting = false;
+	
 
 	public ClientGameEventHandler() {
 		ClientRegistry.registerKeyBinding(keyBindings[0]);
@@ -135,6 +138,9 @@ public class ClientGameEventHandler implements IWorldEventListener{
 		if(GuiLabTable.instance.isActive()&& mc.gameSettings.keyBindUseItem.isPressed()) {
 			GuiLabTable.instance.onRightClick();
 		}
+		if(toggleSprintByKeyBindSprint && Minecraft.getMinecraft().gameSettings.keyBindSprint.isPressed()) {
+			isSprinting = !isSprinting;
+		}
 		if (!shieldPunch 
 				&& player.isActiveItemStackBlocking() 
 				&& player.onGround
@@ -195,13 +201,21 @@ public class ClientGameEventHandler implements IWorldEventListener{
 			return;
 		if (event.side != Side.CLIENT)
 			return;
+		boolean pushSprinting = Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown();
+		if(toggleSprintByKeyBindSprint) {
+			pushSprinting = isSprinting;
+		}
 		if (event.phase == Phase.END) {
+			if(toggleSprintByKeyBindSprint) {
+				event.player.setSprinting(isSprinting);
+			}
+				
 			if (!event.player.isSprinting()) {
 				sprintCounter = 0;
 			} else if (sprintCounter < PlayerUtils.MAX_SPRINT_SPEED) {
 				if (sprintCounter == 0)
 					sprintCounter = 1;
-				else if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown())
+				else if (pushSprinting)
 					sprintCounter++;
 			}
 			// Make it more crude so packets will not spawned too often
@@ -232,7 +246,7 @@ public class ClientGameEventHandler implements IWorldEventListener{
 					((ClientNetworkHandler) IblisMod.network).sendCommand(ServerCommands.SHIELD_PUNCH);
 				}
 			}
-			if (Minecraft.getMinecraft().gameSettings.keyBindSprint.isKeyDown() && PlayerUtils.canJump(event.player)) {
+			if (pushSprinting && PlayerUtils.canJump(event.player)) {
 				if (sprintButtonCounter < PlayerUtils.MAX_SPRINT_SPEED)
 					sprintButtonCounter++;
 			} else

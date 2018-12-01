@@ -1,6 +1,7 @@
 package iblis.command;
 
 import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 
 public class CommandShowNBT extends CommandBase {
 
@@ -39,8 +41,19 @@ public class CommandShowNBT extends CommandBase {
 		EntityPlayerMP player = (EntityPlayerMP) command_sender;
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 		NBTTagCompound tag = stack.getTagCompound();
-		if (tag == null)
-			return;
+		if (stack.isEmpty() || tag == null) {
+			World world = player.getEntityWorld();
+			if (world != null) {
+				List<Entity> elist = world.getEntitiesWithinAABBExcludingEntity(player,
+						player.getEntityBoundingBox().grow(4.0d));
+				for (Entity e : elist) {
+					tag = e.writeToNBT(new NBTTagCompound());
+					break;
+				}
+			}
+			if(tag == null)
+				return;
+		}
 		Iterator<String> iterator = tag.getKeySet().iterator();
 		while (iterator.hasNext()) {
 			String entry = iterator.next();

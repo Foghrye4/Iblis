@@ -406,4 +406,8 @@ public class ClientProxy extends ServerProxy {
 		Minecraft.getMinecraft().displayGuiScreen(new iblis.client.gui.GuiScreenBookExtended(playerIn, jsonReader));
 		
 	}
+	
+	public void setToggleSprintByKeyBindSprint(boolean value) {
+		ClientGameEventHandler.instance.toggleSprintByKeyBindSprint = value;
+	}
 }

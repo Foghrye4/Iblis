@@ -63,6 +63,9 @@ public class IblisModConfig {
 				Configuration.CATEGORY_GENERAL, false, "If true mobs will use regular AI. If false - mobs will have a chance to spot player at any distance.");
 		IblisItems.MEDKIT.instantHealing = configuration.getBoolean("medkit_instant_healing",
 				Configuration.CATEGORY_GENERAL, false, "Medkit heal instantly on use.");
+		IblisMod.proxy.setToggleSprintByKeyBindSprint(configuration.getBoolean("toggle_sprint_by_sprint_button",
+				Configuration.CATEGORY_GENERAL, false, "If set to true sprint button will toggle sprint instead of setting it."));
+		
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}
