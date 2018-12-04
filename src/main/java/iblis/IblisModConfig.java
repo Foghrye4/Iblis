@@ -47,6 +47,8 @@ public class IblisModConfig {
 				Configuration.CATEGORY_GENERAL,1, 0, 3, "0 - no particle, 1 - skull, 2 - aim symbol, 3 - star");
 		IblisEventHandler.damageMultiplier = configuration.getFloat("headshot_damage_mutiplier",
 				Configuration.CATEGORY_GENERAL, 4.0f, 0.0f, 1e6f, "Multiplier of damage caused by headshot.");
+		IblisEventHandler.missMultiplier = configuration.getFloat("bodyshot_damage_mutiplier",
+				Configuration.CATEGORY_GENERAL, 1.0f, 0.0f, 1e6f, "Multiplier of damage caused by regular shot (in everything except head).");
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}

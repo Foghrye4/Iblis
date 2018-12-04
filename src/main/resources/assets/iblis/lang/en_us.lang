@@ -6,6 +6,12 @@ key.iblis.reload=Reload ammo
 
 iblis.horseTamingHint=Feed something to horse to tame her
 
+iblis.advancements.adventure.shoot_head.title=Aim for a head
+iblis.advancements.adventure.get_head_shot.title=Like in rotten pumpkin!
+
+iblis.advancements.adventure.shoot_head.description=Make a headshot
+iblis.advancements.adventure.get_head_shot.description=Recieve headshot
+
 generic.maxHealth=Max health points %d: %0.1f
 generic.attackDamage=Damage base %d: %0.1f
 generic.attackSpeed=Attack speed %d: %0.1f
