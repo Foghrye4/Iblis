@@ -214,6 +214,8 @@ public class ItemGuideBook extends Item {
 				for (int i = 0; i < skills.tagCount(); i++) {
 					NBTTagCompound skillNBT = skills.getCompoundTagAt(i);
 					PlayerSkills skill = PlayerSkills.valueOf(skillNBT.getString("name"));
+					if (skill == null)
+						return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 					double skillOldValue = skill.getCurrentValue(playerIn);
 					double skillBookValue = skillNBT.getDouble("value");
 					if (bookNewVersion && skillBookValue * BOOK_KNOWLEDGE_PENALTY > skillOldValue) {

@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiSkills extends GuiScreen {
 
 	private EntityPlayerSP player;
-	private final int leftMargin = 8;
+	private final int leftMargin = 2;
 	private final int topMargin = 8;
 	private final int labelHeight = 12;
 	private final int labelRowHeight = 14;
@@ -33,6 +33,7 @@ public class GuiSkills extends GuiScreen {
 	private final Map<IAttribute, GuiLabel> martialSkills = new HashMap<IAttribute, GuiLabel>();
 	private final Map<IAttribute, GuiLabel> craftSkills = new HashMap<IAttribute, GuiLabel>();
 	private final Map<IAttribute, GuiLabel> acrobaticsSkills = new HashMap<IAttribute, GuiLabel>();
+	private final Map<IAttribute, GuiLabel> magicSkills = new HashMap<IAttribute, GuiLabel>();
 	
 	private int wisdomLineX1;
 	private int wisdomLineY1;
@@ -71,16 +72,18 @@ public class GuiSkills extends GuiScreen {
 		this.martialSkills.clear();
 		this.craftSkills.clear();
 		this.acrobaticsSkills.clear();
+		this.magicSkills.clear();
 		
 		int id = 0;
-		int level1Y = this.height/3;
+		int level1Y = this.labelHeight*3;
 		int martialX = this.width - this.labelWidth - this.leftMargin;
 		int martialY = this.topMargin + labelHeight * 2;
 		
 		int craftX = martialX;
-		int craftY = this.topMargin + this.height/2;
+		int craftY = this.height/2;
 		
-		int acrobaticsY = this.height*2/3;
+		int acrobaticsX = leftMargin + this.labelWidth + 8;
+		int acrobaticsY = this.height/2;
 		
 		for (PlayerSkills skill : PlayerSkills.values()) {
 			if(!skill.enabled)
@@ -91,7 +94,9 @@ public class GuiSkills extends GuiScreen {
 			else if(skillAttribute.getParent() == SharedIblisAttributes.CRAFTMANSHIP)
 				craftSkills.put(skillAttribute, this.addAttributeLabel(skillAttribute, id++, craftX, craftY + labelRowHeight * craftSkills.size()));
 			else if(skillAttribute.getParent() == SharedIblisAttributes.ACROBATICS)
-				acrobaticsSkills.put(skillAttribute, this.addAttributeLabel(skillAttribute, id++, leftMargin, acrobaticsY + labelRowHeight * acrobaticsSkills.size()));
+				acrobaticsSkills.put(skillAttribute, this.addAttributeLabel(skillAttribute, id++, acrobaticsX, acrobaticsY + labelRowHeight * acrobaticsSkills.size()));
+			else
+				magicSkills.put(skillAttribute, this.addAttributeLabel(skillAttribute, id++, leftMargin, acrobaticsY + labelRowHeight * magicSkills.size()));
 
 			IAttribute parent = skillAttribute.getParent();
 			if(!level2Skills.containsKey(parent))
@@ -116,7 +121,7 @@ public class GuiSkills extends GuiScreen {
 		this.craftLineY2 = craftY - 1;
 
 		this.acrobaticsLineX1 = leftMargin + labelWidth + 1;
-		this.acrobaticsLineX2 = leftMargin + labelWidth/2;
+		this.acrobaticsLineX2 = acrobaticsX + labelWidth/2;
 		this.acrobaticsLineY1 = level1Y + labelRowHeight*2 + labelRowHeight/2;
 		this.acrobaticsLineY2 = acrobaticsY - 1;
 	}

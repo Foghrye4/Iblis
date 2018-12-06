@@ -1,35 +1,47 @@
 package iblis.player;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 
-public enum PlayerSkills {
+public class PlayerSkills {
 
-	SWORDSMANSHIP(SharedIblisAttributes.SWORDSMANSHIP,0.001f),
-	PARRY(SharedIblisAttributes.PARRY,0.001f),
-	ARCHERY(SharedIblisAttributes.ARCHERY,0.001f),
-	THROWING(SharedIblisAttributes.THROWING,0.0002f),
-	SHARPSHOOTING(SharedIblisAttributes.SHARPSHOOTING,0.001f),
-	ARMORSMITH(SharedIblisAttributes.ARMORSMITH,0.02f),
-	WEAPONSMITH(SharedIblisAttributes.WEAPONSMITH,0.02f),
-	MECHANICS(SharedIblisAttributes.MECHANICS,0.02f),
-	MEDICAL_AID(SharedIblisAttributes.MEDICAL_AID,0.02f),
-	DIGGING(SharedIblisAttributes.DIGGING,0.001f),
-	TAMING(SharedIblisAttributes.TAMING,0.02f),
-	CHEMISTRY(SharedIblisAttributes.CHEMISTRY,0.02f),
-	RUNNING(SharedIblisAttributes.RUNNING,0.0001f),
-	JUMPING(SharedIblisAttributes.JUMPING,0.001f), 
-	FALLING(SharedIblisAttributes.FALLING,0.02f),
-	EQUILIBRIUM(SharedIblisAttributes.EQUILIBRIUM,0.001f);
+	private static final List<PlayerSkills> values = new ArrayList<PlayerSkills>();
+	private static final Map<String, PlayerSkills> valuesOf = new HashMap<String, PlayerSkills>();
+	public static final PlayerSkills SWORDSMANSHIP = new PlayerSkills("SWORDSMANSHIP",SharedIblisAttributes.SWORDSMANSHIP,0.001f);
+	public static final PlayerSkills PARRY = new PlayerSkills("PARRY",SharedIblisAttributes.PARRY,0.001f);
+	public static final PlayerSkills ARCHERY = new PlayerSkills("ARCHERY",SharedIblisAttributes.ARCHERY,0.001f);
+	public static final PlayerSkills THROWING = new PlayerSkills("THROWING",SharedIblisAttributes.THROWING,0.0002f);
+	public static final PlayerSkills SHARPSHOOTING = new PlayerSkills("SHARPSHOOTING",SharedIblisAttributes.SHARPSHOOTING,0.001f);
+	public static final PlayerSkills ARMORSMITH = new PlayerSkills("ARMORSMITH",SharedIblisAttributes.ARMORSMITH,0.02f);
+	public static final PlayerSkills WEAPONSMITH = new PlayerSkills("WEAPONSMITH",SharedIblisAttributes.WEAPONSMITH,0.02f);
+	public static final PlayerSkills MECHANICS = new PlayerSkills("MECHANICS",SharedIblisAttributes.MECHANICS,0.02f);
+	public static final PlayerSkills MEDICAL_AID = new PlayerSkills("MEDICAL_AID",SharedIblisAttributes.MEDICAL_AID,0.02f);
+	public static final PlayerSkills DIGGING = new PlayerSkills("DIGGING",SharedIblisAttributes.DIGGING,0.001f);
+	public static final PlayerSkills TAMING = new PlayerSkills("TAMING",SharedIblisAttributes.TAMING,0.02f);
+	public static final PlayerSkills CHEMISTRY = new PlayerSkills("CHEMISTRY",SharedIblisAttributes.CHEMISTRY,0.02f);
+	public static final PlayerSkills RUNNING = new PlayerSkills("RUNNING",SharedIblisAttributes.RUNNING,0.0001f);
+	public static final PlayerSkills JUMPING = new PlayerSkills("JUMPING",SharedIblisAttributes.JUMPING,0.001f);
+	public static final PlayerSkills FALLING = new PlayerSkills("FALLING",SharedIblisAttributes.FALLING,0.02f);
+	public static final PlayerSkills EQUILIBRIUM = new PlayerSkills("EQUILIBRIUM",SharedIblisAttributes.EQUILIBRIUM,0.001f);
 	
 	public double pointsPerLevel;
 	public final float defaultPointsPerLevel;
 	private final IAttribute attribute;
 	public boolean enabled = true;
-	PlayerSkills(IAttribute attributeIn, float pointsPerLevelIn){
+	private final String name;
+	
+	public PlayerSkills(String nameIn, IAttribute attributeIn, float pointsPerLevelIn){
+		this.name = nameIn;
 		this.attribute = attributeIn;
 		this.pointsPerLevel = this.defaultPointsPerLevel = pointsPerLevelIn;
+		values.add(this);
+		valuesOf.put(name, this);
 	}
 	
 	public void raiseSkill(EntityPlayer player, double d) {
@@ -90,6 +102,18 @@ public enum PlayerSkills {
 	
 	public IAttribute getAttribute() {
 		return attribute;
+	}
+
+	public static List<PlayerSkills> values() {
+		return values;
+	}
+
+	public String name() {
+		return name;
+	}
+
+	public static PlayerSkills valueOf(String name) {
+		return valuesOf.get(name);
 	}
 
 }
