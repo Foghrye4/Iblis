@@ -4,23 +4,14 @@ import java.io.IOException;
 
 import iblis.init.IblisParticles;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class ClientNetworkHandler extends ServerNetworkHandler {
 
@@ -42,8 +33,10 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 			ySpeed = byteBufInputStream.readDouble();
 			zSpeed = byteBufInputStream.readDouble();
 			particleId  = byteBufInputStream.readInt();
-			((ClientProxy)IblisMod.proxy).spawnParticle(IblisParticles.values()[particleId], posX, posY, posZ, xSpeed, ySpeed, zSpeed);
-            world.playSound(player, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.25F, 1.0F);
+			mc.addScheduledTask(() -> {
+				((ClientProxy)IblisMod.proxy).spawnParticle(IblisParticles.values()[particleId], posX, posY, posZ, xSpeed, ySpeed, zSpeed);
+	            world.playSound(player, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 0.25F, 1.0F);
+			});
 			break;
 		default:
 			break;
