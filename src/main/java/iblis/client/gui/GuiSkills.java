@@ -55,6 +55,10 @@ public class GuiSkills extends GuiScreen {
 	private int acrobaticsLineX2;
 	private int acrobaticsLineY2;
 
+	private int magicLineX1;
+	private int magicLineY1;
+	private int magicLineX2;
+	private int magicLineY2;
 
 
 	public GuiSkills(EntityPlayerSP playerIn) {
@@ -124,6 +128,11 @@ public class GuiSkills extends GuiScreen {
 		this.acrobaticsLineX2 = acrobaticsX + labelWidth/2;
 		this.acrobaticsLineY1 = level1Y + labelRowHeight*2 + labelRowHeight/2;
 		this.acrobaticsLineY2 = acrobaticsY - 1;
+		
+		this.magicLineX1 = leftMargin + labelWidth + 1;
+		this.magicLineX2 = leftMargin + labelWidth/2;
+		this.magicLineY1 = level1Y + labelRowHeight*3 + labelRowHeight/2;
+		this.magicLineY2 = acrobaticsY - 1;
 	}
 	
 	private GuiLabel addAttributeLabel(IAttribute attribute, int id, int x, int y) {
@@ -139,16 +148,14 @@ public class GuiSkills extends GuiScreen {
 		return label;
 	}
 	
-	private void drawLinkFromTopToBottom(int x1, int x2, int y1, int y2){
-		int linkOffsetX = 10;
+	private void drawLinkFromTopToBottom(int x1, int x2, int y1, int y2, int linkOffsetX){
 		this.drawHorizontalLine(x1, x1 + linkOffsetX, y1, 0xeeb36900);
 		this.drawVerticalLine(x1 + linkOffsetX, y1, y1 / 2 + y2 / 2, 0xeeb36900);
 		this.drawHorizontalLine(x2, x1 + linkOffsetX, y1 / 2 + y2 / 2, 0xeeb36900);
 		this.drawVerticalLine(x2, y1 / 2 + y2 / 2, y2, 0xeeb36900);
 	}
 	
-	private void drawLinkFromLeftToRight(int x1, int x2, int y1, int y2) {
-		int linkOffsetX = 20;
+	private void drawLinkFromLeftToRight(int x1, int x2, int y1, int y2, int linkOffsetX) {
 		int linkOffsetY = -10;
 		this.drawHorizontalLine(x1, x1 + linkOffsetX, y1, 0xeeb36900);
 		this.drawVerticalLine(x1 + linkOffsetX, y1, y2 + linkOffsetY, 0xeeb36900);
@@ -165,12 +172,14 @@ public class GuiSkills extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.drawLinkFromTopToBottom(wisdomLineX1, wisdomLineX2, wisdomLineY1, wisdomLineY2);
+		this.drawLinkFromTopToBottom(wisdomLineX1, wisdomLineX2, wisdomLineY1, wisdomLineY2, 10);
 		if (!martialSkills.isEmpty())
-			this.drawLinkFromLeftToRight(martialLineX1, martialLineX2, martialLineY1, martialLineY2);
+			this.drawLinkFromLeftToRight(martialLineX1, martialLineX2, martialLineY1, martialLineY2,20);
 		if (!craftSkills.isEmpty())
-			this.drawLinkFromLeftToRight(craftLineX1, craftLineX2, craftLineY1, craftLineY2);
+			this.drawLinkFromLeftToRight(craftLineX1, craftLineX2, craftLineY1, craftLineY2,30);
 		if (!acrobaticsSkills.isEmpty())
-			this.drawLinkFromTopToBottom(acrobaticsLineX1, acrobaticsLineX2, acrobaticsLineY1, acrobaticsLineY2);
+			this.drawLinkFromTopToBottom(acrobaticsLineX1, acrobaticsLineX2, acrobaticsLineY1, acrobaticsLineY2,20);
+		if (!magicSkills.isEmpty())
+			this.drawLinkFromTopToBottom(magicLineX1, magicLineX2, magicLineY1, magicLineY2,10);
 	}
 }

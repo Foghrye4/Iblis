@@ -18,6 +18,7 @@ import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -26,13 +27,16 @@ public class EBWizardyEventHandler {
     public static final IAttribute MAGIC = (new RangedAttribute(SharedIblisAttributes.WISDOM, "iblis.magic", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Magic").setShouldWatch(true);
     public static IAttribute[] elementToAttributeMap;
     public static PlayerSkills[] elementToSkillMap;
+	private final static String[] SPELL_MODIFIERS = { 
+			"condenser", "storage", "siphon", "range", "duration",
+			"blast", "attunement", "damage" };
     
 	public static void initSkills() {
 		elementToAttributeMap = new IAttribute[Element.values().length];
 		elementToSkillMap = new PlayerSkills[Element.values().length];
 		for(Element e:Element.values()) {
-			elementToAttributeMap[e.ordinal()] = (new RangedAttribute(MAGIC, "iblis.ebwizardy."+e.unlocalisedName, 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Magic").setShouldWatch(true);
-			elementToSkillMap[e.ordinal()] = new PlayerSkills(e.name(), elementToAttributeMap[e.ordinal()], 0.001f);
+			elementToAttributeMap[e.ordinal()] = (new RangedAttribute(MAGIC, "iblis.ebwizardy."+e.getUnlocalisedName(), 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Magic").setShouldWatch(true);
+			elementToSkillMap[e.ordinal()] = new PlayerSkills(e.name()+"_MAGIC", elementToAttributeMap[e.ordinal()], 0.001f);
 		}
 	}
 	
@@ -48,24 +52,24 @@ public class EBWizardyEventHandler {
 		if(!(event.getEntityLiving() instanceof EntityPlayer))
 			return;
 		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-		Spell spell = event.spell;
+		Spell spell = event.getSpell();
 		int elementId = spell.element.ordinal();
 		PlayerSkills skill = elementToSkillMap[elementId];
 		double skillLevel = skill.getFullSkillValue(player);
-		skillLevel -= spell.tier.level;
-		for(Entry<String, Float> entry :event.modifiers.multiplierMap.entrySet()) {
-			float value = entry.getValue();
+		skillLevel -= spell.tier.level*0.5+0.5;
+		for(String modifier:SPELL_MODIFIERS) {
+			float value = event.getModifiers().get(modifier);
 			value = (float) PlayerUtils.modifyDoubleValueBySkill(false, value, skillLevel);
-			event.modifiers.set(entry.getKey(), value, false);
+			event.getModifiers().set(modifier, value, false);
 		}
 	}
 	
 	@SubscribeEvent
 	public void onAfterSpellCast(SpellCastEvent.Post event) {
-		if(!(event.getEntityLiving() instanceof EntityPlayer))
+		if(!(event.getEntityLiving() instanceof EntityPlayerMP))
 			return;
 		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-		Spell spell = event.spell;
+		Spell spell = event.getSpell();
 		int elementId = spell.element.ordinal();
 		PlayerSkills skill = elementToSkillMap[elementId];
 		skill.raiseSkill(player, 1.0);

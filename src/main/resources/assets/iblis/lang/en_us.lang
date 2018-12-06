@@ -42,6 +42,16 @@ iblis.jumping=Jumping: %0.1f
 iblis.falling=Falling: %0.1f
 iblis.equilibrium=Equilibrium: %0.1f
 
+iblis.magic=Magic: %0.1f
+iblis.ebwizardy.simple=Unaligned: %0.1f
+iblis.ebwizardy.fire=Fire: %0.1f
+iblis.ebwizardy.ice=Ice: %0.1f
+iblis.ebwizardy.lightning=Lightning: %0.1f
+iblis.ebwizardy.necromancy=Necromancy: %0.1f
+iblis.ebwizardy.earth=Earth: %0.1f
+iblis.ebwizardy.sorcery=Sorcery: %0.1f
+iblis.ebwizardy.healing=Healing: %0.1f
+
 iblis.SWORDSMANSHIP=swordsmanship
 iblis.PARRY=using shields
 iblis.ARCHERY=archery
@@ -58,6 +68,15 @@ iblis.RUNNING=light athletic
 iblis.JUMPING=acrobatics
 iblis.FALLING=stunt mastery
 iblis.EQUILIBRIUM=equilibristic
+
+iblis.EARTH_MAGIC=earth magic
+iblis.FIRE_MAGIC=fire magic
+iblis.ICE_MAGIC=ice magic
+iblis.LIGHTNING_MAGIC=lightning magic
+iblis.HEALING_MAGIC=healing magic
+iblis.MAGIC_MAGIC=unaligned magic
+iblis.NECROMANCY_MAGIC=necromancy
+iblis.SORCERY_MAGIC=sorcery
 
 iblis.seconds=%d seconds
 iblis.minutes=%d minutes
