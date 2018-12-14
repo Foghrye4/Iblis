@@ -60,7 +60,7 @@ public class EBWizardyEventHandler {
 		for(String modifier:SPELL_MODIFIERS) {
 			float value = event.getModifiers().get(modifier);
 			value = (float) PlayerUtils.modifyDoubleValueBySkill(false, value, skillLevel);
-			event.getModifiers().set(modifier, value, false);
+			event.getModifiers().set(modifier, value, true);
 		}
 	}
 	

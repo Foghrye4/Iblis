@@ -54,7 +54,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod {
 	public static final String MODID = "iblis";
-	public static final String VERSION = "0.4.10";
+	public static final String VERSION = "0.4.11";
 	public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
 	public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
 

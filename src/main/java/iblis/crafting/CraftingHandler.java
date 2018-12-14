@@ -468,6 +468,7 @@ public class CraftingHandler  implements IContainerListener{
 			openedContainers.add((ContainerRepair) event.getContainer());
 		if(event.getContainer() instanceof ContainerWorkbench) {
 			event.getContainer().listeners.add(this);
+			this.sendSlotContents(event.getContainer(), 0, ItemStack.EMPTY);
 		}
 	}
 
@@ -561,9 +562,11 @@ public class CraftingHandler  implements IContainerListener{
 	@Override
 	public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {}
 	@Override
-	public void sendAllWindowProperties(Container containerIn, IInventory inventory) {}
+	public void sendAllWindowProperties(Container containerIn, IInventory inventory) {
+	}
 	@Override
-	public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {}
+	public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
+	}
 
 	public static boolean itemMatches(ItemStack stack1, ItemStack stack2) {
 		return stack1.getItem().getHasSubtypes() && OreDictionary.itemMatches(stack1, stack2, false)

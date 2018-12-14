@@ -176,9 +176,9 @@ public class GuiSkills extends GuiScreen {
 		if (!martialSkills.isEmpty())
 			this.drawLinkFromLeftToRight(martialLineX1, martialLineX2, martialLineY1, martialLineY2,20);
 		if (!craftSkills.isEmpty())
-			this.drawLinkFromLeftToRight(craftLineX1, craftLineX2, craftLineY1, craftLineY2,30);
+			this.drawLinkFromLeftToRight(craftLineX1, craftLineX2, craftLineY1, craftLineY2,10+labelWidth);
 		if (!acrobaticsSkills.isEmpty())
-			this.drawLinkFromTopToBottom(acrobaticsLineX1, acrobaticsLineX2, acrobaticsLineY1, acrobaticsLineY2,20);
+			this.drawLinkFromLeftToRight(acrobaticsLineX1, acrobaticsLineX2, acrobaticsLineY1, acrobaticsLineY2,20);
 		if (!magicSkills.isEmpty())
 			this.drawLinkFromTopToBottom(magicLineX1, magicLineX2, magicLineY1, magicLineY2,10);
 	}
