@@ -18,6 +18,8 @@ generic.attackSpeed=Attack speed %d: %0.1f
 generic.knockbackResistance=Knockback resistance %d: %0.2f
 generic.luck=Luck %d: %0.1f
 
+iblis.headshot_protection=Headshot protection: %d
+
 iblis.melee_damage_bonus=Melee damage multiplier %d: %0.1f
 iblis.melee_damage_reduction=Incoming melee damage reduction %d: %0.1f
 iblis.fire_damage_reduction=Incoming fire damage reduction %d: %0.1f

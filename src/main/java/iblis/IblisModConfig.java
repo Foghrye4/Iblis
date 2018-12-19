@@ -49,6 +49,8 @@ public class IblisModConfig {
 				Configuration.CATEGORY_GENERAL, 4.0f, 0.0f, 1e6f, "Multiplier of damage caused by headshot.");
 		IblisEventHandler.missMultiplier = configuration.getFloat("bodyshot_damage_mutiplier",
 				Configuration.CATEGORY_GENERAL, 1.0f, 0.0f, 1e6f, "Multiplier of damage caused by regular shot (in everything except head).");
+		IblisEventHandler.playersHaveNoHeads = configuration.getBoolean("players_have_no_heads",
+				Configuration.CATEGORY_GENERAL, false, "If true, players will not recieve headshots");
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}
