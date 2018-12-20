@@ -46,6 +46,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -139,7 +140,7 @@ public class GuiEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onOverlayRender(RenderGameOverlayEvent.Pre action) {
 		if (action.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 			ScaledResolution res = action.getResolution();
@@ -190,6 +191,8 @@ public class GuiEventHandler {
 			}
 		}
 		if (!IblisMod.isRPGHUDLoaded && action.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
+			if(action.isCanceled())
+				return;
 			action.setCanceled(true);
 			ScaledResolution res = action.getResolution();
 			renderHealth(res.getScaledWidth(), res.getScaledHeight());
