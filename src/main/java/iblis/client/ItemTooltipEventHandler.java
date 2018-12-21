@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 
+import iblis.util.IblisItemUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeMap;
@@ -41,32 +42,17 @@ public class ItemTooltipEventHandler {
 	};
 
 	@SubscribeEvent
-	public void onItemTooltipEvent(ItemTooltipEvent event){
+	public void onItemTooltipEvent(ItemTooltipEvent event) {
 		ItemStack is = event.getItemStack();
-		if(is.hasTagCompound() && is.getTagCompound().hasKey("quality")) {
+		if (is.hasTagCompound() && is.getTagCompound().hasKey("quality")) {
 			int quality = is.getTagCompound().getInteger("quality");
-			addQualityTooltip(event.getToolTip(),quality);
+			addQualityTooltip(event.getToolTip(), quality);
 		}
-		
-		Multimap<String, AttributeModifier> aMods = is
-				.getAttributeModifiers(EntityEquipmentSlot.HEAD);
-		if(!aMods.isEmpty())
-		{
-			for (AttributeModifier mod : aMods.get(armor.getAttribute().getName()))
-				armor.applyModifier(mod);
-			for (AttributeModifier mod : aMods.get(armorToughness.getAttribute().getName()))
-				armorToughness.applyModifier(mod);
-			float headGearDamageAbsorbMultiplier = CombatRules.getDamageAfterAbsorb(1.0f,
-					(float)armor.getAttributeValue(), (float)armorToughness.getAttributeValue());
-			float headGearDamageAbsorbMultiplier2 = headGearDamageAbsorbMultiplier
-					* headGearDamageAbsorbMultiplier;
-			headGearDamageAbsorbMultiplier2 *= headGearDamageAbsorbMultiplier2;
-			headGearDamageAbsorbMultiplier2 *= headGearDamageAbsorbMultiplier2;
-			headGearDamageAbsorbMultiplier2 *= headGearDamageAbsorbMultiplier2;
-			event.getToolTip().add(TextFormatting.LIGHT_PURPLE + I18n.format("iblis.headshot_protection", (int)((1.0f-headGearDamageAbsorbMultiplier2)*100f))+"%");
-			armor.removeAllModifiers();
-			armorToughness.removeAllModifiers();
-		}
+		float headGearDamageAbsorbMultiplier = IblisItemUtils.getHeadgearProtection(is);
+		if (headGearDamageAbsorbMultiplier != 1.0f)
+			event.getToolTip().add(TextFormatting.LIGHT_PURPLE
+					+ I18n.format("iblis.headshot_protection", (int) ((1.0f - headGearDamageAbsorbMultiplier) * 100f))
+					+ "%");
 	}
 	
 	public static void addQualityTooltip(List<String> tooltip, int qualityRaw){

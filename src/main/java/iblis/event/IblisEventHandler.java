@@ -1,11 +1,13 @@
 package iblis.event;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import iblis.IblisMod;
 import iblis.advacements.criterion.HeadshotTrigger;
 import iblis.init.IblisParticles;
 import iblis.util.HeadShotHandler;
+import iblis.util.IblisItemUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -17,6 +19,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.CombatRules;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -30,7 +34,8 @@ public class IblisEventHandler {
 	public void onLivingHurt(LivingHurtEvent event) {
 		float damage = event.getAmount();
 		EntityLivingBase victim = event.getEntityLiving();
-		if (victim.world.isRemote || damage < 0.1f)
+		World world = victim.world;
+		if (world.isRemote || damage < 0.1f || !(world instanceof WorldServer))
 			return;
 		Entity projectile = event.getSource().getImmediateSource();
 		if (projectile != null) {
@@ -42,29 +47,25 @@ public class IblisEventHandler {
 						IblisParticles.HEADSHOT);
 				float multiplier = damageMultiplier;
 				ItemStack headgear = victim.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-				float totalArmorValue = (float) victim.getTotalArmorValue();
-				float totalToughtnessValue = (float) victim.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS)
-						.getAttributeValue();
-				float damageAbsorbMultiplier = CombatRules.getDamageAfterAbsorb(1.0f, totalArmorValue,
-						totalToughtnessValue);
-				damage /= damageAbsorbMultiplier;
-				if (!victim.getItemStackFromSlot(EntityEquipmentSlot.HEAD).isEmpty()) {
-					Multimap<String, AttributeModifier> aMods = headgear
-							.getAttributeModifiers(EntityEquipmentSlot.HEAD);
-					victim.getAttributeMap().removeAttributeModifiers(aMods);
-					float headgearArmor = totalArmorValue - victim.getTotalArmorValue();
-					float headgearArmorToughtness = totalToughtnessValue - (float) victim
-							.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue();
-					victim.getAttributeMap().applyAttributeModifiers(aMods);
-					float headGearDamageAbsorbMultiplier = CombatRules.getDamageAfterAbsorb(1.0f,
-							headgearArmor, headgearArmorToughtness);
-					float headGearDamageAbsorbMultiplier2 = headGearDamageAbsorbMultiplier
-							* headGearDamageAbsorbMultiplier;
-					headGearDamageAbsorbMultiplier2 *= headGearDamageAbsorbMultiplier2;
-					headGearDamageAbsorbMultiplier2 *= headGearDamageAbsorbMultiplier2;
-					headGearDamageAbsorbMultiplier2 *= headGearDamageAbsorbMultiplier2;
-					multiplier = 1.0f + Math.max(multiplier - 1.0f, 0.0f) * headGearDamageAbsorbMultiplier2;
-					damage *= headGearDamageAbsorbMultiplier;
+				
+	            HashMultimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
+	            this.addModifierOfStackInSlot(victim, multimap, EntityEquipmentSlot.CHEST);
+	            this.addModifierOfStackInSlot(victim, multimap, EntityEquipmentSlot.LEGS);
+	            this.addModifierOfStackInSlot(victim, multimap, EntityEquipmentSlot.FEET);
+	            if(!multimap.isEmpty()) {
+					victim.getAttributeMap().removeAttributeModifiers(multimap);
+					WorldServer wserver = (WorldServer) world;
+					wserver.addScheduledTask(() -> {
+			            HashMultimap<String, AttributeModifier> multimap2 = HashMultimap.<String, AttributeModifier>create();
+			            this.addModifierOfStackInSlot(victim, multimap2, EntityEquipmentSlot.CHEST);
+			            this.addModifierOfStackInSlot(victim, multimap2, EntityEquipmentSlot.LEGS);
+			            this.addModifierOfStackInSlot(victim, multimap2, EntityEquipmentSlot.FEET);
+						victim.getAttributeMap().applyAttributeModifiers(multimap2);
+					});
+	            }
+				if (!headgear.isEmpty()) {
+					float headGearDamageAbsorbMultiplier = IblisItemUtils.getHeadgearProtection(headgear);
+					multiplier = 1.0f + Math.max(multiplier - 1.0f, 0.0f) * headGearDamageAbsorbMultiplier;
 					headgear.damageItem((int) (damage * 4.0F + victim.world.rand.nextFloat() * damage * 2.0F), victim);
 				}
 				damage *= multiplier;
@@ -83,5 +84,11 @@ public class IblisEventHandler {
 			}
 			event.setAmount(damage);
 		}
+	}
+	
+	private void addModifierOfStackInSlot(EntityLivingBase entity, HashMultimap<String, AttributeModifier> multimap, EntityEquipmentSlot slot) {
+		ItemStack stack = entity.getItemStackFromSlot(slot);
+        if(!stack.isEmpty())
+        	multimap.putAll(stack.getAttributeModifiers(slot));
 	}
 }
