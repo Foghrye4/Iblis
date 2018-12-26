@@ -21,6 +21,7 @@ public class LootTableParsingEventHandler {
 	/** An array of loot tables which will be adjusted by event handler **/
 	private final String[] lootTablesPath = new String[] { "pyramid", "city", "jungle_temple", "simple_dungeon",
 			"library", "mansion" };
+	private static final String LIBRARY_POOL = "library_pool";
 
 	@SubscribeEvent
 	public void onLootTableParseEvent(LootTableLoadEvent event) {
@@ -42,14 +43,15 @@ public class LootTableParsingEventHandler {
 		if(skipLoadLoot)
 			return;
 		LootTable table = event.getTable();
-		table.addPool(generateLibraryLootPoolGuideBook());
+		if(table.getPool(LIBRARY_POOL)==null)
+			table.addPool(generateLibraryLootPoolGuideBook());
 	}
 	
 	private LootPool generateLibraryLootPoolGuideBook() {
 		LootEntry[] lootEntries = new LootEntry[2];
 		lootEntries[0] = new LootEntryEmpty(8, 1, new LootCondition[0], "empty");
 		lootEntries[1] = new LootEntryRandomGuideBook(8, 1, new LootCondition[0], "guide_book");
-		return new LootPool(lootEntries, new LootCondition[0], new RandomValueRange(1.0f), new RandomValueRange(1.0f), "library_pool");
+		return new LootPool(lootEntries, new LootCondition[0], new RandomValueRange(1.0f), new RandomValueRange(1.0f), LIBRARY_POOL);
 	}
 
 	private void handleLabyrinthLootTables(LootTableManager lootTableManager, LootTable lootTable,
@@ -70,7 +72,7 @@ public class LootTableParsingEventHandler {
 			int lootLevel) {
 		LootTable iblisLootTable = lootTableManager.getLootTableFromLocation(dungeonLootTable);
 		LootPool pool = iblisLootTable.getPool("level_" + lootLevel);
-		if (pool != null)
+		if (pool != null && lootTable.getPool(pool.getName())==null)
 			lootTable.addPool(pool);
 	}
 
@@ -80,12 +82,12 @@ public class LootTableParsingEventHandler {
 		for (PlayerSkills skill : PlayerSkills.values()) {
 			String skillName = skill.name();
 			LootPool pool = iblisLootTable.getPool(skillName + "_level_" + lootLevel);
-			if (pool != null) {
+			if (pool != null && lootTable.getPool(pool.getName())==null) {
 				lootTable.addPool(pool);
 			} else {
 				while (--lootLevel > 0) {
 					pool = iblisLootTable.getPool(skillName + "_level_" + lootLevel);
-					if (pool != null) {
+					if (pool != null && lootTable.getPool(pool.getName())==null) {
 						lootTable.addPool(pool);
 						return;
 					}
