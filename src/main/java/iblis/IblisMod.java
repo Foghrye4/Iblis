@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import iblis.event.IblisEventHandler;
 import iblis.init.IblisHeadshotsAdvancements;
+import iblis.item.HelmetsConfig;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class IblisMod
 {
     public static final String MODID = "iblis";
-    public static final String VERSION = "1.0.9";
+    public static final String VERSION = "1.1.1";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
     
@@ -48,6 +49,7 @@ public class IblisMod
 		MinecraftForge.EVENT_BUS.register(config);
     	MinecraftForge.EVENT_BUS.register(eventHandler);
     	MinecraftForge.EVENT_BUS.register(proxy);
+    	HelmetsConfig.load();
     }
     
 	@EventHandler
