@@ -62,4 +62,6 @@ public class ServerProxy {
 	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {}
 	
 	public void setToggleSprintByKeyBindSprint(boolean value) {}
+
+	public void setHPRender(boolean boolean1) {}
 }

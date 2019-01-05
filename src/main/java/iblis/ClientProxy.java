@@ -410,4 +410,9 @@ public class ClientProxy extends ServerProxy {
 	public void setToggleSprintByKeyBindSprint(boolean value) {
 		ClientGameEventHandler.instance.toggleSprintByKeyBindSprint = value;
 	}
+	
+	@Override
+	public void setHPRender(boolean renderHPIn) {
+		GuiEventHandler.renderHP = renderHPIn;
+	}
 }

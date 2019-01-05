@@ -65,7 +65,8 @@ public class IblisModConfig {
 				Configuration.CATEGORY_GENERAL, false, "Medkit heal instantly on use.");
 		IblisMod.proxy.setToggleSprintByKeyBindSprint(configuration.getBoolean("toggle_sprint_by_sprint_button",
 				Configuration.CATEGORY_GENERAL, false, "If set to true sprint button will toggle sprint instead of setting it."));
-		
+		IblisMod.proxy.setHPRender(configuration.getBoolean("render_hp_bar",
+				Configuration.CATEGORY_GENERAL, false, "If true HP bar will be rendered by Iblis."));
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}

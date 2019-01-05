@@ -62,6 +62,7 @@ public class GuiEventHandler {
 	public static final ResourceLocation IBLIS_ICONS = new ResourceLocation(IblisMod.MODID, "textures/gui/icons.png");
 	public static final GuiEventHandler instance = new GuiEventHandler();
 
+	public static boolean renderHP = true;
 	private long healthUpdateCounter;
 	private int playerHealth;
 	private long lastSystemTime;
@@ -191,10 +192,11 @@ public class GuiEventHandler {
 			}
 		}
 		if (!IblisMod.isRPGHUDLoaded && action.getType() == RenderGameOverlayEvent.ElementType.HEALTH) {
-			if(action.isCanceled())
+			ScaledResolution res = action.getResolution();
+			this.renderAmmoAndSprintingState(res.getScaledWidth(), res.getScaledHeight());
+			if(action.isCanceled() || !renderHP)
 				return;
 			action.setCanceled(true);
-			ScaledResolution res = action.getResolution();
 			renderHealth(res.getScaledWidth(), res.getScaledHeight());
 		} else if (!IblisMod.isAppleskinLoaded && action.getType() == RenderGameOverlayEvent.ElementType.FOOD) {
 			action.setCanceled(true);
@@ -202,8 +204,8 @@ public class GuiEventHandler {
 			renderFood(res.getScaledWidth(), res.getScaledHeight());
 		}
 	}
-
-	private void renderHealth(int width, int height) {
+	
+	private void renderAmmoAndSprintingState(int width, int height) {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
 		GlStateManager.enableBlend();
@@ -238,8 +240,17 @@ public class GuiEventHandler {
 		for (int i = 0; i < sprintButtonCounter / 4; i++)
 			mc.ingameGUI.drawTexturedModalRect(width - 18, height - 9 * i, 238, 0, 9, 9);
 
-		mc.mcProfiler.endStartSection("health");
-		mc.getTextureManager().bindTexture(Gui.ICONS);
+		mc.mcProfiler.endSection();
+		Minecraft.getMinecraft().getTextureManager().bindTexture(Gui.ICONS);
+	}
+
+	private void renderHealth(int width, int height) {
+		Minecraft mc = Minecraft.getMinecraft();
+		EntityPlayer player = (EntityPlayer) mc.getRenderViewEntity();
+		GlStateManager.enableBlend();
+
+		mc.mcProfiler.startSection("health");
+		int top = height - GuiIngameForge.left_height;
 		int health = MathHelper.ceil(player.getHealth());
 		int updateCounter = mc.ingameGUI.getUpdateCounter();
 		boolean highlight = healthUpdateCounter > updateCounter
