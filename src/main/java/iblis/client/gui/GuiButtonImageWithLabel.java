@@ -2,7 +2,6 @@ package iblis.client.gui;
 
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
 
 import org.lwjgl.opengl.GL11;
 

@@ -1,0 +1,128 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:bow"
+        },
+        "title": {
+            "translate": "iblis.advancements.adventure.shoot_head.title"
+        },
+        "description": {
+            "translate": "iblis.advancements.adventure.shoot_head.description"
+        }
+    },
+    "parent": "adventure/root",
+    "criteria": {
+        "zombie_pigman": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "zombie_pigman"
+                }
+            }
+        },
+        "polar_bear": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "polar_bear"
+                }
+            }
+        },
+        "creeper": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "creeper"
+                }
+            }
+        },
+        "evoker": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "evocation_illager"
+                }
+            }
+        },
+        "husk": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "husk"
+                }
+            }
+        },
+        "skeleton": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "skeleton"
+                }
+            }
+        },
+        "stray": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "stray"
+                }
+            }
+        },
+        "vindicator": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "vindication_illager"
+                }
+            }
+        },
+        "witch": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "witch"
+                }
+            }
+        },
+        "wither_skeleton": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "wither_skeleton"
+                }
+            }
+        },
+        "zombie": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "zombie"
+                }
+            }
+        },
+        "zombie_villager": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "zombie_villager"
+                }
+            }
+        }
+    },
+    "requirements": [
+        [
+            "zombie_pigman",
+            "polar_bear",
+            "creeper",
+            "evoker",
+            "husk",
+            "skeleton",
+            "stray",
+            "vindicator",
+            "witch",
+            "wither_skeleton",
+            "zombie",
+            "zombie_villager"
+        ]
+    ]
+}

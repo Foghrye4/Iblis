@@ -1,6 +1,5 @@
 package iblis.item;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -13,9 +12,10 @@ import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
-import iblis.util.HeadShotHandler;
 import iblis.util.IblisMathUtil;
 import iblis.util.PlayerUtils;
+import iblis_headshots.IblisHeadshotsMod;
+import iblis_headshots.util.HeadShotHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -150,9 +150,8 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 				}
 				target.attackEntityFrom(source, projectileDamage * 4.0f);
 				lastVictim = target;
-				IblisMod.network.spawnCustomParticle(world,
-						target.getPositionVector().add(new Vec3d(0, 2, 0)), new Vec3d(0d, 0.2d, 0d),
-						IblisParticles.HEADSHOT);
+				IblisHeadshotsMod.network.spawnHeadshotParticle(world,
+						target.getPositionVector().add(new Vec3d(0, 2, 0)), new Vec3d(0d, 0.2d, 0d), 15);
 				continue;
 			}
 			AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox();

@@ -1,6 +1,5 @@
 package iblis;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.google.gson.stream.JsonReader;

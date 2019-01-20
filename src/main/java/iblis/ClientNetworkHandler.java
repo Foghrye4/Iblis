@@ -2,16 +2,12 @@ package iblis;
 
 import java.io.IOException;
 
-import iblis.block.BlockLabTable.SubBox;
 import iblis.client.ClientRenderEventHandler;
 import iblis.client.gui.GuiEventHandler;
-import iblis.client.gui.GuiLabTable;
 import iblis.init.IblisParticles;
 import iblis.player.PlayerCharacteristics;
-import iblis.tileentity.TileEntityLabTable;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -237,21 +233,6 @@ public class ClientNetworkHandler extends ServerNetworkHandler {
 		byteBufOutputStream.writeByte(command.ordinal());
 		byteBufOutputStream.writeInt(player.getEntityId());
 		byteBufOutputStream.writeInt(world.provider.getDimension());
-		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
-	}
-
-	public void sendCommandLabTableGuiAction(BlockPos pos, TileEntityLabTable.Actions action) {
-		WorldClient world = Minecraft.getMinecraft().world;
-		EntityPlayerSP player = Minecraft.getMinecraft().player;
-		ByteBuf bb = Unpooled.buffer(36);
-		PacketBuffer byteBufOutputStream = new PacketBuffer(bb);
-		byteBufOutputStream.writeByte(ServerCommands.LAB_TABLE_GUI_ACTION.ordinal());
-		byteBufOutputStream.writeInt(player.getEntityId());
-		byteBufOutputStream.writeInt(world.provider.getDimension());
-		byteBufOutputStream.writeInt(pos.getX());
-		byteBufOutputStream.writeInt(pos.getY());
-		byteBufOutputStream.writeInt(pos.getZ());
-		byteBufOutputStream.writeByte(action.ordinal());
 		channel.sendToServer(new FMLProxyPacket(byteBufOutputStream, IblisMod.MODID));
 	}
 }

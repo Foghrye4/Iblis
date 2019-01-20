@@ -12,19 +12,16 @@ import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
-import iblis.event.IblisBlockEventHandler;
 import iblis.event.IblisEventHandler;
 import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
 import iblis.init.IblisPotions;
 import iblis.init.IblisSounds;
-import iblis.init.IblisSubstances;
 import iblis.init.RegistryEventHandler;
 import iblis.item.IblisCreativeTab;
 import iblis.item.ItemIngot;
 import iblis.loot.LootTableParsingEventHandler;
 import iblis.tconstruct_integration.TConstructCraftingEventHandler;
-import iblis.tileentity.TileEntityLabTable;
 import iblis.villager.EmeraldForOreDictionaryItems;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
@@ -47,14 +44,13 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod {
 	public static final String MODID = "iblis";
-	public static final String VERSION = "0.4.14";
+	public static final String VERSION = "0.5.0";
 	public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
 	public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
 
@@ -88,7 +84,6 @@ public class IblisMod {
 		IblisBlocks.init();
 		IblisItems.init();
 		IblisPotions.init();
-		IblisSubstances.init();
 		IblisSounds.register();
 		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		MinecraftForge.EVENT_BUS.register(config);
@@ -106,7 +101,6 @@ public class IblisMod {
 				"ThrowingKnife", 2, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "crossbow_bolt"), EntityCrossbowBolt.class,
 				"CrossbowBolt", 3, this, 64, 1, true);
-		GameRegistry.registerTileEntity(TileEntityLabTable.class, MODID + ":lab_table");
 		VillagerProfession mechanic = new VillagerProfession(MODID + ":mechanic",
 				MODID + ":textures/entity/villager/mechanic.png",
 				MODID + ":textures/entity/villager/zombie_mechanic.png");
@@ -123,7 +117,6 @@ public class IblisMod {
 		MinecraftForge.EVENT_BUS.register(proxy);
 		MinecraftForge.EVENT_BUS.register(new LootTableParsingEventHandler());
 		MinecraftForge.EVENT_BUS.register(new RegistryEventHandler());
-		MinecraftForge.EVENT_BUS.register(new IblisBlockEventHandler());
 
 		if (Loader.isModLoaded("tconstruct")) {
 			MinecraftForge.EVENT_BUS.register(new TConstructCraftingEventHandler());

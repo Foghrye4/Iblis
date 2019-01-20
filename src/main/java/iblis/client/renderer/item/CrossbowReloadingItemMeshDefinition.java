@@ -3,7 +3,6 @@ package iblis.client.renderer.item;
 import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
 import iblis.init.IblisItems;
-import iblis.item.ItemCrossbowReloading;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.ItemMeshDefinition;

@@ -1,8 +1,8 @@
 package iblis.client;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +11,6 @@ import org.lwjgl.input.Keyboard;
 import iblis.ClientNetworkHandler;
 import iblis.IblisMod;
 import iblis.ServerNetworkHandler.ServerCommands;
-import iblis.client.gui.GuiLabTable;
 import iblis.client.particle.ParticleDecal;
 import iblis.init.IblisItems;
 import iblis.item.ICustomLeftClickItem;
@@ -20,7 +19,6 @@ import iblis.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +30,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.PlayerSPPushOutOfBlocksEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
@@ -40,7 +37,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.MouseInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -134,9 +130,6 @@ public class ClientGameEventHandler implements IWorldEventListener{
 		if (mc.player.getHeldItemMainhand().getItem() instanceof ICustomLeftClickItem
 				&& mc.gameSettings.keyBindAttack.isPressed()) {
 			((ClientNetworkHandler) IblisMod.network).sendCommand(ServerCommands.LEFT_CLICK);
-		}
-		if(GuiLabTable.instance.isActive()&& mc.gameSettings.keyBindUseItem.isPressed()) {
-			GuiLabTable.instance.onRightClick();
 		}
 		if(toggleSprintByKeyBindSprint && Minecraft.getMinecraft().gameSettings.keyBindSprint.isPressed()) {
 			isSprinting = !isSprinting;

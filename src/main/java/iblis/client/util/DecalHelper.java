@@ -1,6 +1,5 @@
 package iblis.client.util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;

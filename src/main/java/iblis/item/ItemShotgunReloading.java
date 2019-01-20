@@ -1,7 +1,6 @@
 package iblis.item;
 
 import iblis.constants.NBTTagsKeys;
-import iblis.init.IblisItems;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
 import net.minecraft.entity.Entity;
@@ -10,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;

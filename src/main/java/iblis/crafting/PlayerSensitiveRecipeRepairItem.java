@@ -1,14 +1,13 @@
 package iblis.crafting;
 
+import static iblis.crafting.CraftingHandler.replacements;
+
 import javax.annotation.Nonnull;
 
 import iblis.IblisMod;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.RecipeRepairItem;
-import net.minecraftforge.oredict.OreDictionary;
-
-import static iblis.crafting.CraftingHandler.*;
 
 public class PlayerSensitiveRecipeRepairItem extends RecipeRepairItem {
 	

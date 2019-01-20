@@ -36,7 +36,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumHand;
@@ -75,9 +74,6 @@ public class GuiEventHandler {
 	private String currentSkillHint = "";
 	private String requiredOrExpSkillHint = "";
 	
-	private String genericHint = "";
-	private int genericHintDisplayCountdown = 0;
-
 	@SubscribeEvent
 	public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
 		if (event.getGui() instanceof GuiInventory) {
@@ -143,13 +139,6 @@ public class GuiEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onOverlayRender(RenderGameOverlayEvent.Pre action) {
-		if (action.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-			ScaledResolution res = action.getResolution();
-			int screenWidth = res.getScaledWidth();
-			int screenHeight = res.getScaledHeight();
-			this.renderHint(screenWidth, screenHeight);
-			GuiLabTable.instance.render();
-		}
 		if (action.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayer player = mc.player;
@@ -463,18 +452,6 @@ public class GuiEventHandler {
 	}
 	
 	public void showHint(String unlocalisedHint){
-		genericHintDisplayCountdown = 255;
-		genericHint = I18n.format(unlocalisedHint);
-	}
-	
-	private void renderHint(int width, int height) {
-		if (genericHintDisplayCountdown > 0) {
-			genericHintDisplayCountdown--;
-			Minecraft mc = Minecraft.getMinecraft();
-			int left = width / 2 - 91;
-			int top = height / 2;
-			GlStateManager.color(1f, 1f, 1f, genericHintDisplayCountdown/255.0f);
-			mc.ingameGUI.getFontRenderer().drawString(genericHint, left, top, 0xFFFFFF);
-		}
+		I18n.format(unlocalisedHint);
 	}
 }

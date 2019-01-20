@@ -10,13 +10,11 @@ import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
 import iblis.entity.EntityPlayerZombie;
 import iblis.init.IblisItems;
-import iblis.init.IblisParticles;
 import iblis.init.IblisPotions;
 import iblis.player.FoodStatsExtended;
 import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
-import iblis.util.HeadShotHandler;
 import iblis.util.ModIntegrationUtil;
 import iblis.util.PlayerUtils;
 import iblis.world.WorldSavedDataPlayers;
@@ -27,7 +25,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -72,6 +69,7 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
@@ -373,28 +371,12 @@ public class IblisEventHandler {
 		}
 	}
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOW)
 	public void onLivingHurt(LivingHurtEvent event) {
 		float damage = event.getAmount();
 		EntityLivingBase living = event.getEntityLiving();
 		if (living.world.isRemote)
 			return;
-		Entity projectile = event.getSource().getImmediateSource();
-		if (projectile != null) {
-			Vec3d start = new Vec3d(projectile.posX, projectile.posY, projectile.posZ);
-			Vec3d end = new Vec3d(projectile.posX + projectile.motionX, projectile.posY + projectile.motionY,
-					projectile.posZ + projectile.motionZ);
-			if (HeadShotHandler.traceHeadShot(living, start, end) != null) {
-				if (living.getHealth() < damage && living instanceof EntitySlime
-						&& ((EntitySlime) living).getSlimeSize() > 1) {
-					((EntitySlime) living).setSlimeSize(0, false);
-				}
-				IblisMod.network.spawnCustomParticle(living.world, start, new Vec3d(0d, 0.2d, 0d),
-						IblisParticles.HEADSHOT);
-				damage *= 4;
-				event.setAmount(damage);
-			}
-		}
 		if (!(living instanceof EntityPlayerMP))
 			return;
 		if (event.getSource().isExplosion()) {

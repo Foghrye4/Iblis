@@ -1,5 +1,6 @@
 package iblis.client.particle;
 
+
 import iblis.init.IblisItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -10,8 +11,6 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -24,20 +23,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ParticleBoulderShard extends Particle {
 
 	private final ItemStack itemstack = new ItemStack(IblisItems.BOULDER);
-	private static final VertexFormat VERTEX_FORMAT = (new VertexFormat()).addElement(DefaultVertexFormats.POSITION_3F)
-			.addElement(DefaultVertexFormats.TEX_2F).addElement(DefaultVertexFormats.COLOR_4UB)
-			.addElement(DefaultVertexFormats.TEX_2S).addElement(DefaultVertexFormats.NORMAL_3B)
-			.addElement(DefaultVertexFormats.PADDING_1B);
 	/** The Rendering Engine. */
 	private final TextureManager textureManager;
-	private final float size;
 	private RenderItem itemRenderer;
 
 	public ParticleBoulderShard(TextureManager textureManagerIn, World worldIn, double xCoordIn, double yCoordIn,
 			double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, float sizeIn) {
 		super(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
 		this.textureManager = textureManagerIn;
-		this.size = sizeIn;
 		this.particleMaxAge = 15;
 		this.itemRenderer = Minecraft.getMinecraft().getRenderItem();
 		this.particleGravity = 10;

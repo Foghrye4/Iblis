@@ -1,7 +1,5 @@
 package iblis.client.renderer.entity;
 
-import org.lwjgl.opengl.GL11;
-
 import iblis.entity.EntityCrossbowBolt;
 import iblis.init.IblisItems;
 import net.minecraft.client.renderer.GlStateManager;

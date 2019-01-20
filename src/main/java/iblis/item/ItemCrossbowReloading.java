@@ -6,7 +6,6 @@ import iblis.init.IblisSounds;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +38,7 @@ public class ItemCrossbowReloading extends ItemBaseFirearmsReloading {
 			playerIn.resetCooldown();
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, loadedGunStack);
 		}
-		if (this.findAmmo(playerIn) == null)
+		if (this.findAmmo(playerIn).isEmpty())
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
 		playerIn.setActiveHand(handIn);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);

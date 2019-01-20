@@ -1,5 +1,20 @@
 package iblis;
 
+
+import static iblis.init.IblisItems.BOULDER;
+import static iblis.init.IblisItems.GUIDE;
+import static iblis.init.IblisItems.HEAVY_SHIELD;
+import static iblis.init.IblisItems.INGOT;
+import static iblis.init.IblisItems.MEDKIT;
+import static iblis.init.IblisItems.NONSTERILE_MEDKIT;
+import static iblis.init.IblisItems.NUGGET_STEEL;
+import static iblis.init.IblisItems.RAISIN;
+import static iblis.init.IblisItems.STEEL_BOOTS;
+import static iblis.init.IblisItems.STEEL_CHESTPLATE;
+import static iblis.init.IblisItems.STEEL_HELMET;
+import static iblis.init.IblisItems.STEEL_LEGGINS;
+import static iblis.init.IblisItems.TRIGGER_SPRING;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,19 +41,15 @@ import iblis.client.renderer.entity.RenderThrowingKnife;
 import iblis.client.renderer.item.CrossbowItemMeshDefinition;
 import iblis.client.renderer.item.CrossbowReloadingItemMeshDefinition;
 import iblis.client.renderer.item.SingleIconItemMeshDefinition;
-import iblis.client.renderer.item.SubstanceContainerItemMeshDefinition;
-import iblis.client.renderer.tileentity.TileEntityLabTableSpecialRenderer;
 import iblis.client.util.DecalHelper;
 import iblis.constants.NBTTagsKeys;
 import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityThrowingKnife;
-import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
 import iblis.init.IblisParticles;
 import iblis.item.ItemIngot;
 import iblis.player.PlayerSkills;
-import iblis.tileentity.TileEntityLabTable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -49,7 +60,6 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -68,15 +78,10 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import static iblis.init.IblisItems.*;
-import static iblis.init.IblisBlocks.*;
 
 
 public class ClientProxy extends ServerProxy {
-
-	private SubstanceContainerItemMeshDefinition substanceContainerItemMeshDefinition;
 
 	@SubscribeEvent
 	void onWorldLoadedEvent(WorldEvent.Load event) {
@@ -175,15 +180,11 @@ public class ClientProxy extends ServerProxy {
 		ModelBakery.registerItemVariants(IblisItems.INGOT,
 				new ResourceLocation[] { new ResourceLocation(IblisMod.MODID, "ingot_steel"),
 						new ResourceLocation(IblisMod.MODID, "ingot_bronze") });
-		substanceContainerItemMeshDefinition = new SubstanceContainerItemMeshDefinition();
-		ModelLoader.setCustomMeshDefinition(IblisItems.SUBSTANCE_CONTAINER,substanceContainerItemMeshDefinition);
-		substanceContainerItemMeshDefinition.registerVariants();
 	}
 
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
 		ParticleSliver.bakeModels();
-		TileEntityLabTableSpecialRenderer.bakeModels();
 	}
 
 	@Override
@@ -197,11 +198,6 @@ public class ClientProxy extends ServerProxy {
 						Minecraft.getMinecraft().getRenderItem()));
 		registerItemRenders();
 		registerBlockRenders();
-		TileEntityLabTableSpecialRenderer renderer = new TileEntityLabTableSpecialRenderer();
-		MinecraftForge.EVENT_BUS.register(renderer);
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLabTable.class, renderer);
-		final ItemColors itemColours = Minecraft.getMinecraft().getItemColors();
-		itemColours.registerItemColorHandler(substanceContainerItemMeshDefinition, IblisItems.SUBSTANCE_CONTAINER);
 	}
 	
 	private void registerItemRenders() {
@@ -243,17 +239,6 @@ public class ClientProxy extends ServerProxy {
 	
 	private void registerBlockRenders() {
 		
-		registerRender(LAB_TABLE, 0, LAB_TABLE.getRegistryName());
-		registerRender(VINE, 0, VINE.getRegistryName());
-		final BlockColors blockColours = Minecraft.getMinecraft().getBlockColors();
-		blockColours.registerBlockColorHandler(new IBlockColor() {
-			public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos,
-					int tintIndex) {
-				return worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos)
-						: ColorizerFoliage.getFoliageColorBasic();
-			}
-		}, VINE);
-		
 	}
 	
 	private static void registerRender(Block block, int metadata, ResourceLocation modelResourceLocation) {
@@ -287,10 +272,6 @@ public class ClientProxy extends ServerProxy {
 		double distance = renderViewEntity.getDistanceSq(posX, posY, posZ);
 		distance = MathHelper.sqrt(distance);
 		switch (particle) {
-		case HEADSHOT:
-			entityParticle = new ParticleHeadshot(mc.getTextureManager(), mc.world, posX, posY, posZ, xSpeedIn,
-					ySpeedIn, zSpeedIn, (float) (distance / 100d + 0.1d));
-			break;
 		case BOULDER:
 			entityParticle = new ParticleBoulderShard(mc.getTextureManager(), mc.world, posX, posY, posZ, xSpeedIn,
 					ySpeedIn, zSpeedIn, 1.0f);
@@ -403,8 +384,6 @@ public class ClientProxy extends ServerProxy {
 	}
 	
 	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {
-		Minecraft.getMinecraft().displayGuiScreen(new iblis.client.gui.GuiScreenBookExtended(playerIn, jsonReader));
-		
 	}
 	
 	public void setToggleSprintByKeyBindSprint(boolean value) {

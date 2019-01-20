@@ -1,19 +1,12 @@
 package iblis.ebwizardy_integration;
 
 
+import electroblob.wizardry.constants.Element;
 import electroblob.wizardry.event.SpellCastEvent;
 import electroblob.wizardry.spell.Spell;
-import electroblob.wizardry.util.SpellModifiers;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import electroblob.wizardry.constants.Element;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
 import iblis.util.PlayerUtils;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.RangedAttribute;

@@ -11,7 +11,6 @@ import iblis.item.ItemIngot;
 import iblis.item.ItemMedkit;
 import iblis.item.ItemShotgun;
 import iblis.item.ItemShotgunReloading;
-import iblis.item.ItemSubstanceContainer;
 import iblis.item.ItemThrowingWeapon;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -32,7 +31,6 @@ public class IblisItems {
 	public static Item RAISIN;
 	public static Item NONSTERILE_MEDKIT;
 	public static ItemMedkit MEDKIT;
-	public static ItemSubstanceContainer SUBSTANCE_CONTAINER;
 	public static Item BOULDER;
 	public static Item IRON_THROWING_KNIFE;
 	public static Item HEAVY_SHIELD;
@@ -62,7 +60,6 @@ public class IblisItems {
 		RAISIN = new ItemFood(4,0.3f,false);
 		NONSTERILE_MEDKIT = new Item();
 		MEDKIT = new ItemMedkit();
-		SUBSTANCE_CONTAINER = new ItemSubstanceContainer();
 		BOULDER = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.BOULDER);
 		IRON_THROWING_KNIFE = new ItemThrowingWeapon(ItemThrowingWeapon.ThrowableType.IRON_KNIFE);
 		HEAVY_SHIELD = new ItemHeavyShield();
@@ -175,12 +172,6 @@ public class IblisItems {
 			.setHasSubtypes(false)
 			.setMaxDamage(10)
 			.setMaxStackSize(1);
-		SUBSTANCE_CONTAINER.setCreativeTab(IblisMod.creativeTab)
-			.setUnlocalizedName("flask")
-			.setRegistryName(IblisMod.MODID, "flask")
-			.setHasSubtypes(true)
-			.setMaxDamage(0)
-			.setMaxStackSize(1);
 		BOULDER.setCreativeTab(IblisMod.creativeTab)
 			.setUnlocalizedName("boulder")
 			.setRegistryName(IblisMod.MODID, "boulder")
@@ -238,7 +229,6 @@ public class IblisItems {
 		registerItem(RAISIN);
 		registerItem(NONSTERILE_MEDKIT);
 		registerItem(MEDKIT);
-		registerItem(SUBSTANCE_CONTAINER);
 		registerItem(BOULDER);
 		registerItem(IRON_THROWING_KNIFE);
 		registerItem(HEAVY_SHIELD);

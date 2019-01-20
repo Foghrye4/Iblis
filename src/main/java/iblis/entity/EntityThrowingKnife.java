@@ -16,7 +16,7 @@ import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
-import iblis.util.HeadShotHandler;
+import iblis_headshots.util.HeadShotHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;

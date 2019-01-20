@@ -1,0 +1,29 @@
+{
+    "display": {
+        "icon": {
+            "item": "minecraft:bow"
+        },
+        "title": {
+            "translate": "iblis.advancements.adventure.get_head_shot.title"
+        },
+        "description": {
+            "translate": "iblis.advancements.adventure.get_head_shot.description"
+        }
+    },
+    "parent": "adventure/root",
+    "criteria": {
+        "player": {
+            "trigger": "iblis_headshots:headshot",
+            "conditions": {
+                "target": {
+                    "type": "player"
+                }
+            }
+        }
+    },
+    "requirements": [
+        [
+            "player"
+        ]
+    ]
+}
