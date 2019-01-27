@@ -80,7 +80,11 @@ public class IblisEventHandler {
 	public boolean spawnPlayerZombie = true;
 	public boolean noDeathPenalty = false;
 	public boolean noIncreasedMobSeekRange = false;
-
+	public boolean mobReactOnlyOnShooting = false;
+	
+	public int lastPlayerShooterID = -1;
+	public int shootingSoundCountdownTimer = -1;
+	
 	@SubscribeEvent
 	public void onPlayerTickEvent(PlayerTickEvent event) {
 		if(event.phase != TickEvent.Phase.START)
@@ -96,7 +100,12 @@ public class IblisEventHandler {
 		if (player.isSpectator())
 			return;
 		World world = player.world;
-		this.notifyRandomEntityAboutPlayer(world, player);
+		if (mobReactOnlyOnShooting) {
+			if (player.getEntityId() == lastPlayerShooterID && --shootingSoundCountdownTimer > 0)
+				this.notifyRandomEntityAboutPlayer(world, player);
+		} else {
+			this.notifyRandomEntityAboutPlayer(world, player);
+		}
 		int knock = PlayerUtils.getKnockState(player);
 		if (knock == 0)
 			return;
@@ -255,120 +264,6 @@ public class IblisEventHandler {
 		if(horse.isTame())
 			return;
 		event.getEntityMounting().attackEntityFrom(DamageSource.causeMobDamage(horse), 1.0f);
-	}
-	
-	private final static float ANY_FOOD_TAMING_SKILL_LIMIT = 8.0f;
-	
-	@SubscribeEvent
-	public void onTameAttempt(EntityInteract event) {
-		if(!(event.getTarget() instanceof EntityAnimal) || event.getWorld().isRemote)
-			return;
-		EntityPlayer tamer = event.getEntityPlayer();
-		Random rand = tamer.world.rand;
-		ItemStack itemstack = event.getItemStack();
-		float tamingSkill = (float)PlayerSkills.TAMING.getCurrentValue(tamer);
-		EntityAnimal animal = (EntityAnimal) event.getTarget();
-		if (rand.nextFloat() > 3.0f / (tamingSkill + 1.0f)
-				&& (animal.isBreedingItem(itemstack) || itemstack.getItem() == Items.GOLDEN_CARROT
-						|| itemstack.getItem() == Items.GOLDEN_APPLE)
-				&& animal.getGrowingAge() == 0 && !animal.isInLove()) {
-			animal.setInLove(tamer);
-		}
-		if (event.getTarget() instanceof AbstractHorse) {
-			AbstractHorse horse = (AbstractHorse) event.getTarget();
-			if (horse.isTame() || horse.isChild())
-				return;
-			int oldTemper = horse.getTemper();
-			if(itemstack.isEmpty() || horse.processInitialInteract(tamer, event.getHand()))
-				event.setCanceled(true);
-			else
-				return;
-			int newTemper = horse.getTemper();
-			if (newTemper > oldTemper || newTemper >= horse.getMaxTemper()) {
-				if (newTemper < horse.getMaxTemper())
-					horse.increaseTemper((int) (tamingSkill * 2.0f));
-				horse.mountTo(tamer);
-				return;
-			} else {
-				IblisMod.network.showHintToPlayer(tamer, "iblis.horseTamingHint");
-				return;
-			}
-		}
-		if(tamingSkill<=1)
-			return;
-		if (event.getTarget() instanceof EntityTameable) {
-			EntityTameable target = (EntityTameable) event.getTarget();
-			if (target.isTamed())
-				return;
-			if (target instanceof EntityOcelot) {
-				EntityOcelot cat = (EntityOcelot) target;
-				if ((cat.aiTempt == null || cat.aiTempt.isRunning() || tamingSkill > 3.0f) && (itemstack.getItem() == Items.FISH || tamingSkill > ANY_FOOD_TAMING_SKILL_LIMIT && itemstack.getItem() instanceof ItemFood)
-						&& tamer.getDistanceSqToEntity(cat) < 9.0D) {
-					event.setCanceled(true);
-					if (!tamer.capabilities.isCreativeMode)
-						itemstack.shrink(1);
-					if (rand.nextFloat() > 0.9f / tamingSkill
-							&& !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(cat, tamer)) {
-						cat.setTamedBy(tamer);
-						cat.setTameSkin(1 + cat.world.rand.nextInt(3));
-						cat.playTameEffect(true);
-						cat.getAISit().setSitting(true);
-						cat.world.setEntityState(cat, (byte) 7);
-					} else {
-						cat.playTameEffect(false);
-						cat.world.setEntityState(cat, (byte) 6);
-					}
-				}
-			}
-			else if (target instanceof EntityWolf) {
-				EntityWolf wolf = (EntityWolf) target;
-				boolean correctItem = itemstack.getItem() == Items.BONE || tamingSkill > ANY_FOOD_TAMING_SKILL_LIMIT && itemstack.getItem() instanceof ItemFood;
-				if(correctItem && wolf.getAttackTarget() == tamer && tamingSkill > 10.0f) {
-					event.setCanceled(true);
-					if(!tamer.capabilities.isCreativeMode)
-						itemstack.shrink(1);
-					wolf.setRevengeTarget((EntityLivingBase) null);
-					wolf.setAttackTarget((EntityLivingBase) null);
-					Iterator<EntityAITasks.EntityAITaskEntry> iterator = wolf.targetTasks.executingTaskEntries
-							.iterator();
-					while (iterator.hasNext()) {
-						EntityAITasks.EntityAITaskEntry entityaitasks$entityaitaskentry1 = iterator.next();
-						entityaitasks$entityaitaskentry1.using = false;
-						entityaitasks$entityaitaskentry1.action.resetTask();
-						iterator.remove();
-					}
-					return;
-				}
-				else if (correctItem && !wolf.isAngry()) {
-					event.setCanceled(true);
-					if (!tamer.capabilities.isCreativeMode)
-						itemstack.shrink(1);
-					if (rand.nextFloat() > 0.9f / tamingSkill
-							&& !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(wolf, tamer)) {
-						wolf.setTamedBy(tamer);
-						wolf.getNavigator().clearPathEntity();
-						wolf.setAttackTarget((EntityLivingBase) null);
-						wolf.getAISit().setSitting(true);
-						wolf.setHealth(20.0F);
-						wolf.playTameEffect(true);
-						wolf.world.setEntityState(wolf, (byte) 7);
-					} else {
-						wolf.playTameEffect(false);
-						wolf.world.setEntityState(wolf, (byte) 6);
-					}
-				}
-			}
-		}
-	}
-
-
-	@SubscribeEvent
-	public void onTame(AnimalTameEvent event) {
-		float tamingSkill = (float)PlayerSkills.TAMING.getCurrentValue(event.getTamer());
-		PlayerSkills.TAMING.raiseSkill(event.getTamer(), 1.0);
-		if(event.getEntity().world.rand.nextFloat() > tamingSkill + 0.1f) {
-			event.setCanceled(true);
-		}
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOW)

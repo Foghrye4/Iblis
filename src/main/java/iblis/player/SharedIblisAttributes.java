@@ -17,6 +17,7 @@ public class SharedIblisAttributes {
     public static final UUID SPRINTING_SPEED_MODIFIER = UUID.fromString("5719796-57EED-AA0D1F1E7-A3-C4A7AC791571C");
 	public static final UUID SHIELD_RUNNING_MODIFIER = UUID.fromString("51E76-57EED-AA0D1F1E7-7E4-E9");
 	public static final UUID EQUILIBRIUM_KNOCKBACK_MODIFIER = UUID.fromString("FFFFFFFF-FF62-BD91-0000-00001580FE92");
+	public static final UUID DIGGING_SKILL_MODIFIER = UUID.fromString("D166146-514177-AA0D1F1E7-7E4-E9");
     
     public static final IAttribute MELEE_DAMAGE_BONUS = (new RangedAttribute((IAttribute)null, "iblis.melee_damage_bonus", 1.0D, 0.0D, Double.MAX_VALUE)).setDescription("Melee damage bonus").setShouldWatch(true);
     public static final IAttribute PROJECTILE_DAMAGE = (new RangedAttribute((IAttribute)null, "iblis.projectile_damage", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Projectile damage").setShouldWatch(true);
@@ -43,9 +44,8 @@ public class SharedIblisAttributes {
     public static final IAttribute MECHANICS = (new RangedAttribute(CRAFTMANSHIP, "iblis.mechanics", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Mechanics").setShouldWatch(true);
 	public static final IAttribute MEDICAL_AID = (new RangedAttribute(CRAFTMANSHIP, "iblis.medical_aid", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Medical aid").setShouldWatch(true);
 	public static final IAttribute DIGGING = (new RangedAttribute(CRAFTMANSHIP, "iblis.digging", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Digging").setShouldWatch(true);
-	public static final IAttribute TAMING = (new RangedAttribute(CRAFTMANSHIP, "iblis.taming", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Taming").setShouldWatch(true);
 	public static final IAttribute CHEMISTRY = (new RangedAttribute(CRAFTMANSHIP, "iblis.chemistry", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Chemistry").setShouldWatch(true);
-    
+	
     public static final IAttribute ACROBATICS = (new RangedAttribute(WISDOM, "iblis.acrobatics", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Acrobatics").setShouldWatch(true);
     public static final IAttribute RUNNING = (new RangedAttribute(ACROBATICS, "iblis.running", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Running").setShouldWatch(true);
     public static final IAttribute JUMPING = (new RangedAttribute(ACROBATICS, "iblis.jumping", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Jumping").setShouldWatch(true);
@@ -74,7 +74,6 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(MECHANICS);
 		attributeMap.registerAttribute(MEDICAL_AID);
 		attributeMap.registerAttribute(DIGGING);
-		attributeMap.registerAttribute(TAMING);
 		attributeMap.registerAttribute(CHEMISTRY);
 		attributeMap.registerAttribute(ACROBATICS);
 		attributeMap.registerAttribute(RUNNING);

@@ -62,7 +62,7 @@ iblis.ARMORSMITH=armor smithing
 iblis.MECHANICS=mechanics
 iblis.MEDICAL_AID=medical aid
 iblis.CHEMISTRY=chemistry
-iblis.DIGGING=mining
+iblis.DIGGING=mining and chopping
 iblis.TAMING=taming
 iblis.RUNNING=light athletic
 iblis.JUMPING=acrobatics
@@ -112,6 +112,7 @@ attribute.name.iblis.melee_damage_reduction=Incoming melee damage reduction
 attribute.name.iblis.fire_damage_reduction=Incoming fire damage reduction
 attribute.name.iblis.intelligence=Intelligence
 attribute.name.iblis.running=Running
+attribute.name.iblis.digging=Tool effectiveness
 
 iblis.diary=%ss' diary
 iblis.youAlreadyReadThatBook=You already read that book.
@@ -150,93 +151,23 @@ item.steel_helmet.name=Steel helmet
 item.steel_chestplate.name=Steel chestplate
 item.steel_leggins.name=Steel leggins
 item.steel_boots.name=Steel boots
-item.pile.name=Pile of dust
-item.flask.name=Flask
-item.reactor.name=Glass reactor
-item.raisin.name=Raisins
 
 ### Blocks ###
 
 tile.iblis.vine.name=Grape
 tile.iblis.chemical_lab_installation.name=Chemical lab installation
+tile.iblis.iron_coal.name=Iron with coal
+tile.iblis.ironore_coal.name=Iron ore with coal
+tile.iblis.slag.name=Slag
 
-### Substances ###
-
-iblis.empty=Empty
-iblis.impurity.name=Impurities
-iblis.water.name=Water
-iblis.mercury.name=Mercury
-iblis.nitric_acid.name=Nitric acid
-iblis.mercury2_nitrate.name=Mercury(II) nitrate
-iblis.mercury2_fulminate.name=Mercury(II) fulminate
-iblis.ethanole.name=Ethanole
-iblis.yeast.name=Yeast
-iblis.chitin.name=Chitin
-iblis.sugar.name=Sugar
-iblis.sugar_syrup.name=Sugar syrup
-iblis.carbon_dioxide.name=Carbon dioxide
-iblis.nitric_oxide4.name=Nitric oxide (IV)
-iblis.sulphuric_acid.name=Sulphuric acid
-iblis.saltpeter.name=Saltpeter
-iblis.sulphur.name=Sulphur
-iblis.sulphuric_anhydride.name=Sulphuric anhydride
-iblis.potassium_sulphate.name=Potassium sulphate
-iblis.sodium_sulphate.name=Sodium sulphate
-iblis.acetaldehyde.name=Acetaldehyde
-
-iblis.impurity.formula=(unknown)
-iblis.water.formula=H₂O
-iblis.mercury.formula=Hg
-iblis.nitric_acid.formula=HNO₃
-iblis.mercury2_nitrate.formula=Hg(HNO₃)₂
-iblis.mercury2_fulminate.formula=Hg(CNO)₂
-iblis.ethanole.formula=C₂H₅OH
-iblis.yeast.formula=(yeast)
-iblis.chitin.formula=[C₈H₁₃NO₅]ₙ
-iblis.sugar.formula=C₁₂H₂₂O₁₁
-iblis.sugar_syrup.formula=C₁₂H₂₂O₁₁(solution)
-iblis.carbon_dioxide.formula=CO₂
-iblis.nitric_oxide4.formula=NO₂
-iblis.sulphuric_acid.formula=H₂SO₄
-iblis.saltpeter.formula=KNO₃
-iblis.sulphur.formula=S
-iblis.sulphuric_anhydride.formula=SO₃
-iblis.potassium_sulphate.formula=K₂SO₄
-iblis.sodium_sulphate.formula=Na₂SO₄
-iblis.acetaldehyde.formula=CH₃CHO
-
-entity.Villager.mechanic=Mechanic
 awareness=A smell of enemy
 overheating=Overheating
 
 ### GUI elements ###
 
-iblis.gui.entalpy=%dkJ
-iblis.gui.longDash= — 
-iblis.gui.arrowRight=⟶
-iblis.gui.arrowLeftRight=⟷
-iblis.gui.contains=Contains:
-iblis.gui.amount=: %0.2f
-iblis.gui.atTemperatureAbove=at %0.2f℃ or higher
 iblis.trainCraftTooltip=Do not craft item. Use resources to train only.
-iblis.gui.fillReactor=Fill reactor
-iblis.gui.takeReactor=Take reactor
-iblis.gui.fillFlask=Fill flask
-iblis.gui.takeFlask=Take flask
-iblis.gui.placeFlask=Place flask
-iblis.gui.placeReactor=Place reactor
-iblis.gui.fillSeparator=Fill separator
-iblis.gui.useSeparator=Use separator
-iblis.gui.fillFilter=Fill filter
-iblis.gui.takeSolidFilterContent=Grab solid residuum
-iblis.gui.clearFlask=Clear flask
-iblis.gui.toggleBurner=Toggle burner
-iblis.gui.addFuel=Add fuel
-iblis.gui.temperature=Temperature: %0.1f °C
-iblis.gui.fuel=Fuel: %0.1f s
-
-### Books ###
-iblis.chemistry_guide_text1=A common field tool to process a chemical reaction is a compact installation which can be crafted like this:
-iblis.chemistry_guide_text2=To heat up reactor add some burning powder to burner under reactor. If reaction mass is heated above a boiling point of a substance or a product of reaction is gaseous in temperature of reaction mass, a gaseous product will be collected in attached flask. To clean reactor or flask detatch them and use a brush provided with installation. A solid residue can be separated by using filter. Simply fill a filter while holding flask or reactor in hand. Liquid will be collected in a flask below filter. Chemical compounds of some common items:
-iblis.chemistry_guide_text3=Chemical formula of some widely used substances:
-iblis.chemistry_guide_text4=An entalpy gain and temperature conditions of some chemical reactions:
+iblis.generalConfig=General
+iblis.characteristicsDisablingConfig=Characteristics
+iblis.characteristicsStartLevelConfig=Characteristics start level
+iblis.characteristicsPointsPerLevelConfig=Characteristics points per level
+iblis.skillsConfig=Skills

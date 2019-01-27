@@ -16,8 +16,8 @@ public class PlayerSensitiveMetadataShapedRecipeWrapper extends ShapedRecipeRais
 		super(recipeIn);
 	}
 
-	public PlayerSensitiveMetadataShapedRecipeWrapper setSesitiveTo(PlayerSkills skillIn, double requiredskill, double skillXPIn) {
-		super.setSesitiveTo(skillIn, skillXPIn);
+	public PlayerSensitiveMetadataShapedRecipeWrapper setSensitiveTo(PlayerSkills skillIn, double requiredskill, double skillXPIn) {
+		super.setSensitiveTo(skillIn, skillXPIn);
 		minimalSkill = requiredskill;
 		return this;
 	}

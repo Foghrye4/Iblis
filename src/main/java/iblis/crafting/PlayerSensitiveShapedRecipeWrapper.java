@@ -15,6 +15,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -27,8 +28,8 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkill
 		super(recipeIn);
 	}
 
-	public PlayerSensitiveShapedRecipeWrapper setSesitiveTo(PlayerSkills skillIn, double requiredskill, double skillXPIn) {
-		super.setSesitiveTo(skillIn, skillXPIn);
+	public PlayerSensitiveShapedRecipeWrapper setSensitiveTo(PlayerSkills skillIn, double requiredskill, double skillXPIn) {
+		super.setSensitiveTo(skillIn, skillXPIn);
 		minimalSkill = requiredskill;
 		return this;
 	}
@@ -55,12 +56,32 @@ public class PlayerSensitiveShapedRecipeWrapper extends ShapedRecipeRaisingSkill
 			int modifiedValue = PlayerUtils.modifyIntValueBySkill(additive, baseValue, skillValue);
 			output1.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, modifiedValue);
 		}
+		for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+			for (Entry<String, AttributeModifier> entry : output1.getAttributeModifiers(slot).entries()) {
+				NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(
+						new AttributeModifier(entry.getValue().getID(), entry.getValue().getName(),
+								entry.getValue().getAmount(), entry.getValue().getOperation()));
+				modifierNBT.setString("Slot", slot.getName());
+				modifierNBT.setString("AttributeName", entry.getKey());
+				attributeModifiersNBTList.appendTag(modifierNBT);
+			}
+		}
 		if(output1.getItem() instanceof ItemBow && !output1.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).containsKey(SharedIblisAttributes.PROJECTILE_DAMAGE.getName())) {
 			double modifierValue = 2.0d;
 			NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(
 					new AttributeModifier(SharedIblisAttributes.ARROW_DAMAGE_MODIFIER, "Arrow damage", modifierValue, 0));
 			modifierNBT.setString("Slot", EntityEquipmentSlot.MAINHAND.getName());
 			modifierNBT.setString("AttributeName", SharedIblisAttributes.PROJECTILE_DAMAGE.getName());
+			attributeModifiersNBTList.appendTag(modifierNBT);
+			output1.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
+		}
+		if(!output1.getItem().getToolClasses(output1).isEmpty() && output1.getItem() instanceof ItemTool) {
+			ItemTool tool = (ItemTool) output1.getItem(); 
+			double modifierValue = tool.efficiencyOnProperMaterial * 0.1f;
+			NBTTagCompound modifierNBT = SharedMonsterAttributes.writeAttributeModifierToNBT(
+					new AttributeModifier(SharedIblisAttributes.ARROW_DAMAGE_MODIFIER, "Digging skill", modifierValue, 0));
+			modifierNBT.setString("Slot", EntityEquipmentSlot.MAINHAND.getName());
+			modifierNBT.setString("AttributeName", SharedIblisAttributes.DIGGING.getName());
 			attributeModifiersNBTList.appendTag(modifierNBT);
 			output1.getTagCompound().setTag("AttributeModifiers", attributeModifiersNBTList);
 		}

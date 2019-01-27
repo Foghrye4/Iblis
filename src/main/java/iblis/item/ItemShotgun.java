@@ -52,6 +52,8 @@ public class ItemShotgun extends ItemFirearmsBase {
 	
 	@Override
 	protected void shoot(World worldIn, Vec3d aim, EntityPlayer playerIn, boolean isCritical, double accuracy, float projectileDamageIn, int ammoTypeIn){
+		IblisMod.eventHandler.lastPlayerShooterID = playerIn.getEntityId();
+		IblisMod.eventHandler.shootingSoundCountdownTimer = 1200;
 		int blockReachDistance = 256;
 		Vec3d vec3d = new Vec3d(playerIn.posX, playerIn.posY + playerIn.eyeHeight, playerIn.posZ);
 		Vec3d vec3d2 = vec3d.addVector(aim.x * blockReachDistance, aim.y * blockReachDistance,

@@ -22,7 +22,7 @@ import iblis.item.IblisCreativeTab;
 import iblis.item.ItemIngot;
 import iblis.loot.LootTableParsingEventHandler;
 import iblis.tconstruct_integration.TConstructCraftingEventHandler;
-import iblis.villager.EmeraldForOreDictionaryItems;
+import iblis.villager.EmeraldForRandomSkillBook;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
@@ -44,13 +44,14 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerCareer;
 import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession;
 
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod {
 	public static final String MODID = "iblis";
-	public static final String VERSION = "0.5.0";
+	public static final String VERSION = "0.5.1";
 	public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
 	public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
 
@@ -68,6 +69,7 @@ public class IblisMod {
 	public static boolean isAppleCoreLoaded = false;
 	public static boolean isAppleskinLoaded = false;
 	public static boolean isEBWizardyLoaded = false;
+	private static final int LIBRARIAN_CAREER_ID = 0;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -101,14 +103,11 @@ public class IblisMod {
 				"ThrowingKnife", 2, this, 64, 1, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(MODID, "crossbow_bolt"), EntityCrossbowBolt.class,
 				"CrossbowBolt", 3, this, 64, 1, true);
-		VillagerProfession mechanic = new VillagerProfession(MODID + ":mechanic",
-				MODID + ":textures/entity/villager/mechanic.png",
-				MODID + ":textures/entity/villager/zombie_mechanic.png");
-		VillagerCareer mechanicCareer = new VillagerCareer(mechanic, "mechanic");
-		ITradeList trade1 = new ListItemForEmeralds(IblisItems.SHOTGUN_BULLET, new PriceInfo(-24, -8));
-		ITradeList trade2 = new EmeraldForOreDictionaryItems("ingotSteel", new PriceInfo(4, 8));
-		mechanicCareer.addTrade(1, trade1, trade2);
-		RegistryEventHandler.professions.add(mechanic);
+		
+		VillagerProfession librarian = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:librarian"));
+		VillagerCareer librarianCareer = librarian.getCareer(LIBRARIAN_CAREER_ID);
+		ITradeList trade = new EmeraldForRandomSkillBook("ingotSteel", new PriceInfo(4, 8));
+		librarianCareer.addTrade(2, trade);
 		proxy.load();
 		network.load();
 

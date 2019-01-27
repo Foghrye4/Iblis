@@ -6,7 +6,6 @@ import java.util.Random;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
-import iblis.IblisMod;
 import iblis.init.IblisItems;
 import iblis.player.PlayerSkills;
 import net.minecraft.item.ItemStack;
@@ -33,8 +32,6 @@ public class LootEntryRandomGuideBook extends LootEntry {
 		skillNBT.setDouble("value", rand.nextFloat() * rand.nextFloat() + 0.1f);
 		skills.appendTag(skillNBT);
 		guideNBT.setTag("skills", skills);
-		if (skill == PlayerSkills.CHEMISTRY)
-			guideNBT.setString("resourceLocation", IblisMod.MODID + ":books/chemistry_guide.json");
 		guideStack.setTagCompound(guideNBT);
 		stacks.add(guideStack);
 	}

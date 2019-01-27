@@ -34,6 +34,7 @@ public class PlayerUtils {
 			SharedMonsterAttributes.ARMOR.getName(), 
 			SharedMonsterAttributes.ARMOR_TOUGHNESS.getName(),
 			SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
+			SharedIblisAttributes.DIGGING.getName(),
 			SharedIblisAttributes.PROJECTILE_DAMAGE.getName(),
 			SharedIblisAttributes.MELEE_DAMAGE_REDUCTION.getName(),
 			SharedIblisAttributes.PROJECTILE_DAMAGE_REDUCTION.getName(),

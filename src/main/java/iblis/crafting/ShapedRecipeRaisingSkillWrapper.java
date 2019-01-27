@@ -27,7 +27,7 @@ public class ShapedRecipeRaisingSkillWrapper extends ShapedRecipes implements IR
 		wrappedRecipe = recipeIn;
 	}
 
-	public ShapedRecipeRaisingSkillWrapper setSesitiveTo(PlayerSkills skillIn, double skillXPIn) {
+	public ShapedRecipeRaisingSkillWrapper setSensitiveTo(PlayerSkills skillIn, double skillXPIn) {
 		sensitiveSkill = skillIn;
 		skillXP = skillXPIn;
 		return this;

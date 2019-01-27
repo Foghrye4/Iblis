@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"normal": { "model": "iblis:slag" },
+		"inventory": { "model": "iblis:slag" }
+	}
+}

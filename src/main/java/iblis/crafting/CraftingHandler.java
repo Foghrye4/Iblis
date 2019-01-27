@@ -78,13 +78,13 @@ public class CraftingHandler  implements IContainerListener{
 					this.wrapRecipe(is, vanillaRecipesToRemove, recipe, PlayerSkills.MECHANICS);
 				} else if (is.getItem() instanceof ItemShield) {
 					ShapedRecipeRaisingSkillWrapper shieldsWrapper = new ShapedRecipeRaisingSkillWrapper(recipe);
-					shieldsWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 2);
+					shieldsWrapper.setSensitiveTo(PlayerSkills.ARMORSMITH, 2);
 					shieldsWrapper.setRegistryName(recipe.getRegistryName());
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
 					replacements2.add(shieldsWrapper);
 				} else if (isMechanism(is)) {
 					ShapedRecipeRaisingSkillWrapper mechanismWrapper = new ShapedRecipeRaisingSkillWrapper(recipe);
-					mechanismWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 1);
+					mechanismWrapper.setSensitiveTo(PlayerSkills.MECHANICS, 1);
 					mechanismWrapper.setRegistryName(recipe.getRegistryName());
 					vanillaRecipesToRemove.add(recipe.getRegistryName());
 					replacements2.add(mechanismWrapper);
@@ -117,7 +117,7 @@ public class CraftingHandler  implements IContainerListener{
 			if(material.equalsIgnoreCase("stone"))
 				skillXP = 1.0d;
 		}
-		recipeReplacement.setSesitiveTo(sensitiveSkill, requiredskill, skillXP);
+		recipeReplacement.setSensitiveTo(sensitiveSkill, requiredskill, skillXP);
 		recipeReplacement.setRegistryName(recipe.getRegistryName());
 		vanillaRecipesToRemove.add(recipe.getRegistryName());
 		replacements.add(recipeReplacement);
@@ -177,6 +177,8 @@ public class CraftingHandler  implements IContainerListener{
 				Ingredient.fromStacks(new ItemStack(IblisItems.BOULDER, 1, 0)));
 		
 		Ingredient ironIngot = Ingredient.fromStacks(new ItemStack(Items.IRON_INGOT));
+		Ingredient ironOre = Ingredient.fromStacks(new ItemStack(Blocks.IRON_ORE));
+		Ingredient coal = Ingredient.fromStacks(new ItemStack(Items.COAL,1,0),new ItemStack(Items.COAL,1,1));
 		Ingredient planks = new OreIngredient("plankWood");
 		Ingredient leather = Ingredient.fromItem(Items.LEATHER);
 		ItemStack spring = new ItemStack(IblisItems.TRIGGER_SPRING);
@@ -213,23 +215,32 @@ public class CraftingHandler  implements IContainerListener{
 		NonNullList<Ingredient> bulletRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				Ingredient.EMPTY, ironIngot, Ingredient.EMPTY,
 				paper, gunpowder, paper,
-				Ingredient.fromItem(Items.REDSTONE), bronzeIngot, Ingredient.EMPTY);
+				bronzeIngot, Ingredient.fromItem(Items.REDSTONE), bronzeIngot);
 		
 		NonNullList<Ingredient> shotRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				paper, 			ironIngot, 			paper,
 				paper, 			gunpowder, 			paper,
-				Ingredient.fromItem(Items.REDSTONE), bronzeIngot, Ingredient.EMPTY);
+				bronzeIngot, Ingredient.fromItem(Items.REDSTONE), bronzeIngot);
 		
-		ShapedRecipes bulletRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, bulletRecipeIngridients, new ItemStack(IblisItems.SHOTGUN_BULLET,64));
-		ShapedRecipes shotRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, shotRecipeIngridients, new ItemStack(IblisItems.SHOTGUN_SHOT,64));
+		NonNullList<Ingredient> ironCoalRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				ironIngot, coal, ironIngot,
+				coal, ironIngot, coal,
+				ironIngot, coal, ironIngot);
+
+		NonNullList<Ingredient> ironOreCoalRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
+				ironOre, coal, ironOre,
+				coal, ironOre, coal,
+				ironOre, coal, ironOre);
+		
+		ShapedRecipes bulletRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, bulletRecipeIngridients, new ItemStack(IblisItems.SHOTGUN_BULLET,32));
+		ShapedRecipes shotRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, shotRecipeIngridients, new ItemStack(IblisItems.SHOTGUN_SHOT,32));
 		ShapedRecipes ironThrowingKnifeRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, ironThrowingKnifeRecipeIngridients, new ItemStack(IblisItems.IRON_THROWING_KNIFE,8,0));
 		ShapedRecipes crossbowBoltRecipe = new ShapedRecipes(IblisMod.MODID+":shaped", 3, 3, crossbowBoltRecipeIngridients, new ItemStack(IblisItems.CROSSBOW_BOLT,8,0));
 		
-		
-		PlayerSensitiveMetadataShapedRecipeWrapper bulletWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(bulletRecipe).setSesitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
-		PlayerSensitiveMetadataShapedRecipeWrapper shotWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(shotRecipe).setSesitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
-		PlayerSensitiveMetadataShapedRecipeWrapper ironThrowingKnifeWrappedRecipe = new PlayerSensitiveMetadataShapedRecipeWrapper(ironThrowingKnifeRecipe).setSesitiveTo(PlayerSkills.WEAPONSMITH, 0.0, 1.0);
-		PlayerSensitiveMetadataShapedRecipeWrapper crossbowBoltWrappedRecipe = new PlayerSensitiveMetadataShapedRecipeWrapper(crossbowBoltRecipe).setSesitiveTo(PlayerSkills.WEAPONSMITH, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper bulletWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(bulletRecipe).setSensitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper shotWrapped = new PlayerSensitiveMetadataShapedRecipeWrapper(shotRecipe).setSensitiveTo(PlayerSkills.CHEMISTRY, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper ironThrowingKnifeWrappedRecipe = new PlayerSensitiveMetadataShapedRecipeWrapper(ironThrowingKnifeRecipe).setSensitiveTo(PlayerSkills.WEAPONSMITH, 0.0, 1.0);
+		PlayerSensitiveMetadataShapedRecipeWrapper crossbowBoltWrappedRecipe = new PlayerSensitiveMetadataShapedRecipeWrapper(crossbowBoltRecipe).setSensitiveTo(PlayerSkills.WEAPONSMITH, 0.0, 1.0);
 		
 		PlayerSensitiveShapedRecipe recipe1 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients, new ItemStack(IblisItems.GUIDE,1,0));
 		PlayerSensitiveShapedRecipe recipe2 = new PlayerSensitiveShapedRecipe(IblisMod.MODID+":shaped_player_sensitive", 2, 2, guideRecipeIngridients2, new ItemStack(IblisItems.GUIDE,1,0));
@@ -287,10 +298,15 @@ public class CraftingHandler  implements IContainerListener{
 		PlayerSensitiveShapedRecipeWrapper steelChestplateRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelChestplateRecipe);
 		PlayerSensitiveShapedRecipeWrapper steelLegginsRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelLegginsRecipe);
 		PlayerSensitiveShapedRecipeWrapper steelBootsRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(steelBootsRecipe);
-		steelHelmetRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
-		steelChestplateRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
-		steelLegginsRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
-		steelBootsRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		ShapedRecipes ironCoalRecipe = new ShapedRecipes(IblisMod.MODID + ":shaped", 3, 3, ironCoalRecipeIngridients,
+				new ItemStack(IblisBlocks.IRON_COAL, 1, 0));
+		ShapedRecipes ironOreCoalRecipe = new ShapedRecipes(IblisMod.MODID + ":shaped", 3, 3, ironOreCoalRecipeIngridients,
+				new ItemStack(IblisBlocks.IRONORE_COAL, 1, 0));
+
+		steelHelmetRecipeWrapper.setSensitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		steelChestplateRecipeWrapper.setSensitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		steelLegginsRecipeWrapper.setSensitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
+		steelBootsRecipeWrapper.setSensitiveTo(PlayerSkills.ARMORSMITH, 12d, 12d);
 		
 		PlayerSensitiveRecipeRepairItem rri = new PlayerSensitiveRecipeRepairItem();
 
@@ -300,13 +316,13 @@ public class CraftingHandler  implements IContainerListener{
 		boulderRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"boulder"));
 		cobblestoneRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"cobblestone_from_boulders"));
 		ironThrowingKnifeWrappedRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"iron_throwing_knife"));
-		ironThrowingKnifeWrappedRecipe.setSesitiveTo(PlayerSkills.WEAPONSMITH, 5);
+		ironThrowingKnifeWrappedRecipe.setSensitiveTo(PlayerSkills.WEAPONSMITH, 5);
 		shieldRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"heavy_shield"));
-		shieldRecipeWrapper.setSesitiveTo(PlayerSkills.ARMORSMITH, 4, 4);
+		shieldRecipeWrapper.setSensitiveTo(PlayerSkills.ARMORSMITH, 4, 4);
 		crossbowRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"double_crossbow"));
-		crossbowRecipeWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 4, 4);
+		crossbowRecipeWrapper.setSensitiveTo(PlayerSkills.MECHANICS, 4, 4);
 		crossbowBoltWrappedRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"crossbow_bolt"));
-		crossbowBoltWrappedRecipe.setSesitiveTo(PlayerSkills.WEAPONSMITH, 2);
+		crossbowBoltWrappedRecipe.setSensitiveTo(PlayerSkills.WEAPONSMITH, 2);
 		triggerSpringRecipe.setRegistryName(IblisMod.MODID, "trigger_spring");
 		steelHelmetRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_helmet");
 		steelChestplateRecipeWrapper.setRegistryName(IblisMod.MODID, "steel_chestplate");
@@ -315,6 +331,8 @@ public class CraftingHandler  implements IContainerListener{
 		bulletWrapped.setRegistryName(IblisMod.MODID, "bullet");
 		shotWrapped.setRegistryName(IblisMod.MODID, "shot");
 		rri.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_repair_item"));
+		ironCoalRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_iron_coal"));
+		ironOreCoalRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_ironore_coal"));
 		
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
@@ -333,6 +351,9 @@ public class CraftingHandler  implements IContainerListener{
 		event.getRegistry().register(bulletWrapped);
 		event.getRegistry().register(shotWrapped);
 		event.getRegistry().register(rri);
+		event.getRegistry().register(ironOreCoalRecipe);
+		event.getRegistry().register(ironCoalRecipe);
+		
 		this.addShapelessNuggetsOrShradsRecipe("ingotSteel", "nuggetSteel", "steel_ingot_from_nuggets", "nugget_steel", event.getRegistry());
 
 		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);
@@ -343,7 +364,7 @@ public class CraftingHandler  implements IContainerListener{
 				" ST",
 				"S  ", 'W', "plankWood", 'S', "ingotSteel", 'T', spring);
 		PlayerSensitiveShapedRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shotgunRecipe);
-		shotgunRecipeWrapper.setSesitiveTo(PlayerSkills.MECHANICS, 12, 20);
+		shotgunRecipeWrapper.setSensitiveTo(PlayerSkills.MECHANICS, 12, 20);
 		shotgunRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"shotgun_recipe"));
 		replacements.add(shotgunRecipeWrapper);
 		for(PlayerSensitiveShapedRecipeWrapper recipeReplacement: replacements)

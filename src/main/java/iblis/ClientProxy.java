@@ -1,6 +1,5 @@
 package iblis;
 
-
 import static iblis.init.IblisItems.BOULDER;
 import static iblis.init.IblisItems.GUIDE;
 import static iblis.init.IblisItems.HEAVY_SHIELD;
@@ -14,6 +13,7 @@ import static iblis.init.IblisItems.STEEL_CHESTPLATE;
 import static iblis.init.IblisItems.STEEL_HELMET;
 import static iblis.init.IblisItems.STEEL_LEGGINS;
 import static iblis.init.IblisItems.TRIGGER_SPRING;
+import static iblis.init.IblisBlocks.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -238,7 +238,9 @@ public class ClientProxy extends ServerProxy {
 	}
 	
 	private void registerBlockRenders() {
-		
+		registerRender(IRON_COAL, 0, IRON_COAL.getRegistryName());
+		registerRender(IRONORE_COAL, 0, IRONORE_COAL.getRegistryName());
+		registerRender(SLAG, 0, SLAG.getRegistryName());
 	}
 	
 	private static void registerRender(Block block, int metadata, ResourceLocation modelResourceLocation) {
