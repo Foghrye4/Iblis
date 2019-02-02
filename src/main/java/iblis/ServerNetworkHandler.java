@@ -73,13 +73,16 @@ public class ServerNetworkHandler {
 			worldDimensionId = byteBufInputStream.readInt();
 			WorldServer world = server.getWorld(worldDimensionId);
 			EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			world.addScheduledTask(new TaskRaiseCharacteristic(characteristic, player));
+			if (player != null)
+				world.addScheduledTask(new TaskRaiseCharacteristic(characteristic, player));
 			break;
 		case RELOAD_WEAPON:
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			if (player == null)
+				break;
 			ItemStack held = player.getHeldItem(EnumHand.MAIN_HAND);
 			if (held.getItem() instanceof ItemFirearmsBase) {
 				ItemFirearmsBase gun = (ItemFirearmsBase) held.getItem();
@@ -93,7 +96,8 @@ public class ServerNetworkHandler {
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			int sprintingState = byteBufInputStream.readInt();
-			world.addScheduledTask(new TaskApplySprintingSpeedModifier(player, sprintingState));
+			if (player != null)
+				world.addScheduledTask(new TaskApplySprintingSpeedModifier(player, sprintingState));
 			break;
 		case RUNNED_DISTANCE_INFO:
 			playerEntityId = byteBufInputStream.readInt();
@@ -101,13 +105,17 @@ public class ServerNetworkHandler {
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
 			// Please don't cheat. I want to keep it client side.
-			world.addScheduledTask(new TaskRaiseSkill(PlayerSkills.RUNNING, player, byteBufInputStream.readFloat()));
+			if (player != null)
+				world.addScheduledTask(
+						new TaskRaiseSkill(PlayerSkills.RUNNING, player, byteBufInputStream.readFloat()));
 			break;
 		case SPRINTING_BUTTON_INFO:
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			if (player == null)
+				break;
 			int sprintButtonCounter = byteBufInputStream.readInt();
 			PlayerUtils.saveSprintButtonCounterState(player, sprintButtonCounter);
 			break;
@@ -116,13 +124,16 @@ public class ServerNetworkHandler {
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			world.addScheduledTask(new TaskTrainCraftButton(player));
+			if (player != null)
+				world.addScheduledTask(new TaskTrainCraftButton(player));
 			break;
 		case LEFT_CLICK:
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
+			if (player == null)
+				break;
 			ItemStack itemstack = player.getHeldItem(EnumHand.MAIN_HAND);
 			if (itemstack.getItem() instanceof ICustomLeftClickItem) {
 				ICustomLeftClickItem firearm = (ICustomLeftClickItem) itemstack.getItem();
@@ -134,14 +145,16 @@ public class ServerNetworkHandler {
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_SHIELD);
+			if (player != null)
+				PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_SHIELD);
 			break;
 		case KICK:
 			playerEntityId = byteBufInputStream.readInt();
 			worldDimensionId = byteBufInputStream.readInt();
 			world = server.getWorld(worldDimensionId);
 			player = (EntityPlayerMP) world.getEntityByID(playerEntityId);
-			PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_KICK);
+			if (player != null)
+				PlayerUtils.saveKnockState(player, PlayerUtils.KNOCK_BY_KICK);
 			break;
 		default:
 			break;

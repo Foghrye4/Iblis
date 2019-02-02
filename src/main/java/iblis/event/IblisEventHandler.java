@@ -479,15 +479,17 @@ public class IblisEventHandler {
 					.getOrLoadData(WorldSavedDataPlayers.class, WorldSavedDataPlayers.DATA_IDENTIFIER);
 			NBTTagList attributesNBTList = null;
 			NBTTagList books = null;
-			if (playersData != null) {
-				attributesNBTList = playersData.playerDataAttributes.remove(player.getUniqueID());
-				books = playersData.playerDataBooks.remove(player.getUniqueID());
+			boolean signOfRessurection = player.getEntityData().getBoolean(NBTTagsKeys.SIGN_OF_RESSURECTION);
+			if (playersData != null && !signOfRessurection) {
+				attributesNBTList = playersData.playerDataAttributes.get(player.getUniqueID());
+				books = playersData.playerDataBooks.get(player.getUniqueID());
 				playersData.markDirty();
 			}
 			if (attributesNBTList != null && noDeathPenalty)
 				SharedMonsterAttributes.setAttributeModifiers(player.getAttributeMap(), attributesNBTList);
 			if (books != null && noDeathPenalty)
 				player.getEntityData().setTag(NBTTagsKeys.EXPLORED_BOOKS, books);
+			player.getEntityData().setBoolean(NBTTagsKeys.SIGN_OF_RESSURECTION, true);
 		}
 	}
 
@@ -535,6 +537,7 @@ public class IblisEventHandler {
 			playersData.playerDataAttributes.put(player.getUniqueID(),
 					SharedMonsterAttributes.writeBaseAttributeMapToNBT(player.getAttributeMap()));
 			playersData.markDirty();
+			player.getEntityData().setBoolean(NBTTagsKeys.SIGN_OF_RESSURECTION, true);
 		}
 		
 	}

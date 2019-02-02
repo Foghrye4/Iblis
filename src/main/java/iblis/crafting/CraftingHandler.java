@@ -113,9 +113,9 @@ public class CraftingHandler  implements IContainerListener{
 			ItemTool isit = (ItemTool) is.getItem();
 			String material = isit.getToolMaterialName();
 			if(material.equalsIgnoreCase("wood"))
-				skillXP = 1.0d; // Nerf tools XP for easily obtained materials
+				skillXP = 0.2d; // Nerf tools XP for easily obtained materials
 			if(material.equalsIgnoreCase("stone"))
-				skillXP = 1.0d;
+				skillXP = 0.2d;
 		}
 		recipeReplacement.setSensitiveTo(sensitiveSkill, requiredskill, skillXP);
 		recipeReplacement.setRegistryName(recipe.getRegistryName());
