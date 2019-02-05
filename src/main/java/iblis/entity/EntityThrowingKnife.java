@@ -117,7 +117,7 @@ public class EntityThrowingKnife extends EntityArrow {
 	protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
 		Entity target = null;
 		double closestDistanceTo = Double.MAX_VALUE;
-		List<Entity> list = world.getEntitiesInAABBexcluding(this, (new AxisAlignedBB(start, end)).grow(0.5d), TARGETS);
+		List<Entity> list = world.getEntitiesInAABBexcluding(this, (new AxisAlignedBB(start.x, start.y, start.z, end.x, end.y, end.z)).grow(0.5d), TARGETS);
 		Iterator<Entity> ei = list.iterator();
 		while (ei.hasNext()) {
 			Entity entity = ei.next();

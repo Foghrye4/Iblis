@@ -134,7 +134,7 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 		if (splashDamageCone != 0.0f) {
 			splashDamage = true;
 		}
-		List<Entity> list = world.getEntitiesInAABBexcluding(shooter, (new AxisAlignedBB(start, end)).grow(0.5d),
+		List<Entity> list = world.getEntitiesInAABBexcluding(shooter, (new AxisAlignedBB(start.x, start.y, start.z, end.x, end.y, end.z)).grow(0.5d),
 				BULLET_TARGETS);
 		Iterator<Entity> ei = list.iterator();
 		while (ei.hasNext()) {

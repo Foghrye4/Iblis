@@ -91,7 +91,7 @@ public class ItemShotgun extends ItemFirearmsBase {
 					block.onBlockExploded(worldIn, pos, explosion);
 				}
 			}
-			else {
+			else if (rtr != null) {
 				addDecal = true;
 			}
 		}
