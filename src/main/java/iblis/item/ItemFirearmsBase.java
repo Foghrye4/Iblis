@@ -83,7 +83,7 @@ public abstract class ItemFirearmsBase extends Item implements ICustomLeftClickI
 	// Server side only
 	public void onShoot(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		if (itemstack.getTagCompound() == null)
+		if (itemstack.getTagCompound() == null || worldIn.isRemote)
 			return;
 		NBTTagCompound nbt = itemstack.getTagCompound();
 		NBTTagList ammoIn = nbt.getTagList(NBTTagsKeys.AMMO, 10);

@@ -129,6 +129,7 @@ iblis.guideLevel.ultimate=ultimate
 iblis.ammo_damage=Damage: %0.1f
 
 itemGroup.iblis.tab=Iblis items
+death.attack.shotgun=%1$s was shot by %2$s
 
 ### Items ###
 

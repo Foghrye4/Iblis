@@ -14,7 +14,7 @@ public enum PlayerCharacteristics {
 	FIRE_DAMAGE_REDUCTION(SharedIblisAttributes.FIRE_DAMAGE_REDUCTION,0d,0.1d),
 	EXPLOSION_DAMAGE_REDUCTION(SharedIblisAttributes.EXPLOSION_DAMAGE_REDUCTION,0d,0.1d),
 	PROJECTILE_DAMAGE_REDUCTION(SharedIblisAttributes.PROJECTILE_DAMAGE_REDUCTION,0d,0.1d),
-	MELEE_DAMAGE_BONUS(SharedIblisAttributes.MELEE_DAMAGE_BONUS,1d,0.1d),
+	MELEE_DAMAGE_BONUS(SharedIblisAttributes.MELEE_DAMAGE_BONUS,0d,0.1d),
 	ATTACK_SPEED(SharedMonsterAttributes.ATTACK_SPEED,4d,0.1d),
 	LUCK(SharedMonsterAttributes.LUCK,0d,0.1d),
 	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d),

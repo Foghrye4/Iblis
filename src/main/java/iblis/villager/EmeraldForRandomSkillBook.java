@@ -18,7 +18,7 @@ public class EmeraldForRandomSkillBook implements ITradeList {
 	
 	private final PriceInfo priceInfo;
     
-    public EmeraldForRandomSkillBook(String buyingItemIn, PriceInfo priceInfoIn)
+    public EmeraldForRandomSkillBook(PriceInfo priceInfoIn)
     {
         this.priceInfo = priceInfoIn;
     }

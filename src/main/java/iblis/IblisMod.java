@@ -51,7 +51,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod {
 	public static final String MODID = "iblis";
-	public static final String VERSION = "0.5.3";
+	public static final String VERSION = "0.5.6";
 	public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
 	public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
 
@@ -106,7 +106,7 @@ public class IblisMod {
 		
 		VillagerProfession librarian = ForgeRegistries.VILLAGER_PROFESSIONS.getValue(new ResourceLocation("minecraft:librarian"));
 		VillagerCareer librarianCareer = librarian.getCareer(LIBRARIAN_CAREER_ID);
-		ITradeList trade = new EmeraldForRandomSkillBook("ingotSteel", new PriceInfo(4, 8));
+		ITradeList trade = new EmeraldForRandomSkillBook(new PriceInfo(4, 8));
 		librarianCareer.addTrade(2, trade);
 		proxy.load();
 		network.load();

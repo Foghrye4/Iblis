@@ -184,7 +184,7 @@ public class CraftingHandler  implements IContainerListener{
 		ItemStack spring = new ItemStack(IblisItems.TRIGGER_SPRING);
 		Ingredient paper = Ingredient.fromStacks(new ItemStack(Items.PAPER));
 		Ingredient gunpowder = Ingredient.fromStacks(new ItemStack(Items.GUNPOWDER));
-		Ingredient bronzeIngot = new OreIngredient("ingotBronze");
+		Ingredient copperAlloys = new MultiOreIngredient("ingotBronze","ingotCopper");
 		
 		NonNullList<Ingredient> crossbowRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				Ingredient.fromStacks(new ItemStack(Items.STICK, 1, 0)),
@@ -215,12 +215,12 @@ public class CraftingHandler  implements IContainerListener{
 		NonNullList<Ingredient> bulletRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				Ingredient.EMPTY, ironIngot, Ingredient.EMPTY,
 				paper, gunpowder, paper,
-				bronzeIngot, Ingredient.fromItem(Items.REDSTONE), bronzeIngot);
+				copperAlloys, Ingredient.fromItem(Items.REDSTONE), copperAlloys);
 		
 		NonNullList<Ingredient> shotRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				paper, 			ironIngot, 			paper,
 				paper, 			gunpowder, 			paper,
-				bronzeIngot, Ingredient.fromItem(Items.REDSTONE), bronzeIngot);
+				copperAlloys, Ingredient.fromItem(Items.REDSTONE), copperAlloys);
 		
 		NonNullList<Ingredient> ironCoalRecipeIngridients = NonNullList.from(Ingredient.EMPTY,
 				ironIngot, coal, ironIngot,
