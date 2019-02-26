@@ -22,7 +22,7 @@ public class PlayerSkills {
 	public static final PlayerSkills WEAPONSMITH = new PlayerSkills("WEAPONSMITH",SharedIblisAttributes.WEAPONSMITH,0.02f);
 	public static final PlayerSkills MECHANICS = new PlayerSkills("MECHANICS",SharedIblisAttributes.MECHANICS,0.02f);
 	public static final PlayerSkills MEDICAL_AID = new PlayerSkills("MEDICAL_AID",SharedIblisAttributes.MEDICAL_AID,0.02f);
-	public static final PlayerSkills DIGGING = new PlayerSkills("DIGGING",SharedIblisAttributes.DIGGING,0.001f);
+	public static final PlayerSkills DIGGING = new PlayerSkills("DIGGING",SharedIblisAttributes.DIGGING,0.002f);
 	public static final PlayerSkills CHEMISTRY = new PlayerSkills("CHEMISTRY",SharedIblisAttributes.CHEMISTRY,0.02f);
 	public static final PlayerSkills RUNNING = new PlayerSkills("RUNNING",SharedIblisAttributes.RUNNING,0.0001f);
 	public static final PlayerSkills JUMPING = new PlayerSkills("JUMPING",SharedIblisAttributes.JUMPING,0.001f);
@@ -51,7 +51,7 @@ public class PlayerSkills {
 				iattribute != SharedIblisAttributes.INTELLIGENCE;
 				iattribute = iattribute.getParent()) {
 			double value = player.getEntityAttribute(iattribute).getBaseValue();
-			value += pointsPerLevel * d / divider / (value + 1.0d);
+			value += pointsPerLevel * d / divider / (value*0.5d + 1.0d);
 			player.getEntityAttribute(iattribute).setBaseValue(value);
 			divider<<=2;
 		}

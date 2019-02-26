@@ -1,14 +1,10 @@
 package iblis.event;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import com.google.common.collect.Multimap;
 
 import iblis.IblisMod;
-import iblis.constants.NBTTagsKeys;
-import iblis.entity.EntityPlayerZombie;
 import iblis.init.IblisItems;
 import iblis.init.IblisPotions;
 import iblis.player.FoodStatsExtended;
@@ -17,31 +13,22 @@ import iblis.player.PlayerSkills;
 import iblis.player.SharedIblisAttributes;
 import iblis.util.ModIntegrationUtil;
 import iblis.util.PlayerUtils;
-import iblis.world.WorldSavedDataPlayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
@@ -56,10 +43,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.event.entity.EntityTravelToDimensionEvent;
-import net.minecraftforge.event.entity.living.AnimalTameEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
@@ -67,7 +51,6 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -77,8 +60,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class IblisEventHandler {
 
-	public boolean spawnPlayerZombie = true;
-	public boolean noDeathPenalty = false;
 	public boolean noIncreasedMobSeekRange = false;
 	public boolean mobReactOnlyOnShooting = false;
 	
@@ -474,22 +455,6 @@ public class IblisEventHandler {
 				aiAttackDamage.applyModifier(new AttributeModifier(
 						SharedIblisAttributes.ATTACK_DAMAGE_BY_CHARACTERISTIC_MODIFIER, "Characteristic modifier",
 						PlayerCharacteristics.MELEE_DAMAGE_BONUS.getCurrentValue(player), 1));
-
-			WorldSavedDataPlayers playersData = (WorldSavedDataPlayers) IblisMod.proxy.getServer().worlds[0].getPerWorldStorage()
-					.getOrLoadData(WorldSavedDataPlayers.class, WorldSavedDataPlayers.DATA_IDENTIFIER);
-			NBTTagList attributesNBTList = null;
-			NBTTagList books = null;
-			boolean signOfRessurection = player.getEntityData().getBoolean(NBTTagsKeys.SIGN_OF_RESSURECTION);
-			if (playersData != null && !signOfRessurection) {
-				attributesNBTList = playersData.playerDataAttributes.get(player.getUniqueID());
-				books = playersData.playerDataBooks.get(player.getUniqueID());
-				playersData.markDirty();
-			}
-			if (attributesNBTList != null && noDeathPenalty)
-				SharedMonsterAttributes.setAttributeModifiers(player.getAttributeMap(), attributesNBTList);
-			if (books != null && noDeathPenalty)
-				player.getEntityData().setTag(NBTTagsKeys.EXPLORED_BOOKS, books);
-			player.getEntityData().setBoolean(NBTTagsKeys.SIGN_OF_RESSURECTION, true);
 		}
 	}
 
@@ -509,36 +474,5 @@ public class IblisEventHandler {
 								"Weapon skill modifier", PlayerSkills.SWORDSMANSHIP.getFullSkillValue(player), 0));
 			}
 		}
-	}
-	
-	@SubscribeEvent
-	public void onPlayerChangeDimension(EntityTravelToDimensionEvent event){
-		if (!(event.getEntity() instanceof EntityPlayerMP))
-			return;
-		this.savePlayerData((EntityPlayerMP) event.getEntity());
-	}
-	
-	@SubscribeEvent
-	public void onPlayerDeath(LivingDeathEvent event) {
-		if (!(event.getEntityLiving() instanceof EntityPlayerMP))
-			return;
-		EntityPlayerMP player = (EntityPlayerMP) event.getEntityLiving();
-		this.savePlayerData(player);
-		if (spawnPlayerZombie) {
-			EntityPlayerZombie playerZombie = new EntityPlayerZombie(player, noDeathPenalty);
-			player.world.spawnEntity(playerZombie);
-		}
-	}
-	
-	private void savePlayerData(EntityPlayerMP player){
-		if (noDeathPenalty) {
-			WorldSavedDataPlayers playersData = PlayerUtils.getOrCreateWorldSavedData(IblisMod.proxy.getServer().worlds[0]);
-			playersData.playerDataKeys.add(player.getUniqueID());
-			playersData.playerDataAttributes.put(player.getUniqueID(),
-					SharedMonsterAttributes.writeBaseAttributeMapToNBT(player.getAttributeMap()));
-			playersData.markDirty();
-			player.getEntityData().setBoolean(NBTTagsKeys.SIGN_OF_RESSURECTION, true);
-		}
-		
 	}
 }

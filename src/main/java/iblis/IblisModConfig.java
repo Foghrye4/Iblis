@@ -60,9 +60,9 @@ public class IblisModConfig {
 			ch.pointsPerLevel = configuration.getFloat(ch.name().toLowerCase(),
 					CATEGORY_CHARACTERISTICS_POINTS_PER_LEVEL, (float)ch.defaultPointsPerLevel, 0f, 100f, "Amount of points added to characteristic every level.");
 		}
-		IblisMod.eventHandler.spawnPlayerZombie = configuration.getBoolean("spawn_player_zombie",
+		IblisMod.deathPenaltyHandler.spawnPlayerZombie = configuration.getBoolean("spawn_player_zombie",
 				Configuration.CATEGORY_GENERAL, false, "Spawn player zombie on players death with all inventory.");
-		IblisMod.eventHandler.noDeathPenalty = configuration.getBoolean("no_death_penalty",
+		IblisMod.deathPenaltyHandler.noDeathPenalty = configuration.getBoolean("no_death_penalty",
 				Configuration.CATEGORY_GENERAL, true, "No death penalty to all skills and characteristics.");
 		IblisMod.eventHandler.noIncreasedMobSeekRange = configuration.getBoolean("no_increased_mob_seek_range",
 				Configuration.CATEGORY_GENERAL, false, "If true mobs will use regular AI. If false - mobs will have a chance to spot player at any distance.");

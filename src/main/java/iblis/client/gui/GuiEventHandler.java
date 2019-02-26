@@ -78,12 +78,28 @@ public class GuiEventHandler {
 	public void onGuiOpen(GuiScreenEvent.InitGuiEvent.Post event) {
 		if (event.getGui() instanceof GuiInventory) {
 			GuiInventory gui = (GuiInventory) event.getGui();
+			boolean showCharacteristics = false;
+			for (PlayerCharacteristics c : PlayerCharacteristics.values()) {
+				if (c.enabled) {
+					showCharacteristics = true;
+					break;
+				}
+			}
+			boolean showSkills = false;
+			for (PlayerSkills c : PlayerSkills.values()) {
+				if (c.enabled) {
+					showSkills = true;
+					break;
+				}
+			}
 			characteristicsButton = new GuiButtonImage(CHARACTERISTICS_BUTTON_INDEX, gui.getGuiLeft() + 125,
 					gui.getGuiTop() + 61, 20, 18, 0, 220, 18, IBLIS_ICONS);
 			skillsButton = new GuiButtonImage(SKILLS_BUTTON_INDEX, gui.getGuiLeft() + 146, gui.getGuiTop() + 61, 20, 18,
 					20, 220, 18, IBLIS_ICONS);
-			event.getGui().buttonList.add(characteristicsButton);
-			event.getGui().buttonList.add(skillsButton);
+			if(showCharacteristics)
+				event.getGui().buttonList.add(characteristicsButton);
+			if(showSkills)
+				event.getGui().buttonList.add(skillsButton);
 		}
 		refreshTrainCraftingButton();
 	}
@@ -92,13 +108,12 @@ public class GuiEventHandler {
 	public void onDrawScreen(GuiScreenEvent.DrawScreenEvent.Post event) {
 		if (!(event.getGui() instanceof GuiCrafting))
 			return;
-		GuiCrafting gui = (GuiCrafting) event.getGui();
 		Minecraft mc = Minecraft.getMinecraft();
 		GuiCrafting gc = (GuiCrafting) event.getGui();
 		GlStateManager.color(1f, 1f, 1f, 1f);
 		mc.fontRenderer.drawString(currentSkillHint, gc.getGuiLeft() + 88, gc.getGuiTop() + 6, 4210752);
 		mc.fontRenderer.drawString(requiredOrExpSkillHint, gc.getGuiLeft() + 88, gc.getGuiTop() + 19, 4210752);
-		if (trainCraftButton != null && trainCraftButton.isMouseOver() && gui.buttonList.contains(trainCraftButton)) {
+		if (trainCraftButton != null && trainCraftButton.isMouseOver() && gc.buttonList.contains(trainCraftButton)) {
 			mc.currentScreen.drawHoveringText(trainCraftButton.displayString, event.getMouseX(), event.getMouseY());
 		}
 	}
@@ -412,7 +427,7 @@ public class GuiEventHandler {
 		GuiCrafting gui = (GuiCrafting) mc.currentScreen;
 		ContainerWorkbench workBenchContainer = (ContainerWorkbench) gui.inventorySlots;
 		IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, mc.world);
-		if (recipe instanceof IRecipeRaiseSkill) {
+		if (recipe instanceof IRecipeRaiseSkill && ((IRecipeRaiseSkill) recipe).getSensitiveSkill().enabled) {
 			if (trainCraftButton == null)
 				trainCraftButton = new GuiButtonImageWithTooltip(TRAIN_CRAFT_BUTTON_INDEX, gui.getGuiLeft() + 122,
 						gui.getGuiTop() + 61, 20, 18, 60, 220, 18, IBLIS_ICONS,

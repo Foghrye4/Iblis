@@ -12,6 +12,7 @@ import iblis.entity.EntityBoulder;
 import iblis.entity.EntityCrossbowBolt;
 import iblis.entity.EntityPlayerZombie;
 import iblis.entity.EntityThrowingKnife;
+import iblis.event.IblisDeathPenaltyHandler;
 import iblis.event.IblisEventHandler;
 import iblis.init.IblisBlocks;
 import iblis.init.IblisItems;
@@ -51,7 +52,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod {
 	public static final String MODID = "iblis";
-	public static final String VERSION = "0.5.6";
+	public static final String VERSION = "0.5.8";
 	public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
 	public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
 
@@ -63,6 +64,7 @@ public class IblisMod {
 	public static IblisCreativeTab creativeTab;
 	public static IblisModConfig config;
 	public static IblisEventHandler eventHandler;
+	public static IblisDeathPenaltyHandler deathPenaltyHandler;
 	public static ArmorMaterial armorMaterialSteel;
 	public static ArmorMaterial armorMaterialParaAramid;
 	public static boolean isRPGHUDLoaded = false;
@@ -73,6 +75,9 @@ public class IblisMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		isAppleCoreLoaded = Loader.isModLoaded("applecore");
+		isEBWizardyLoaded = Loader.isModLoaded("ebwizardry");
+		isAppleskinLoaded = Loader.isModLoaded("appleskin");
 		// Oh, so original and fresh! ^_^
 		armorMaterialSteel = EnumHelper.addArmorMaterial("STEEL", "iblis:steel", 33, new int[] { 6, 12, 16, 6 }, 0,
 				SoundEvents.ITEM_ARMOR_EQUIP_IRON, 4);
@@ -81,12 +86,17 @@ public class IblisMod {
 				new int[] { 6, 12, 16, 6 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 8);
 		armorMaterialParaAramid.setRepairItem(new ItemStack(IblisItems.PARA_ARAMID_FABRIC));
 		eventHandler = new IblisEventHandler();
+		deathPenaltyHandler = new IblisDeathPenaltyHandler();
 		log = event.getModLog();
 		creativeTab = new IblisCreativeTab("iblis.tab");
 		IblisBlocks.init();
 		IblisItems.init();
 		IblisPotions.init();
 		IblisSounds.register();
+		if (isEBWizardyLoaded) {
+			EBWizardyEventHandler.initSkills();
+			MinecraftForge.EVENT_BUS.register(new EBWizardyEventHandler());
+		}
 		config = new IblisModConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		MinecraftForge.EVENT_BUS.register(config);
 		RangedAttribute toughness = (RangedAttribute) SharedMonsterAttributes.ARMOR_TOUGHNESS;
@@ -113,6 +123,7 @@ public class IblisMod {
 
 		MinecraftForge.EVENT_BUS.register(new CraftingHandler());
 		MinecraftForge.EVENT_BUS.register(eventHandler);
+		MinecraftForge.EVENT_BUS.register(deathPenaltyHandler);
 		MinecraftForge.EVENT_BUS.register(proxy);
 		MinecraftForge.EVENT_BUS.register(new LootTableParsingEventHandler());
 		MinecraftForge.EVENT_BUS.register(new RegistryEventHandler());
@@ -120,15 +131,8 @@ public class IblisMod {
 		if (Loader.isModLoaded("tconstruct")) {
 			MinecraftForge.EVENT_BUS.register(new TConstructCraftingEventHandler());
 		}
-		isAppleCoreLoaded = Loader.isModLoaded("applecore");
-		isAppleskinLoaded = Loader.isModLoaded("appleskin");
 		if (isAppleCoreLoaded) {
 			MinecraftForge.EVENT_BUS.register(new AplleCoreHungerEventHandler());
-		}
-		isEBWizardyLoaded = Loader.isModLoaded("ebwizardry");
-		if (isEBWizardyLoaded) {
-			EBWizardyEventHandler.initSkills();
-			MinecraftForge.EVENT_BUS.register(new EBWizardyEventHandler());
 		}
 	}
 
