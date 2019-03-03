@@ -1,6 +1,5 @@
 package iblis_headshots.util;
 
-import iblis_headshots.IblisHeadshotsMod;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEndermite;
 import net.minecraft.entity.monster.EntityGhast;

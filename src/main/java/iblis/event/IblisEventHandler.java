@@ -373,6 +373,13 @@ public class IblisEventHandler {
 		// To avoid skipping crossbow reload animation
 		if (isCrossbow && duration <= 6)
 			return;
+		if (skillValue < 1.0d)
+			return;
+		if (skillValue > 63.0d) {
+			int newDuration = event.getDuration() - (int) (skillValue - 63.0d);
+			event.setDuration(newDuration);
+			return;
+		}
 		if (duration % (int) (128.0d / skillValue) == 0)
 			event.setDuration(event.getDuration() - 1);
 	}

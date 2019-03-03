@@ -10,7 +10,6 @@ import com.google.common.base.Predicate;
 
 import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
-import iblis.init.IblisParticles;
 import iblis.init.IblisSounds;
 import iblis.util.IblisMathUtil;
 import iblis.util.PlayerUtils;

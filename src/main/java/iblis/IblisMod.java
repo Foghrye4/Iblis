@@ -27,7 +27,6 @@ import iblis.villager.EmeraldForRandomSkillBook;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.passive.EntityVillager.ITradeList;
-import net.minecraft.entity.passive.EntityVillager.ListItemForEmeralds;
 import net.minecraft.entity.passive.EntityVillager.PriceInfo;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -52,7 +51,7 @@ import net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfessio
 @Mod(modid = IblisMod.MODID, version = IblisMod.VERSION, guiFactory = IblisMod.GUI_FACTORY, dependencies = IblisMod.DEPENDENCIES)
 public class IblisMod {
 	public static final String MODID = "iblis";
-	public static final String VERSION = "0.5.8";
+	public static final String VERSION = "0.5.9";
 	public static final String GUI_FACTORY = "iblis.client.gui.IblisGuiFactory";
 	public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
 

@@ -1,5 +1,8 @@
 package iblis;
 
+import static iblis.init.IblisBlocks.IRONORE_COAL;
+import static iblis.init.IblisBlocks.IRON_COAL;
+import static iblis.init.IblisBlocks.SLAG;
 import static iblis.init.IblisItems.BOULDER;
 import static iblis.init.IblisItems.GUIDE;
 import static iblis.init.IblisItems.HEAVY_SHIELD;
@@ -13,7 +16,6 @@ import static iblis.init.IblisItems.STEEL_CHESTPLATE;
 import static iblis.init.IblisItems.STEEL_HELMET;
 import static iblis.init.IblisItems.STEEL_LEGGINS;
 import static iblis.init.IblisItems.TRIGGER_SPRING;
-import static iblis.init.IblisBlocks.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.google.gson.stream.JsonReader;
 
@@ -32,7 +33,6 @@ import iblis.client.gui.GuiEventHandler;
 import iblis.client.particle.ParticleBoulderShard;
 import iblis.client.particle.ParticleDecal;
 import iblis.client.particle.ParticleFlame;
-import iblis.client.particle.ParticleHeadshot;
 import iblis.client.particle.ParticleSliver;
 import iblis.client.particle.ParticleSpark;
 import iblis.client.renderer.entity.RenderBoulder;
@@ -58,8 +58,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.color.BlockColors;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
@@ -70,9 +68,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.obj.OBJLoader;
