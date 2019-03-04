@@ -1,0 +1,23 @@
+language.name=Chinese
+language.region=CN
+language.code=zh_CN
+
+iblis.advancements.adventure.shoot_head.title=瞄准头部
+iblis.advancements.adventure.get_head_shot.title=就像腐烂的南瓜一样!
+
+iblis.advancements.adventure.shoot_head.description=完成一次爆头
+iblis.advancements.adventure.get_head_shot.description=接受爆头
+
+iblis.headshot_protection=爆头伤害削减: %d
+
+iblis.protectionLevel.no=无头部防护
+iblis.protectionLevel.weak=较弱的头部防护
+iblis.protectionLevel.miserable=凄惨的头部防护
+iblis.protectionLevel.awful=糟糕的头部防护
+iblis.protectionLevel.bad=低劣的头部防护
+iblis.protectionLevel.normal=普通的头部防护
+iblis.protectionLevel.good=良好的头部防护
+iblis.protectionLevel.excellent=优秀的头部防护
+iblis.protectionLevel.marvelous=非凡的头部防护
+iblis.protectionLevel.exceptional=独特的头部防护
+iblis.protectionLevel.perfect=完美的头部防护
