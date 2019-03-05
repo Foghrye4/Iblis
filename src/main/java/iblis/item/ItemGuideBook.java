@@ -1,15 +1,10 @@
 package iblis.item;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-
-import com.google.gson.stream.JsonReader;
 
 import iblis.IblisMod;
 import iblis.constants.NBTTagsKeys;
@@ -31,7 +26,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -76,7 +70,6 @@ public class ItemGuideBook extends Item {
 		skill.setDouble("value", 0.7d);
 		skills.appendTag(skill);
 		guideNBT.setTag("skills", skills);
-		guideNBT.setString("resourceLocation", IblisMod.MODID + ":books/chemistry_guide.json");
 		guideStack.setTagCompound(guideNBT);
 		subItems.add(guideStack);
 
@@ -175,12 +168,6 @@ public class ItemGuideBook extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		if(itemstack.hasTagCompound() && worldIn.isRemote && itemstack.getTagCompound().hasKey("resourceLocation")) {
-			NBTTagCompound bookIn = itemstack.getTagCompound();
-			InputStream stream = IblisMod.proxy.getResourceInputStream(new ResourceLocation(bookIn.getString("resourceLocation")));
-			Reader reader = new InputStreamReader(stream);
-			IblisMod.proxy.displayGuiScreenBookExtended(playerIn, new JsonReader(reader));
-		}
 		if (itemstack.hasTagCompound() && !worldIn.isRemote) {
 			boolean playerAlreadyReadBook = false;
 			boolean bookNewVersion = false;

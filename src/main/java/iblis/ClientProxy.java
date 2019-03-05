@@ -380,9 +380,6 @@ public class ClientProxy extends ServerProxy {
 		return super.getResourceInputStream(location);
 	}
 	
-	public void displayGuiScreenBookExtended(EntityPlayer playerIn, JsonReader jsonReader) {
-	}
-	
 	public void setToggleSprintByKeyBindSprint(boolean value) {
 		ClientGameEventHandler.instance.toggleSprintByKeyBindSprint = value;
 	}
