@@ -405,7 +405,9 @@ public class ServerNetworkHandler {
 				IRecipe recipe = CraftingManager.findMatchingRecipe(workBenchContainer.craftMatrix, player.world);
 				if (recipe instanceof IRecipeRaiseSkill) {
 					Slot slotCrafting = workBenchContainer.getSlotFromInventory(workBenchContainer.craftResult, 0);
-					slotCrafting.onTake(player, slotCrafting.getStack());
+					ItemStack result = slotCrafting.getStack();
+					MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, result, workBenchContainer.craftMatrix));
+					slotCrafting.onTake(player, result);
 					((IRecipeRaiseSkill) recipe).getSensitiveSkill().raiseSkill(player, 2.0);
 					IblisMod.network.sendRefreshTrainCraftButton(player);
 				}

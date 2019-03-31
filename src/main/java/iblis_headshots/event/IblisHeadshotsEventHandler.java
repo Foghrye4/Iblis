@@ -64,6 +64,15 @@ public class IblisHeadshotsEventHandler {
 				projectile.posZ - projectile.motionZ);
 		Vec3d end = new Vec3d(projectile.posX + projectile.motionX, projectile.posY + projectile.motionY,
 				projectile.posZ + projectile.motionZ);
+		if (projectile instanceof EntityPlayer) {
+			double d = projectile.getDistanceSqToEntity(victim);
+			if (d < 1.0d)
+				return damage;
+			start = new Vec3d(projectile.posX, projectile.posY + projectile.getEyeHeight(), projectile.posZ);
+			Vec3d aim = projectile.getLookVec();
+			end = new Vec3d(projectile.posX + aim.x * d, projectile.posY + projectile.getEyeHeight() + aim.y * d,
+					projectile.posZ + aim.z * d);
+		}
 		if (debug) {
 			for (int i = 20; i < 60; i++) {
 				Vec3d iv = start.addVector(projectile.motionX * i * 0.05, projectile.motionY * i * 0.05,
@@ -108,7 +117,7 @@ public class IblisHeadshotsEventHandler {
 			}
 			if (victim.getHealth() < damage && victim instanceof EntitySlime
 					&& ((EntitySlime) victim).getSlimeSize() > 1) {
-				((EntitySlime) victim).setSlimeSize(0, false);
+				((EntitySlime) victim).setSlimeSize(1, false);
 			}
 		} else {
 			damage *= missMultiplier;

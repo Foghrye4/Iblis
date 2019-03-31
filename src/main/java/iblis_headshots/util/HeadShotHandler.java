@@ -33,8 +33,8 @@ public class HeadShotHandler {
 	private static final AxisAlignedBB zero = new AxisAlignedBB(0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d);
 	private static final AxisAlignedBB slimeCore = new AxisAlignedBB(0.4d, 0.4d, 0.4d, 0.6d, 0.6d, 0.6d);
 	private static final AxisAlignedBB shulkerCore = new AxisAlignedBB(0.4d, 0.1d, 0.4d, 0.6d, 0.4d, 0.6d);
-	private static final AxisAlignedBB humanoidHead = new AxisAlignedBB(0.1d, 0.75d, 0.1d, 0.9d, 1.0d, 0.9d);
-	private static final AxisAlignedBB huskHead = new AxisAlignedBB(0.1d, 0.75d, 0.1d, 0.9d, 1.1d, 0.9d);
+	private static final AxisAlignedBB humanoidHead = new AxisAlignedBB(0.1d, 0.8d, 0.1d, 0.9d, 1.0d, 0.9d);
+	private static final AxisAlignedBB huskHead = new AxisAlignedBB(0.1d, 0.8d, 0.1d, 0.9d, 1.1d, 0.9d);
 	private static final AxisAlignedBB spiderHead = new AxisAlignedBB(0.6d, 0.5d, 0.3d, 1.2d, 1.2d, 0.7d);
 	private static final AxisAlignedBB chickenHead = new AxisAlignedBB(0.9d, 0.8d, 0.3d, 1.4d, 1.4d, 0.7d);
 	private static final AxisAlignedBB cowHead = new AxisAlignedBB(0.9d, 0.7d, 0.2d, 1.4d, 1.2d, 0.8d);

@@ -45,7 +45,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
 
-version = "0.5.10"
+version = "0.5.11"
 group = "iblis" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "iblis"
 
@@ -69,10 +69,15 @@ jar {
 
 task headshots(type: Jar) {  
     dependsOn "build"
-	version = "1.2.0"
+	version = "1.2.3"
 	baseName = "iblis-headshots"
     from zipTree(jar.outputs.getFiles().getSingleFile()).matching {
         exclude "iblis/**"
+        exclude "assets/iblis/**"
+    }
+    manifest {
+        attributes("Manifest-Version": "1.0",
+		"FMLAT": "iblis_at.cfg")
     }
 }
 
