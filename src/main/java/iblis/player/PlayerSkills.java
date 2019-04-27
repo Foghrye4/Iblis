@@ -13,6 +13,7 @@ public class PlayerSkills {
 
 	private static final List<PlayerSkills> values = new ArrayList<PlayerSkills>();
 	private static final Map<String, PlayerSkills> valuesOf = new HashMap<String, PlayerSkills>();
+	public static final PlayerSkills BOXING = new PlayerSkills("BOXING",SharedIblisAttributes.BOXING,0.005f);
 	public static final PlayerSkills SWORDSMANSHIP = new PlayerSkills("SWORDSMANSHIP",SharedIblisAttributes.SWORDSMANSHIP,0.001f);
 	public static final PlayerSkills PARRY = new PlayerSkills("PARRY",SharedIblisAttributes.PARRY,0.001f);
 	public static final PlayerSkills ARCHERY = new PlayerSkills("ARCHERY",SharedIblisAttributes.ARCHERY,0.001f);

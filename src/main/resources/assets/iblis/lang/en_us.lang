@@ -23,6 +23,7 @@ iblis.gluttony=Gluttony %d: %0.1f
 
 iblis.wisdom=Wisdom: %0.1f
 iblis.martial_arts=Martial arts: %0.1f
+iblis.boxing=Boxing: %0.1f
 iblis.swordsmanship=Swordsmanship: %0.1f
 iblis.parry=Parry: %0.1f
 iblis.archery=Archery: %0.1f
@@ -52,6 +53,7 @@ iblis.ebwizardy.earth=Earth: %0.1f
 iblis.ebwizardy.sorcery=Sorcery: %0.1f
 iblis.ebwizardy.healing=Healing: %0.1f
 
+iblis.BOXING=boxing
 iblis.SWORDSMANSHIP=swordsmanship
 iblis.PARRY=using shields
 iblis.ARCHERY=archery

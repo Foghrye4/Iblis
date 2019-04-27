@@ -82,7 +82,7 @@ public class GuiSkills extends GuiScreen {
 		int martialY = this.topMargin + labelHeight * 2;
 		
 		int craftX = martialX;
-		int craftY = this.height/2;
+		int craftY = this.height - labelHeight * 7;
 		
 		int acrobaticsX = leftMargin + this.labelWidth + 8;
 		int acrobaticsY = this.height/2;
@@ -118,7 +118,7 @@ public class GuiSkills extends GuiScreen {
 		this.martialLineY2 = martialY - 1;
 		
 		this.craftLineX1 = leftMargin + labelWidth + 1;
-		this.craftLineX2 = craftX + labelWidth/2;
+		this.craftLineX2 = craftX + labelWidth / 2;
 		this.craftLineY1 = level1Y + labelRowHeight + labelRowHeight/2;
 		this.craftLineY2 = craftY - 1;
 
@@ -174,7 +174,7 @@ public class GuiSkills extends GuiScreen {
 		if (!martialSkills.isEmpty())
 			this.drawLinkFromLeftToRight(martialLineX1, martialLineX2, martialLineY1, martialLineY2,20);
 		if (!craftSkills.isEmpty())
-			this.drawLinkFromLeftToRight(craftLineX1, craftLineX2, craftLineY1, craftLineY2,10+labelWidth);
+			this.drawLinkFromLeftToRight(craftLineX1, craftLineX2, craftLineY1, craftLineY2,20+labelWidth);
 		if (!acrobaticsSkills.isEmpty())
 			this.drawLinkFromLeftToRight(acrobaticsLineX1, acrobaticsLineX2, acrobaticsLineY1, acrobaticsLineY2,20);
 		if (!magicSkills.isEmpty())

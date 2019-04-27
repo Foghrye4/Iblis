@@ -66,7 +66,7 @@ public class IblisHeadshotsEventHandler {
 				projectile.posZ + projectile.motionZ);
 		if (projectile instanceof EntityPlayer) {
 			double d = projectile.getDistanceSqToEntity(victim);
-			if (d < 1.0d)
+			if (d < 4.0d)
 				return damage;
 			start = new Vec3d(projectile.posX, projectile.posY + projectile.getEyeHeight(), projectile.posZ);
 			Vec3d aim = projectile.getLookVec();

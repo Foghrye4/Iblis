@@ -187,9 +187,8 @@ public class IblisEventHandler {
 		if (!ForgeHooks.isToolEffective(player.world, event.getPos(), player.getHeldItemMainhand()))
 			return;
 		double msm = PlayerSkills.DIGGING.getFullSkillValue(player);
-		speed *= msm * (0.1 + player.getEntityWorld().rand.nextDouble() * 0.1) + 0.2;
+		speed *= msm * 0.1 + 0.2;
 		event.setNewSpeed(speed);
-
 	}
 
 	@SubscribeEvent
@@ -288,7 +287,12 @@ public class IblisEventHandler {
 		ItemStack stackInHand = living.getHeldItemMainhand();
 		Multimap<String, AttributeModifier> am = stackInHand.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
 		if (event.getTarget() instanceof EntityLivingBase) {
-			if (am.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
+			if(stackInHand.isEmpty()) {
+				EntityLivingBase target = (EntityLivingBase) event.getTarget();
+				PlayerSkills.BOXING.raiseSkill(event.getEntityPlayer(), target.getAttributeMap()
+						.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
+			}
+			else if (am.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
 				EntityLivingBase target = (EntityLivingBase) event.getTarget();
 				PlayerSkills.SWORDSMANSHIP.raiseSkill(event.getEntityPlayer(), target.getAttributeMap()
 						.getAttributeInstance(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue());
@@ -475,10 +479,17 @@ public class IblisEventHandler {
 			IAttributeInstance aiAttackDamage = event.getEntityLiving().getAttributeMap()
 					.getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE);
 			aiAttackDamage.removeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER);
-			if (amto.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName()) && PlayerSkills.SWORDSMANSHIP.enabled) {
+			if (amto.containsKey(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
+				if(PlayerSkills.SWORDSMANSHIP.enabled) {
 				aiAttackDamage
 						.applyModifier(new AttributeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER,
 								"Weapon skill modifier", PlayerSkills.SWORDSMANSHIP.getFullSkillValue(player), 0));
+				}
+			}
+			else if(player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).isEmpty()) {
+				aiAttackDamage
+				.applyModifier(new AttributeModifier(SharedIblisAttributes.ATTACK_DAMAGE_BY_SKILL_MODIFIER,
+						"Boxing skill modifier", PlayerSkills.BOXING.getFullSkillValue(player), 0));
 			}
 		}
 	}

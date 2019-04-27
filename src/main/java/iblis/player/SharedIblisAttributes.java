@@ -32,6 +32,7 @@ public class SharedIblisAttributes {
     public static final IAttribute WISDOM = (new RangedAttribute(INTELLIGENCE, "iblis.wisdom", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Wisdom").setShouldWatch(true);
     
     public static final IAttribute MARTIAL_ARTS = (new RangedAttribute(WISDOM, "iblis.martial_arts", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Combat mastery").setShouldWatch(true);
+    public static final IAttribute BOXING = (new RangedAttribute(MARTIAL_ARTS, "iblis.boxing", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Boxing").setShouldWatch(true);
     public static final IAttribute SWORDSMANSHIP = (new RangedAttribute(MARTIAL_ARTS, "iblis.swordsmanship", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Sword mastery").setShouldWatch(true);
     public static final IAttribute PARRY = (new RangedAttribute(MARTIAL_ARTS, "iblis.parry", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Parry").setShouldWatch(true);
     public static final IAttribute ARCHERY = (new RangedAttribute(MARTIAL_ARTS, "iblis.archery", 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Archery").setShouldWatch(true);
@@ -63,6 +64,7 @@ public class SharedIblisAttributes {
 		attributeMap.registerAttribute(GLUTTONY);
 		attributeMap.registerAttribute(WISDOM);
 		attributeMap.registerAttribute(MARTIAL_ARTS);
+		attributeMap.registerAttribute(BOXING);
 		attributeMap.registerAttribute(SWORDSMANSHIP);
 		attributeMap.registerAttribute(PARRY);
 		attributeMap.registerAttribute(ARCHERY);
