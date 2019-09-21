@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public class IblisHeadshotsMod
 {
     public static final String MODID = "iblis_headshots";
-    public static final String VERSION = "1.2.4";
+    public static final String VERSION = "1.2.6";
     public static final String DEPENDENCIES = "after:landcore;after:hardcorearmor;after:tconstruct;after:silentgems";
     public static final String GUI_FACTORY = "iblis_headshots.client.gui.IblisGuiFactory";
     

@@ -55,6 +55,8 @@ import net.minecraftforge.registries.IForgeRegistryModifiable;
 
 public class CraftingHandler  implements IContainerListener{
 	
+	public static boolean disableMedkitRecipe = false;
+	public static boolean disableShotgunRecipes = false;
 	static List<PlayerSensitiveShapedRecipeWrapper> replacements = new ArrayList<PlayerSensitiveShapedRecipeWrapper>();
 	static List<ShapedRecipeRaisingSkillWrapper> replacements2 = new ArrayList<ShapedRecipeRaisingSkillWrapper>();
 	
@@ -333,10 +335,22 @@ public class CraftingHandler  implements IContainerListener{
 		rri.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_repair_item"));
 		ironCoalRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_iron_coal"));
 		ironOreCoalRecipe.setRegistryName(new ResourceLocation(IblisMod.MODID,"recipe_ironore_coal"));
+		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);
+		shotgun.setTagCompound(new NBTTagCompound());
+		shotgun.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, 600);
+		ShapedOreRecipe shotgunRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),shotgun, 
+				"  W",
+				" ST",
+				"S  ", 'W', "plankWood", 'S', "ingotSteel", 'T', spring);
+		PlayerSensitiveShapedRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shotgunRecipe);
+		shotgunRecipeWrapper.setSensitiveTo(PlayerSkills.MECHANICS, 12, 20);
+		shotgunRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"shotgun_recipe"));
 		
 		event.getRegistry().register(recipe1);
 		event.getRegistry().register(recipe2);
-		event.getRegistry().register(medkitRecipe);
+		if (!disableMedkitRecipe) {
+			event.getRegistry().register(medkitRecipe);
+		}
 		event.getRegistry().register(boulderRecipe);
 		event.getRegistry().register(cobblestoneRecipe);
 		event.getRegistry().register(ironThrowingKnifeWrappedRecipe);
@@ -348,25 +362,17 @@ public class CraftingHandler  implements IContainerListener{
 		event.getRegistry().register(steelChestplateRecipeWrapper);
 		event.getRegistry().register(steelLegginsRecipeWrapper);
 		event.getRegistry().register(steelBootsRecipeWrapper);
-		event.getRegistry().register(bulletWrapped);
-		event.getRegistry().register(shotWrapped);
+		if (!disableShotgunRecipes) {
+			event.getRegistry().register(bulletWrapped);
+			event.getRegistry().register(shotWrapped);
+			event.getRegistry().register(shotgunRecipeWrapper);
+		}
 		event.getRegistry().register(rri);
 		event.getRegistry().register(ironOreCoalRecipe);
 		event.getRegistry().register(ironCoalRecipe);
 		
 		this.addShapelessNuggetsOrShradsRecipe("ingotSteel", "nuggetSteel", "steel_ingot_from_nuggets", "nugget_steel", event.getRegistry());
 
-		ItemStack shotgun = new ItemStack(IblisItems.SHOTGUN);
-		shotgun.setTagCompound(new NBTTagCompound());
-		shotgun.getTagCompound().setInteger(NBTTagsKeys.DURABILITY, 600);
-		ShapedOreRecipe shotgunRecipe = new ShapedOreRecipe(new ResourceLocation(IblisMod.MODID,"shaped"),shotgun, 
-				"  W",
-				" ST",
-				"S  ", 'W', "plankWood", 'S', "ingotSteel", 'T', spring);
-		PlayerSensitiveShapedRecipeWrapper shotgunRecipeWrapper = new PlayerSensitiveShapedRecipeWrapper(shotgunRecipe);
-		shotgunRecipeWrapper.setSensitiveTo(PlayerSkills.MECHANICS, 12, 20);
-		shotgunRecipeWrapper.setRegistryName(new ResourceLocation(IblisMod.MODID,"shotgun_recipe"));
-		replacements.add(shotgunRecipeWrapper);
 		for(PlayerSensitiveShapedRecipeWrapper recipeReplacement: replacements)
 			event.getRegistry().register(recipeReplacement);
 		for(ShapedRecipeRaisingSkillWrapper recipeReplacement: replacements2)
@@ -429,6 +435,8 @@ public class CraftingHandler  implements IContainerListener{
 		// Third - find a recipe output
 		ItemStack repairableStack = container.getSlot(2).getStack();
 		for (PlayerSensitiveShapedRecipeWrapper recipeReplacement : replacements) {
+			if(!recipeReplacement.sensitiveSkill.enabled)
+				continue;
 			if (CraftingHandler.itemMatches(repairableStack, recipeReplacement.getRecipeOutput())) {
 				double skillValue = recipeReplacement.sensitiveSkill.getFullSkillValue(player) - recipeReplacement.minimalSkill;
 				PlayerSensitiveShapedRecipeWrapper.getCraftingResult(repairableStack, skillValue, true);

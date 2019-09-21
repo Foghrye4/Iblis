@@ -246,9 +246,11 @@ public class ClientProxy extends ServerProxy {
 	@Override
 	public double getPlayerSkillValue(PlayerSkills sensitiveSkill, InventoryCrafting inv) {
 		double serverValue = super.getPlayerSkillValue(sensitiveSkill, inv);
-		if (serverValue != 0d)
+		if (serverValue != 0.0d)
 			return serverValue;
 		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		if (player == null)
+			return 0.0d;
 		return sensitiveSkill.getFullSkillValue(player);
 	}
 

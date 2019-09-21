@@ -2,6 +2,7 @@ package iblis_headshots.client;
 
 import java.util.List;
 
+import iblis_headshots.event.IblisHeadshotsEventHandler;
 import iblis_headshots.util.IblisItemUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -41,12 +42,12 @@ public class ItemTooltipEventHandler {
 	public void onItemTooltipEvent(ItemTooltipEvent event) {
 		ItemStack is = event.getItemStack();
 		float headGearDamageAbsorbMultiplier = IblisItemUtils.getHeadgearProtection(is);
-		int absobtionPercents = MathHelper.ceil((1.0f - headGearDamageAbsorbMultiplier) * 100f);
-		if (headGearDamageAbsorbMultiplier != 1.0f) {
+		int absorptionPercents = MathHelper.ceil((1.0f - headGearDamageAbsorbMultiplier) * 100f);
+		if (headGearDamageAbsorbMultiplier != 1.0f && !IblisHeadshotsEventHandler.playersHaveNoHeads) {
 			event.getToolTip().add(TextFormatting.LIGHT_PURPLE
-					+ I18n.format("iblis.headshot_protection", absobtionPercents)
+					+ I18n.format("iblis.headshot_protection", absorptionPercents)
 					+ "%");
-			addProtectionTooltip(event.getToolTip(), absobtionPercents/10);
+			addProtectionTooltip(event.getToolTip(), absorptionPercents/10);
 		}
 		
 	}

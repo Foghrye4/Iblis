@@ -24,6 +24,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class IblisHeadshotsEventHandler {
 
+	public static float nonProjectileHeadshotMinDistanceSq = 16.0f;
+	public static float damageToItemMultiplier = 4.0f;
 	public static float damageMultiplier = 4.0f;
 	public static float missMultiplier = 1.0f;
 	public static boolean playersHaveNoHeads = false;
@@ -66,7 +68,7 @@ public class IblisHeadshotsEventHandler {
 				projectile.posZ + projectile.motionZ);
 		if (projectile instanceof EntityPlayer) {
 			double d = projectile.getDistanceSqToEntity(victim);
-			if (d < 4.0d)
+			if (d < nonProjectileHeadshotMinDistanceSq)
 				return damage;
 			start = new Vec3d(projectile.posX, projectile.posY + projectile.getEyeHeight(), projectile.posZ);
 			Vec3d aim = projectile.getLookVec();
@@ -106,7 +108,7 @@ public class IblisHeadshotsEventHandler {
 			if (!headgear.isEmpty()) {
 				float headGearDamageAbsorbMultiplier = IblisItemUtils.getHeadgearProtection(headgear);
 				multiplier = 1.0f + Math.max(multiplier - 1.0f, 0.0f) * headGearDamageAbsorbMultiplier;
-				headgear.damageItem((int) (damage * 4.0F + victim.world.rand.nextFloat() * damage * 2.0F), victim);
+				headgear.damageItem((int) ((victim.world.rand.nextFloat()*0.5 + 1.0F) * damage * damageToItemMultiplier), victim);
 			}
 			damage *= multiplier;
 			Entity shooter = source.getTrueSource();

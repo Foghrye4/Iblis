@@ -1,5 +1,6 @@
 package iblis;
 
+import iblis.crafting.CraftingHandler;
 import iblis.init.IblisItems;
 import iblis.player.PlayerCharacteristics;
 import iblis.player.PlayerSkills;
@@ -10,9 +11,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class IblisModConfig {
 	
 	public static final String CATEGORY_SKILLS = "skills";
+	public static final String CATEGORY_SKILLS_CAP = "skills_cap";
 	public static final String CATEGORY_CHARACTERISTICS_DISABLING = "characteristics_disabling";
 	public static final String CATEGORY_CHARACTERISTICS_START_LEVEL = "characteristics_start_level";
 	public static final String CATEGORY_CHARACTERISTICS_POINTS_PER_LEVEL = "characteristics_points_per_level";
+	public static final String CATEGORY_CHARACTERISTICS_CAP = "characteristics_cap";
 	
 	public IblisModConfig(Configuration configuration) {
 		loadConfig(configuration);
@@ -51,6 +54,8 @@ public class IblisModConfig {
 		for(PlayerSkills skill:PlayerSkills.values()){
 			skill.enabled = configuration.getBoolean(skill.name().toLowerCase(),
 					CATEGORY_SKILLS, true, "Turn off to disable skill. Disabled skills always counts as equal to zero.");
+			skill.cap = configuration.getFloat(skill.name().toLowerCase(),
+					CATEGORY_SKILLS_CAP, 1000.0f, 0f, 1000.0f, "Max skill level.");
 		}
 		for(PlayerCharacteristics ch:PlayerCharacteristics.values()){
 			ch.enabled = configuration.getBoolean(ch.name().toLowerCase(),
@@ -59,6 +64,8 @@ public class IblisModConfig {
 					CATEGORY_CHARACTERISTICS_START_LEVEL, (float)ch.defaultStartLevel, 0f, 100f, "Start level of characteristic.");
 			ch.pointsPerLevel = configuration.getFloat(ch.name().toLowerCase(),
 					CATEGORY_CHARACTERISTICS_POINTS_PER_LEVEL, (float)ch.defaultPointsPerLevel, 0f, 100f, "Amount of points added to characteristic every level.");
+			ch.cap = configuration.getFloat(ch.name().toLowerCase(),
+					CATEGORY_CHARACTERISTICS_CAP, 1000.0f, 0f, 1000.0f, "Max value of characteristic.");
 		}
 		IblisMod.deathPenaltyHandler.spawnPlayerZombie = configuration.getBoolean("spawn_player_zombie",
 				Configuration.CATEGORY_GENERAL, false, "Spawn player zombie on players death with all inventory.");
@@ -74,6 +81,10 @@ public class IblisModConfig {
 				Configuration.CATEGORY_GENERAL, false, "If set to true sprint button will toggle sprint instead of setting it."));
 		IblisMod.proxy.setHPRender(configuration.getBoolean("render_hp_bar",
 				Configuration.CATEGORY_GENERAL, false, "If true HP bar will be rendered by Iblis."));
+		CraftingHandler.disableMedkitRecipe = configuration.getBoolean("disable_medkit_recipe",
+				Configuration.CATEGORY_GENERAL, false, "If true medkit will not be craftable. Effective after game reload.");
+		CraftingHandler.disableShotgunRecipes = configuration.getBoolean("disable_shotgun_recipe",
+				Configuration.CATEGORY_GENERAL, false, "If true shotgun and bullets will not be craftable. Effective after game reload.");
 		if (configuration.hasChanged()) {
 			configuration.save();
 		}

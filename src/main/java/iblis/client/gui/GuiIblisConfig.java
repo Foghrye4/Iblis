@@ -29,7 +29,9 @@ public class GuiIblisConfig extends GuiConfig {
 		list.add(new DummyCategoryElement("characteristicsDisabling", "iblis.characteristicsDisablingConfig", CharacteristicsDisablingEntry.class));
 		list.add(new DummyCategoryElement("characteristicsStartLevel", "iblis.characteristicsStartLevelConfig", CharacteristicsStartLevelEntry.class));
 		list.add(new DummyCategoryElement("characteristicsPointsPerLevel", "iblis.characteristicsPointsPerLevelConfig", CharacteristicsPointsPerLevelEntry.class));
+		list.add(new DummyCategoryElement("characteristicsCapConfig", "iblis.characteristicsCapConfig", CharacteristicsCapEntry.class));
 		list.add(new DummyCategoryElement("skillsConfig", "iblis.skillsConfig", SkillsEntry.class));
+		list.add(new DummyCategoryElement("skillsCapConfig", "iblis.skillsCapConfig", SkillsCapEntry.class));
 		return list;
 	}
 
@@ -92,6 +94,21 @@ public class GuiIblisConfig extends GuiConfig {
 					GuiConfig.getAbridgedConfigPath(IblisMod.config.configuration.toString()));
 		}
 	}
+	
+	public static class CharacteristicsCapEntry extends CategoryEntry {
+		public CharacteristicsCapEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+			super(owningScreen, owningEntryList, prop);
+		}
+
+		@Override
+		protected GuiScreen buildChildScreen() {
+			return new GuiConfig(this.owningScreen,
+					new ConfigElement(IblisMod.config.configuration.getCategory(IblisModConfig.CATEGORY_CHARACTERISTICS_CAP))
+							.getChildElements(),
+					IblisMod.MODID, false, false,
+					GuiConfig.getAbridgedConfigPath(IblisMod.config.configuration.toString()));
+		}
+	}
 
 	public static class SkillsEntry extends CategoryEntry {
 		public SkillsEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
@@ -107,4 +124,20 @@ public class GuiIblisConfig extends GuiConfig {
 					GuiConfig.getAbridgedConfigPath(IblisMod.config.configuration.toString()));
 		}
 	}
+
+	public static class SkillsCapEntry extends CategoryEntry {
+		public SkillsCapEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+			super(owningScreen, owningEntryList, prop);
+		}
+
+		@Override
+		protected GuiScreen buildChildScreen() {
+			return new GuiConfig(this.owningScreen,
+					new ConfigElement(IblisMod.config.configuration.getCategory(IblisModConfig.CATEGORY_SKILLS_CAP))
+							.getChildElements(),
+					IblisMod.MODID, false, false,
+					GuiConfig.getAbridgedConfigPath(IblisMod.config.configuration.toString()));
+		}
+	}
+
 }

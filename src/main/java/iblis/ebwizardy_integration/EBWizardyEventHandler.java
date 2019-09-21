@@ -28,7 +28,7 @@ public class EBWizardyEventHandler {
 		elementToAttributeMap = new IAttribute[Element.values().length];
 		elementToSkillMap = new PlayerSkills[Element.values().length];
 		for(Element e:Element.values()) {
-			elementToAttributeMap[e.ordinal()] = (new RangedAttribute(MAGIC, "iblis.ebwizardy."+e.getUnlocalisedName(), 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Magic").setShouldWatch(true);
+			elementToAttributeMap[e.ordinal()] = (new RangedAttribute(MAGIC, "iblis.ebwizardy."+e.func_176610_l(), 0.0D, 0.0D, Double.MAX_VALUE)).setDescription("Magic").setShouldWatch(true);
 			elementToSkillMap[e.ordinal()] = new PlayerSkills(e.name()+"_MAGIC", elementToAttributeMap[e.ordinal()], 0.001f);
 		}
 	}
@@ -42,14 +42,14 @@ public class EBWizardyEventHandler {
 	
 	@SubscribeEvent
 	public void onBeforeSpellCast(SpellCastEvent.Pre event) {
-		if(!(event.getEntityLiving() instanceof EntityPlayer))
+		if(!(event.getCaster() instanceof EntityPlayer))
 			return;
-		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+		EntityPlayer player = (EntityPlayer) event.getCaster();
 		Spell spell = event.getSpell();
-		int elementId = spell.element.ordinal();
+		int elementId = spell.getElement().ordinal();
 		PlayerSkills skill = elementToSkillMap[elementId];
 		double skillLevel = skill.getFullSkillValue(player);
-		skillLevel -= spell.tier.level*0.5+0.5;
+		skillLevel -= spell.getTier().level*0.5+0.5;
 		for(String modifier:SPELL_MODIFIERS) {
 			float value = event.getModifiers().get(modifier);
 			value = (float) PlayerUtils.modifyDoubleValueBySkill(false, value, skillLevel);
@@ -59,11 +59,11 @@ public class EBWizardyEventHandler {
 	
 	@SubscribeEvent
 	public void onAfterSpellCast(SpellCastEvent.Post event) {
-		if(!(event.getEntityLiving() instanceof EntityPlayerMP))
+		if(!(event.getCaster() instanceof EntityPlayerMP))
 			return;
-		EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+		EntityPlayer player = (EntityPlayer) event.getCaster();
 		Spell spell = event.getSpell();
-		int elementId = spell.element.ordinal();
+		int elementId = spell.getElement().ordinal();
 		PlayerSkills skill = elementToSkillMap[elementId];
 		skill.raiseSkill(player, 1.0);
 	}

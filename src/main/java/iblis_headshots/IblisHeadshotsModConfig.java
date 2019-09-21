@@ -45,8 +45,13 @@ public class IblisHeadshotsModConfig {
 				Configuration.CATEGORY_GENERAL, 10.0f, 0.0f, 1e6f, "Size of headshot particle");
 		IblisHeadshotsMod.proxy.headshotParticleType = configuration.getInt("headshot_particle_type",
 				Configuration.CATEGORY_GENERAL,1, 0, 3, "0 - no particle, 1 - skull, 2 - aim symbol, 3 - star");
+		IblisHeadshotsEventHandler.nonProjectileHeadshotMinDistanceSq = configuration.getFloat("non_projectile_headshot_min_distance",
+				Configuration.CATEGORY_GENERAL, 16.0f, 0.0f, 1e6f, "Minimal distance at which non-projectile attack count as headshot. Affect Flans mod weapons as well.");
+		IblisHeadshotsEventHandler.nonProjectileHeadshotMinDistanceSq *=IblisHeadshotsEventHandler.nonProjectileHeadshotMinDistanceSq;
 		IblisHeadshotsEventHandler.damageMultiplier = configuration.getFloat("headshot_damage_mutiplier",
 				Configuration.CATEGORY_GENERAL, 4.0f, 0.0f, 1e6f, "Multiplier of damage caused by headshot.");
+		IblisHeadshotsEventHandler.damageToItemMultiplier = configuration.getFloat("headgear_damage_mutiplier",
+				Configuration.CATEGORY_GENERAL, 4.0f, 0.0f, 1e6f, "Multiplier of damage to headgear item on headshot.");
 		IblisHeadshotsEventHandler.missMultiplier = configuration.getFloat("bodyshot_damage_mutiplier",
 				Configuration.CATEGORY_GENERAL, 1.0f, 0.0f, 1e6f, "Multiplier of damage caused by regular shot (in everything except head).");
 		IblisHeadshotsEventHandler.playersHaveNoHeads = configuration.getBoolean("players_have_no_heads",

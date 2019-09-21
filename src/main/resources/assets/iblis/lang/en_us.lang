@@ -45,6 +45,7 @@ iblis.equilibrium=Equilibrium: %0.1f
 
 iblis.magic=Magic: %0.1f
 iblis.ebwizardy.simple=Unaligned: %0.1f
+iblis.ebwizardy.magic=Unaligned: %0.1f
 iblis.ebwizardy.fire=Fire: %0.1f
 iblis.ebwizardy.ice=Ice: %0.1f
 iblis.ebwizardy.lightning=Lightning: %0.1f
@@ -173,4 +174,6 @@ iblis.generalConfig=General
 iblis.characteristicsDisablingConfig=Characteristics
 iblis.characteristicsStartLevelConfig=Characteristics start level
 iblis.characteristicsPointsPerLevelConfig=Characteristics points per level
+iblis.characteristicsCapConfig=Characteristics cap
 iblis.skillsConfig=Skills
+iblis.skillsCapConfig=Skills cap

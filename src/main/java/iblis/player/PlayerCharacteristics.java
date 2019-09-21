@@ -20,6 +20,7 @@ public enum PlayerCharacteristics {
 	INTELLIGENCE(SharedIblisAttributes.INTELLIGENCE,0d,0.1d),
 	GLUTTONY(SharedIblisAttributes.GLUTTONY,10d,1d);
 	
+	public double cap = 1000.0d;
 	public final double defaultPointsPerLevel;
 	public final double defaultStartLevel;
 	public double pointsPerLevel;
@@ -62,7 +63,7 @@ public enum PlayerCharacteristics {
 	}
 	
 	public double getMaxValue(EntityPlayer player) {
-		return player.getEntityAttribute(attribute).getAttribute().clampValue(Double.MAX_VALUE);
+		return player.getEntityAttribute(attribute).getAttribute().clampValue(cap);
 	}
 
 	public String getNiceName() {

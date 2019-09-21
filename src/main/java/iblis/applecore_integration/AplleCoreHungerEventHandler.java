@@ -8,7 +8,9 @@ import squeek.applecore.api.hunger.HungerEvent;
 public class AplleCoreHungerEventHandler {
 	
 	@SubscribeEvent
-	public void onGetMaxHunger(HungerEvent.GetMaxHunger event){
+	public void onGetMaxHunger(HungerEvent.GetMaxHunger event) {
+		if (event.player == null)
+			return;
 		event.maxHunger = MathHelper.floor(PlayerCharacteristics.GLUTTONY.getCurrentValue(event.player));
 	}
 }
