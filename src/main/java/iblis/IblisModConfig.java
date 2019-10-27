@@ -12,6 +12,7 @@ public class IblisModConfig {
 	
 	public static final String CATEGORY_SKILLS = "skills";
 	public static final String CATEGORY_SKILLS_CAP = "skills_cap";
+	public static final String CATEGORY_SKILLS_XP = "skills_xp";
 	public static final String CATEGORY_CHARACTERISTICS_DISABLING = "characteristics_disabling";
 	public static final String CATEGORY_CHARACTERISTICS_START_LEVEL = "characteristics_start_level";
 	public static final String CATEGORY_CHARACTERISTICS_POINTS_PER_LEVEL = "characteristics_points_per_level";
@@ -56,6 +57,8 @@ public class IblisModConfig {
 					CATEGORY_SKILLS, true, "Turn off to disable skill. Disabled skills always counts as equal to zero.");
 			skill.cap = configuration.getFloat(skill.name().toLowerCase(),
 					CATEGORY_SKILLS_CAP, 1000.0f, 0f, 1000.0f, "Max skill level.");
+			skill.pointsPerLevel = configuration.getFloat(skill.name().toLowerCase(),
+					CATEGORY_SKILLS_XP, (float) skill.defaultPointsPerLevel, 0f, 1000.0f, "Skill XP per action.");
 		}
 		for(PlayerCharacteristics ch:PlayerCharacteristics.values()){
 			ch.enabled = configuration.getBoolean(ch.name().toLowerCase(),

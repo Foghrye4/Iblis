@@ -32,6 +32,7 @@ public class GuiIblisConfig extends GuiConfig {
 		list.add(new DummyCategoryElement("characteristicsCapConfig", "iblis.characteristicsCapConfig", CharacteristicsCapEntry.class));
 		list.add(new DummyCategoryElement("skillsConfig", "iblis.skillsConfig", SkillsEntry.class));
 		list.add(new DummyCategoryElement("skillsCapConfig", "iblis.skillsCapConfig", SkillsCapEntry.class));
+		list.add(new DummyCategoryElement("skillsXPConfig", "iblis.skillsXPConfig", SkillsXPEntry.class));
 		return list;
 	}
 
@@ -140,4 +141,18 @@ public class GuiIblisConfig extends GuiConfig {
 		}
 	}
 
+	public static class SkillsXPEntry extends CategoryEntry {
+		public SkillsXPEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+			super(owningScreen, owningEntryList, prop);
+		}
+
+		@Override
+		protected GuiScreen buildChildScreen() {
+			return new GuiConfig(this.owningScreen,
+					new ConfigElement(IblisMod.config.configuration.getCategory(IblisModConfig.CATEGORY_SKILLS_XP))
+							.getChildElements(),
+					IblisMod.MODID, false, false,
+					GuiConfig.getAbridgedConfigPath(IblisMod.config.configuration.toString()));
+		}
+	}
 }

@@ -45,6 +45,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerContainerEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
@@ -60,7 +61,7 @@ public class CraftingHandler  implements IContainerListener{
 	static List<PlayerSensitiveShapedRecipeWrapper> replacements = new ArrayList<PlayerSensitiveShapedRecipeWrapper>();
 	static List<ShapedRecipeRaisingSkillWrapper> replacements2 = new ArrayList<ShapedRecipeRaisingSkillWrapper>();
 	
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		IForgeRegistryModifiable<IRecipe> recipeRegistry = (IForgeRegistryModifiable<IRecipe>) ForgeRegistries.RECIPES;
 		Iterator<IRecipe> irecipes = recipeRegistry.iterator();
@@ -69,6 +70,12 @@ public class CraftingHandler  implements IContainerListener{
 			IRecipe recipe = irecipes.next();
 			if(recipe instanceof RecipeRepairItem) {
 				vanillaRecipesToRemove.add(recipe.getRegistryName());
+			}
+			if(recipe.getRegistryName().getResourceDomain().equals("pickletweaks") && recipe.getRegistryName().getResourcePath().equals("grid_repair")) {
+				vanillaRecipesToRemove.add(recipe.getRegistryName());
+				ShapedRecipeRaisingSkillWrapper repairRecipeWrapper = new PlayerSensitiveCustomRecipeWrapper(recipe);
+				repairRecipeWrapper.setRegistryName(recipe.getRegistryName());
+				replacements2.add(repairRecipeWrapper);
 			}
 			ItemStack is = recipe.getRecipeOutput();
 			if (is != null) {

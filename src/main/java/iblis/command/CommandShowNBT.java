@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
@@ -20,7 +21,7 @@ public class CommandShowNBT extends CommandBase {
 
 	@Override
 	public String getName() {
-		return "shownbt";
+		return "iblis";
 	}
 
 	@Override
@@ -41,6 +42,18 @@ public class CommandShowNBT extends CommandBase {
 		EntityPlayerMP player = (EntityPlayerMP) command_sender;
 		ItemStack stack = player.getHeldItem(EnumHand.MAIN_HAND);
 		NBTTagCompound tag = stack.getTagCompound();
+		
+		if (args.length > 0 && args[0].equalsIgnoreCase("playernbt")) {
+			tag = new NBTTagCompound();
+			player.writeEntityToNBT(tag);
+		}
+		if (args.length > 0 && args[0].equalsIgnoreCase("playernbtraw")) {
+			tag = new NBTTagCompound();
+			player.writeEntityToNBT(tag);
+			command_sender.sendMessage(new TextComponentString(tag.toString()));
+			return;
+		}
+			
 		if (stack.isEmpty() || tag == null) {
 			World world = player.getEntityWorld();
 			if (world != null) {
